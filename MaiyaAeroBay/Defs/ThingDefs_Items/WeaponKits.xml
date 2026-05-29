@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 武器套件基类 -->
+  <ThingDef ParentName="ResourceBase" Name="MaiyaAeroBayWeaponKitBase" Abstract="true">
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <altitudeLayer>Item</altitudeLayer>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>8</Mass>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <alwaysHaulable>true</alwaysHaulable>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <tradeability>All</tradeability>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="CompProperties_Usable">
+        <useJob>UseArtifact</useJob>
+        <useLabel>Install weapon on shuttle</useLabel>
+        <useDuration>120</useDuration>
+      </li>
+      <li Class="MaiyaAeroBay.CompProperties_TargetableSingleShuttle"/>
+      <li Class="MaiyaAeroBay.CompProperties_TargetEffectInstallAeroBayKit"/>
+    </comps>
+  </ThingDef>
+
+  <!-- 双机枪套件 -->
+  <ThingDef ParentName="MaiyaAeroBayWeaponKitBase">
+    <defName>MaiyaAeroBay_WeaponKit_DualMG</defName>
+    <label>穿梭机双联机枪套件</label>
+    <description>为穿梭机安装双联装机枪，停泊地面时自动攻击射程内敌人。12伤害×4连发，射程28格，冷却4.8秒。\n\n每个穿梭机只能安装一个武器套件，无法替换。仅在地面时生效，飞行中不攻击。</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/SubcoreRegular</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(200,50,50)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>400</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Weapon</kitType>
+        <weaponType>DualMachineGun</weaponType>
+        <weaponDamage>12</weaponDamage>
+        <weaponRange>28</weaponRange>
+        <weaponBurstCount>4</weaponBurstCount>
+        <weaponCooldown>4.8</weaponCooldown>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 机炮套件 -->
+  <ThingDef ParentName="MaiyaAeroBayWeaponKitBase">
+    <defName>MaiyaAeroBay_WeaponKit_Autocannon</defName>
+    <label>穿梭机机炮套件</label>
+    <description>为穿梭机安装重型机炮，停泊地面时自动攻击射程内敌人。30伤害单发，射程35格，冷却6秒。适合对付护甲较厚的目标。\n\n每个穿梭机只能安装一个武器套件，无法替换。仅在地面时生效。</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/SubcoreRegular</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(180,80,50)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>600</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Weapon</kitType>
+        <weaponType>Autocannon</weaponType>
+        <weaponDamage>30</weaponDamage>
+        <weaponRange>35</weaponRange>
+        <weaponBurstCount>1</weaponBurstCount>
+        <weaponCooldown>6.0</weaponCooldown>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 火箭巢套件 -->
+  <ThingDef ParentName="MaiyaAeroBayWeaponKitBase">
+    <defName>MaiyaAeroBay_WeaponKit_Rocket</defName>
+    <label>穿梭机火箭巢套件</label>
+    <description>为穿梭机安装火箭发射巢，停泊地面时自动攻击射程内敌人。50伤害×3连发，射程40格，冷却10秒。爆炸范围伤害，注意友军。\n\n每个穿梭机只能安装一个武器套件，无法替换。仅在地面时生效。</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/SubcoreRegular</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(100,100,200)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>800</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Weapon</kitType>
+        <weaponType>RocketPod</weaponType>
+        <weaponDamage>50</weaponDamage>
+        <weaponRange>40</weaponRange>
+        <weaponBurstCount>3</weaponBurstCount>
+        <weaponCooldown>10.0</weaponCooldown>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 激光炮套件 -->
+  <ThingDef ParentName="MaiyaAeroBayWeaponKitBase">
+    <defName>MaiyaAeroBay_WeaponKit_Laser</defName>
+    <label>穿梭机激光炮套件</label>
+    <description>为穿梭机安装激光炮，停泊地面时自动攻击射程内敌人。45穿甲伤害，射程50格，冷却5秒。无视大部分护甲，精度极高。\n\n每个穿梭机只能安装一个武器套件，无法替换。仅在地面时生效。</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/SubcoreRegular</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(50,200,255)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>1200</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Weapon</kitType>
+        <weaponType>LaserCannon</weaponType>
+        <weaponDamage>45</weaponDamage>
+        <weaponRange>50</weaponRange>
+        <weaponBurstCount>1</weaponBurstCount>
+        <weaponCooldown>5.0</weaponCooldown>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

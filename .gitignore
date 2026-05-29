@@ -1,0 +1,23 @@
+## Build outputs
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+
+## Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+
+## IDE
+.idea/
+*.swp
+
+## OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+## Backup
+*_backup*/

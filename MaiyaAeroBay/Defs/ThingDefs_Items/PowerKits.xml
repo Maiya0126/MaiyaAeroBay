@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="ResourceBase" Name="MaiyaAeroBayPowerKitBase" Abstract="true">
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <altitudeLayer>Item</altitudeLayer>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>6</Mass>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <alwaysHaulable>true</alwaysHaulable>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <tradeability>All</tradeability>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="CompProperties_Usable">
+        <useJob>UseArtifact</useJob>
+        <useLabel>Install power kit on shuttle</useLabel>
+        <useDuration>120</useDuration>
+      </li>
+      <li Class="MaiyaAeroBay.CompProperties_TargetableSingleShuttle"/>
+      <li Class="MaiyaAeroBay.CompProperties_TargetEffectInstallAeroBayKit"/>
+    </comps>
+  </ThingDef>
+
+  <!-- 动力套件 I -->
+  <ThingDef ParentName="MaiyaAeroBayPowerKitBase">
+    <defName>MaiyaAeroBay_PowerKit_I</defName>
+    <label>穿梭机动力套件 I</label>
+    <description>为穿梭机升级动力系统。油箱容量×1.2，起飞冷却时间×0.8。更远的航程，更短的等待。\n\n每个穿梭机只能安装一个动力套件，无法替换。</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/SignalChip</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(100,200,100)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>300</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Power</kitType>
+        <fuelCapacityMultiplier>1.2</fuelCapacityMultiplier>
+        <cooldownMultiplier>0.8</cooldownMultiplier>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 动力套件 II -->
+  <ThingDef ParentName="MaiyaAeroBayPowerKitBase">
+    <defName>MaiyaAeroBay_PowerKit_II</defName>
+    <label>穿梭机动力套件 II</label>
+    <description>为穿梭机升级动力系统。油箱容量×2.0，起飞冷却时间×0.5。翻倍的油量让你飞得更远、等得更少。\n\n每个穿梭机只能安装一个动力套件，无法替换。</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/SignalChip</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(100,150,255)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>600</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Power</kitType>
+        <fuelCapacityMultiplier>2.0</fuelCapacityMultiplier>
+        <cooldownMultiplier>0.5</cooldownMultiplier>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 动力套件 III -->
+  <ThingDef ParentName="MaiyaAeroBayPowerKitBase">
+    <defName>MaiyaAeroBay_PowerKit_III</defName>
+    <label>穿梭机动力套件 III</label>
+    <description>为穿梭机升级动力系统。油箱容量×5.0，起飞冷却时间×0.2。五倍油量和极速冷却，让穿梭机随时待命。\n\n每个穿梭机只能安装一个动力套件，无法替换。</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/SignalChip</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(255,200,50)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>1200</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Power</kitType>
+        <fuelCapacityMultiplier>5.0</fuelCapacityMultiplier>
+        <cooldownMultiplier>0.2</cooldownMultiplier>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

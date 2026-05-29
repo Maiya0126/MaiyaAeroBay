@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C93ACD31-C397-4068-8841-332D0E32B362}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MaiyaAeroBay</RootNamespace>
+    <AssemblyName>MaiyaAeroBay</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>D:\Games\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>D:\Games\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>D:\Games\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>D:\Games\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\..\..\Games\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\..\..\Games\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Source\Comp_ShuttleInterior.cs" />
+    <Compile Include="Source\CompProperties_ShuttleInterior.cs" />
+    <Compile Include="Source\CompProperties_AeroBayKit.cs" />
+    <Compile Include="Source\ShuttleKitDefs.cs" />
+    <Compile Include="Source\CompShuttleWeapon.cs" />
+    <Compile Include="Source\CompShuttleShield.cs" />
+    <Compile Include="Source\CompShuttlePowerComfort.cs" />
+    <Compile Include="Source\CompShuttleKitInstaller.cs" />
+    <Compile Include="Source\CompTargetable_SingleShuttle.cs" />
+    <Compile Include="Source\CompTargetEffect_InstallAeroBayKit.cs" />
+    <Compile Include="Source\JobDriver_InstallAeroBayKit.cs" />
+    <Compile Include="Source\Dialog_EnterShuttleInterior.cs" />
+    <Compile Include="Source\Dialog_SelectPawnsForExit.cs" />
+    <Compile Include="Source\Dialog_TransferItems.cs" />
+    <Compile Include="Source\ExitPortal.cs" />
+    <Compile Include="Source\GenStep_ShuttleInterior.cs" />
+    <Compile Include="Source\HarmonyPatches.cs" />
+    <Compile Include="Source\InteriorMapComponent.cs" />
+    <Compile Include="Source\JobDriver_EnterShuttleInterior.cs" />
+    <Compile Include="Source\MaiyaAeroBayMod.cs" />
+    <Compile Include="Source\MaiyaAeroBayModSettings.cs" />
+    <Compile Include="Source\ShuttleInteriorPortal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Textures\UI\" />
+    <Folder Include="Textures\Things\" />
+    <Folder Include="Textures\Things\Building\" />
+    <Folder Include="Textures\Things\Building\Asset\" />
+    <Folder Include="Textures\Things\Building\Surface\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="About\About.xml" />
+    <Content Include="Defs\JobDef_EnterShuttleInterior.xml" />
+    <Content Include="Defs\MapGenerator_ShuttleInterior.xml" />
+    <Content Include="Defs\Terrain_ShuttleInterior.xml" />
+    <Content Include="Defs\ThingDefs_Items\UpgradeKits.xml" />
+    <Content Include="Defs\ThingDefs_Items\WeaponKits.xml" />
+    <Content Include="Defs\ThingDefs_Items\ShieldKits.xml" />
+    <Content Include="Defs\ThingDefs_Items\PowerKits.xml" />
+    <Content Include="Defs\ThingDefs_Items\ComfortKits.xml" />
+    <Content Include="Defs\ThingDefs_Buildings\CivilianShuttle.xml" />
+    <Content Include="Defs\JobDefs\Jobs.xml" />
+    <Content Include="Defs\RecipeDefs\Recipes.xml" />
+    <Content Include="Defs\RecipeDefs\Recipes_Kits.xml" />
+    <Content Include="Defs\ResearchProjectDefs\ResearchProjects.xml" />
+    <Content Include="Languages\ChineseSimplified\Keyed\MaiyaAeroBay_Keys.xml" />
+    <Content Include="Languages\English\Keyed\MaiyaAeroBay_Keys.xml" />
+    <Content Include="Textures\Things\Building\Asset\Cargo.png" />
+    <Content Include="Textures\Things\Building\Asset\Exit.png" />
+    <Content Include="Textures\Things\Building\Surface\MetalTile.png" />
+    <Content Include="Textures\UI\Commands\Enter.png" />
+    <Content Include="Textures\UI\Commands\Exit.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+<PropertyGroup>
+    <PostBuildEvent>set MOD_DIR=D:\Games\steamapps\common\Rimworld\Mods\MaiyaMod10 Maiya AeroBay 麦丫穿梭舱
+copy /y "$(TargetPath)" "%MOD_DIR%\Assemblies\"
+if exist "$(ProjectDir)Defs" xcopy /y /i "$(ProjectDir)Defs" "%MOD_DIR%\Defs\"
+if exist "$(ProjectDir)About" xcopy /y /i "$(ProjectDir)About" "%MOD_DIR%\About\"
+if exist "$(ProjectDir)Languages" xcopy /y /i "$(ProjectDir)Languages" "%MOD_DIR%\Languages\"
+if exist "$(ProjectDir)Textures" xcopy /y /i "$(ProjectDir)Textures" "%MOD_DIR%\Textures\"
+echo [MaiyaAeroBay] Build and deploy complete!</PostBuildEvent>
+  </PropertyGroup>
+</Project>

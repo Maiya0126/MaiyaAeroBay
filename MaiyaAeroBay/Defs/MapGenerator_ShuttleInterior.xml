@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <MapGeneratorDef>
+    <defName>MaiyaAeroBay_InteriorSpace</defName>
+    <label>MaiyaAeroBay_InteriorSpace</label>
+    <ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>
+    <disableShadows>true</disableShadows>
+    <disableCallAid>true</disableCallAid>
+    <customMapComponents>
+      <li>MaiyaAeroBay.InteriorMapComponent</li>
+    </customMapComponents>
+    
+    <pocketMapProperties>
+      <biome>MaiyaAeroBay_InteriorSpace</biome>
+      <temperature>21</temperature>
+      <destroyOnParentMapAbandoned>false</destroyOnParentMapAbandoned>
+    </pocketMapProperties>
+    <genSteps>
+      <li>MaiyaAeroBay_InteriorSpace</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <GenStepDef>
+    <defName>MaiyaAeroBay_InteriorSpace</defName>
+    <order>10</order>
+    <genStep Class="MaiyaAeroBay.GenStep_ShuttleInterior, MaiyaAeroBay" />
+  </GenStepDef>
+
+  <BiomeDef>
+    <defName>MaiyaAeroBay_InteriorSpace</defName>
+    <label>MaiyaAeroBay_InteriorSpace_biome</label>
+    <description>MaiyaAeroBay_InteriorSpace_biome_description</description>
+    <generatesNaturally>false</generatesNaturally>
+    <animalDensity>0</animalDensity>
+    <plantDensity>0</plantDensity>
+    <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
+    <baseWeatherCommonalities>
+      <Clear>1</Clear>
+    </baseWeatherCommonalities>
+    <diseaseMtbDays>999</diseaseMtbDays>
+    <settlementSelectionWeight>0</settlementSelectionWeight>
+    <movementDifficulty>1</movementDifficulty>
+    <diseases />
+  </BiomeDef>
+
+</Defs>

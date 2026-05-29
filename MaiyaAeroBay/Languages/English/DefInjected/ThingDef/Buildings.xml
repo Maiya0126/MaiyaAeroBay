@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <MaiyaAeroBay_InteriorWall.description>Sturdy hull walls of the shuttle, each cell automatically outputs 50W of power</MaiyaAeroBay_InteriorWall.description>
+  <MaiyaAeroBay_InteriorConduit.label>Shuttle Interior Conduit</MaiyaAeroBay_InteriorConduit.label>
+  <MaiyaAeroBay_InteriorConduit.description>Power transmission cables inside the shuttle, delivering wall-generated electricity</MaiyaAeroBay_InteriorConduit.description>
+</LanguageData>

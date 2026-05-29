@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- 穿梭机操作 -->
+  <MaiyaAeroBay_EnterInterior>进入内部</MaiyaAeroBay_EnterInterior>
+  <MaiyaAeroBay_EnterInteriorDesc>进入穿梭机内部空间</MaiyaAeroBay_EnterInteriorDesc>
+  <MaiyaAeroBay_ViewInterior>查看内部</MaiyaAeroBay_ViewInterior>
+  <MaiyaAeroBay_ViewInteriorDesc>查看穿梭机内部空间</MaiyaAeroBay_ViewInteriorDesc>
+  <MaiyaAeroBay_NeedUpgradeFirst>需要先升级穿梭机才能进入</MaiyaAeroBay_NeedUpgradeFirst>
+  
+  <!-- 对话框 -->
+  <MaiyaAeroBay_SelectPawnsToEnter>选择要进入的殖民者</MaiyaAeroBay_SelectPawnsToEnter>
+  <MaiyaAeroBay_SelectAtLeastOnePawn>请至少选择一名殖民者</MaiyaAeroBay_SelectAtLeastOnePawn>
+  <MaiyaAeroBay_ExitNotReady>出口未就绪</MaiyaAeroBay_ExitNotReady>
+  <MaiyaAeroBay_PawnCantReach>{0} 无法到达穿梭机</MaiyaAeroBay_PawnCantReach>
+  <MaiyaAeroBay_PawnDowned>{0} 已倒下</MaiyaAeroBay_PawnDowned>
+  
+  <!-- 升级相关 -->
+  <MaiyaAeroBay_Upgrade>升级</MaiyaAeroBay_Upgrade>
+  <MaiyaAeroBay_UpgradeDesc>升级穿梭机内部空间到 Lv.{0}\n需要: 钢 {1}, 塑料 {2}</MaiyaAeroBay_UpgradeDesc>
+  <MaiyaAeroBay_UpgradeSuccess>穿梭机已升级到 Lv.{0}</MaiyaAeroBay_UpgradeSuccess>
+  <MaiyaAeroBay_HasOccupantsCannotUpgrade>内部有人员，无法升级。请先让人员离开内部空间。</MaiyaAeroBay_HasOccupantsCannotUpgrade>
+  
+  <!-- 内部空间信息 -->
+  <MaiyaAeroBay_InteriorSize>内部空间: {0} x {1} (Lv.{2})</MaiyaAeroBay_InteriorSize>
+  
+  <!-- 货物转运 -->
+  <MaiyaAeroBay_TransferCargo>转运货物</MaiyaAeroBay_TransferCargo>
+  <MaiyaAeroBay_TransferCargoDesc>将穿梭机内的货物转运到内部存储</MaiyaAeroBay_TransferCargoDesc>
+  <MaiyaAeroBay_NoCargoToTransfer>穿梭机内没有货物</MaiyaAeroBay_NoCargoToTransfer>
+  <MaiyaAeroBay_NoStorageFound>内部存储空间未找到</MaiyaAeroBay_NoStorageFound>
+  <MaiyaAeroBay_TransferSuccess>已转运 {0} 件物品</MaiyaAeroBay_TransferSuccess>
+  <MaiyaAeroBay_TransferFailed>无法转运货物</MaiyaAeroBay_TransferFailed>
+  
+  <!-- Job -->
+  <MaiyaAeroBay_EnteringInterior>进入穿梭机内部</MaiyaAeroBay_EnteringInterior>
+  
+  <!-- 科技项目 -->
+  <MaiyaAeroBay_BasicExpansion_label>穿梭机改造入门</MaiyaAeroBay_BasicExpansion_label>
+  <MaiyaAeroBay_BasicExpansion_desc>解锁穿梭机基础改装能力：空间套件Lv.1-2、舒适套件I、动力套件I、简易护盾套件、双联机枪套件。</MaiyaAeroBay_BasicExpansion_desc>
+  
+  <MaiyaAeroBay_AdvancedExpansion_label>穿梭机改造进阶</MaiyaAeroBay_AdvancedExpansion_label>
+  <MaiyaAeroBay_AdvancedExpansion_desc>解锁穿梭机中级改装能力：空间套件Lv.3-4、舒适套件II、动力套件II、能量护盾套件、机炮与火箭巢套件。</MaiyaAeroBay_AdvancedExpansion_desc>
+  
+  <MaiyaAeroBay_UltimateExpansion_label>穿梭机改造精通</MaiyaAeroBay_UltimateExpansion_label>
+  <MaiyaAeroBay_UltimateExpansion_desc>解锁穿梭机高级改装能力：空间套件Lv.5、舒适套件III、动力套件III、强化护盾套件、激光炮套件。</MaiyaAeroBay_UltimateExpansion_desc>
+  
+  <!-- 地形和生物群系 -->
+  <MaiyaAeroBay_InteriorFloor>穿梭舱地板</MaiyaAeroBay_InteriorFloor>
+  <MaiyaAeroBay_InteriorFloor_description>穿梭机内部金属地板</MaiyaAeroBay_InteriorFloor_description>
+  
+  <MaiyaAeroBay_ShuttleRoof>穿梭机顶棚</MaiyaAeroBay_ShuttleRoof>
+  <MaiyaAeroBay_ShuttleRoof_description>穿梭机的封闭顶棚</MaiyaAeroBay_ShuttleRoof_description>
+  
+  <MaiyaAeroBay_InteriorWall>穿梭机墙壁</MaiyaAeroBay_InteriorWall>
+  <MaiyaAeroBay_InteriorWall_description>穿梭机的坚固外壳墙壁</MaiyaAeroBay_InteriorWall_description>
+  
+  <MaiyaAeroBay_CargoPod>机载货物舱</MaiyaAeroBay_CargoPod>
+  <MaiyaAeroBay_ExitPortal>穿梭机出口</MaiyaAeroBay_ExitPortal>
+  <MaiyaAeroBay_ExitPortal_description>穿梭机内部出口，连接外部世界</MaiyaAeroBay_ExitPortal_description>
+  <MaiyaAeroBay>穿梭机拓展：别有洞天</MaiyaAeroBay>
+  <MaiyaAeroBay_CargoPod_description>穿梭机底部的紧凑存储空间，可存放各类物品</MaiyaAeroBay_CargoPod_description>
+  
+  <MaiyaAeroBay_InteriorSpace_biome>穿梭机内部</MaiyaAeroBay_InteriorSpace_biome>
+  <MaiyaAeroBay_InteriorSpace_biome_description>穿梭机的内部空间</MaiyaAeroBay_InteriorSpace_biome_description>
+
+  <!-- 疏散 -->
+  <MaiyaAeroBay_PawnsEvacuated>已疏散 {0} 名人员到主地图</MaiyaAeroBay_PawnsEvacuated>
+
+  <!-- 出口按钮 -->
+  <MaiyaAeroBay_ExitToShuttle>离开穿梭机</MaiyaAeroBay_ExitToShuttle>
+  <MaiyaAeroBay_ExitToShuttleDesc>离开穿梭机内部空间</MaiyaAeroBay_ExitToShuttleDesc>
+
+  <!-- 穿梭机操作 -->
+  <MaiyaAeroBay_AllExit>全部撤离</MaiyaAeroBay_AllExit>
+  <MaiyaAeroBay_ExitSuccess>已撤离 {0} 名人员</MaiyaAeroBay_ExitSuccess>
+  <MaiyaAeroBay_NoPawnsToExit>没有可撤离的人员</MaiyaAeroBay_NoPawnsToExit>
+  <MaiyaAeroBay_ShuttleNotFound>穿梭机未找到</MaiyaAeroBay_ShuttleNotFound>
+
+  <!-- Mod设置 -->
+  <MaiyaAeroBay_ModSettings>别有洞天设置</MaiyaAeroBay_ModSettings>
+  <MaiyaAeroBay_UpgradeCostPercent>升级资源消耗百分比</MaiyaAeroBay_UpgradeCostPercent>
+  <MaiyaAeroBay_UpgradeCostPercentDesc>调整升级所需资源的百分比（100%为默认消耗）</MaiyaAeroBay_UpgradeCostPercentDesc>
+
+  <!-- 升级套件物品 -->
+  <MaiyaAeroBay_UpgradeKit_A>穿梭舱升级套件 Lv.1</MaiyaAeroBay_UpgradeKit_A>
+  <MaiyaAeroBay_UpgradeKit_A_desc>穿梭机内部空间升级套件。安装后可获得 7x6 的内部空间，可供殖民者休息和存储物品。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个套件。</MaiyaAeroBay_UpgradeKit_A_desc>
+  
+  <MaiyaAeroBay_UpgradeKit_B>穿梭舱升级套件 Lv.2</MaiyaAeroBay_UpgradeKit_B>
+  <MaiyaAeroBay_UpgradeKit_B_desc>穿梭机内部空间升级套件。安装后可获得 8x7 的内部空间，供殖民者休息和存储物品。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个套件。</MaiyaAeroBay_UpgradeKit_B_desc>
+  
+  <MaiyaAeroBay_UpgradeKit_C>穿梭舱升级套件 Lv.3</MaiyaAeroBay_UpgradeKit_C>
+  <MaiyaAeroBay_UpgradeKit_C_desc>穿梭机内部空间升级套件。安装后可获得 9x7 的内部空间，供殖民者休息和存储物品。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个套件。</MaiyaAeroBay_UpgradeKit_C_desc>
+  
+  <MaiyaAeroBay_UpgradeKit_D>穿梭舱升级套件 Lv.4</MaiyaAeroBay_UpgradeKit_D>
+  <MaiyaAeroBay_UpgradeKit_D_desc>穿梭机内部空间升级套件。安装后可获得 10x8 的内部空间，供殖民者休息和存储物品。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个套件。</MaiyaAeroBay_UpgradeKit_D_desc>
+  
+  <MaiyaAeroBay_UpgradeKit_E>穿梭舱升级套件 Lv.5</MaiyaAeroBay_UpgradeKit_E>
+  <MaiyaAeroBay_UpgradeKit_E_desc>穿梭机内部空间升级套件。安装后可获得 12x10 的最大内部空间，供殖民者休息和存储物品。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个套件。</MaiyaAeroBay_UpgradeKit_E_desc>
+  
+  <!-- 配方标签 -->
+  <MaiyaAeroBay_UpgradeKit_A_label>制作穿梭舱升级套件 Lv.1</MaiyaAeroBay_UpgradeKit_A_label>
+  <MaiyaAeroBay_UpgradeKit_B_label>制作穿梭舱升级套件 Lv.2</MaiyaAeroBay_UpgradeKit_B_label>
+  <MaiyaAeroBay_UpgradeKit_C_label>制作穿梭舱升级套件 Lv.3</MaiyaAeroBay_UpgradeKit_C_label>
+  <MaiyaAeroBay_UpgradeKit_D_label>制作穿梭舱升级套件 Lv.4</MaiyaAeroBay_UpgradeKit_D_label>
+  <MaiyaAeroBay_UpgradeKit_E_label>制作穿梭舱升级套件 Lv.5</MaiyaAeroBay_UpgradeKit_E_label>
+
+  <!-- 套件使用 -->
+  <MaiyaAeroBay_NotAShuttle>目标不是穿梭机</MaiyaAeroBay_NotAShuttle>
+  <MaiyaAeroBay_ShuttleAlreadyHasInterior>此穿梭机已安装升级套件，无法重复安装</MaiyaAeroBay_ShuttleAlreadyHasInterior>
+  <MaiyaAeroBay_KitInstalled>已将 {0} 安装到 {1}，获得 {2}x{3} 的内部空间</MaiyaAeroBay_KitInstalled>
+
+  <!-- 民用穿梭机 -->
+  <MaiyaAeroBay_CivilianShuttle>民用穿梭机</MaiyaAeroBay_CivilianShuttle>
+  <MaiyaAeroBay_CivilianShuttle_desc>一架用化合燃料驱动的民用穿梭机，设计用于中等距离旅行。虽然性能不如军用穿梭机，但制造成本低廉，不需要稀有的穿梭机引擎。\n\n可以对它使用升级套件来获得内部空间（最高支持Lv.2套件）。武器和防护套件无限制。载重200公斤，最大航程约30格。</MaiyaAeroBay_CivilianShuttle_desc>
+
+  <!-- 研究项目 -->
+  <MaiyaAeroBay_CivilianAviation_label>民用航空</MaiyaAeroBay_CivilianAviation_label>
+  <MaiyaAeroBay_CivilianAviation_desc>解锁建造民用穿梭机和穿梭舱升级套件的能力。民用穿梭机是一种低成本的中程运输工具，可安装升级套件获得内部空间。</MaiyaAeroBay_CivilianAviation_desc>
+
+  <!-- 武器套件 -->
+  <MaiyaAeroBay_WeaponKit_DualMG>双机枪套件</MaiyaAeroBay_WeaponKit_DualMG>
+  <MaiyaAeroBay_WeaponKit_DualMG_desc>穿梭机武器套件。安装后可获得双联装机枪，自动攻击射程内的敌人。伤害12×4，射程28格。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个武器套件。仅在穿梭机停在地面时生效。</MaiyaAeroBay_WeaponKit_DualMG_desc>
+  
+  <MaiyaAeroBay_WeaponKit_Autocannon>机炮套件</MaiyaAeroBay_WeaponKit_Autocannon>
+  <MaiyaAeroBay_WeaponKit_Autocannon_desc>穿梭机武器套件。安装后可获得重型机炮，自动攻击射程内的敌人。伤害30，射程35格。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个武器套件。仅在穿梭机停在地面时生效。</MaiyaAeroBay_WeaponKit_Autocannon_desc>
+  
+  <MaiyaAeroBay_WeaponKit_Rocket>火箭巢套件</MaiyaAeroBay_WeaponKit_Rocket>
+  <MaiyaAeroBay_WeaponKit_Rocket_desc>穿梭机武器套件。安装后可获得火箭发射巢，自动攻击射程内的敌人。伤害50×3，射程40格。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个武器套件。仅在穿梭机停在地面时生效。</MaiyaAeroBay_WeaponKit_Rocket_desc>
+  
+  <MaiyaAeroBay_WeaponKit_Laser>激光炮套件</MaiyaAeroBay_WeaponKit_Laser>
+  <MaiyaAeroBay_WeaponKit_Laser_desc>穿梭机武器套件。安装后可获得激光炮，自动攻击射程内的敌人。伤害45（穿甲），射程50格。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个武器套件。仅在穿梭机停在地面时生效。</MaiyaAeroBay_WeaponKit_Laser_desc>
+
+  <!-- 防御套件 -->
+  <MaiyaAeroBay_ShieldKit_Simple>简易护盾套件</MaiyaAeroBay_ShieldKit_Simple>
+  <MaiyaAeroBay_ShieldKit_Simple_desc>穿梭机防御套件。安装后获得永久护盾，可抵御来袭攻击。护盾HP 150，恢复速度慢。EMP攻击会瘫痪护盾10秒。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个防御套件。仅在穿梭机停在地面时生效。</MaiyaAeroBay_ShieldKit_Simple_desc>
+  
+  <MaiyaAeroBay_ShieldKit_Energy>能量护盾套件</MaiyaAeroBay_ShieldKit_Energy>
+  <MaiyaAeroBay_ShieldKit_Energy_desc>穿梭机防御套件。安装后获得能量护盾，可抵御来袭攻击。护盾HP 300，恢复速度中等。EMP攻击会瘫痪护盾8秒。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个防御套件。仅在穿梭机停在地面时生效。</MaiyaAeroBay_ShieldKit_Energy_desc>
+  
+  <MaiyaAeroBay_ShieldKit_Reinforced>强化护盾套件</MaiyaAeroBay_ShieldKit_Reinforced>
+  <MaiyaAeroBay_ShieldKit_Reinforced_desc>穿梭机防御套件。安装后获得强化护盾，可抵御来袭攻击。护盾HP 500，恢复速度快。EMP攻击会瘫痪护盾5秒。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个防御套件。仅在穿梭机停在地面时生效。</MaiyaAeroBay_ShieldKit_Reinforced_desc>
+
+  <!-- 状态信息 -->
+  <MaiyaAeroBay_WeaponStatus>武器: {0}</MaiyaAeroBay_WeaponStatus>
+  <MaiyaAeroBay_WeaponReady>就绪</MaiyaAeroBay_WeaponReady>
+  <MaiyaAeroBay_WeaponFlying>飞行中（无效）</MaiyaAeroBay_WeaponFlying>
+  <MaiyaAeroBay_Cooldown>冷却中: {0}</MaiyaAeroBay_Cooldown>
+  <MaiyaAeroBay_ForceFire>强制开火</MaiyaAeroBay_ForceFire>
+  <MaiyaAeroBay_ForceFireDesc>选择目标强制开火</MaiyaAeroBay_ForceFireDesc>
+  
+  <MaiyaAeroBay_ShieldStatus>护盾: {0}</MaiyaAeroBay_ShieldStatus>
+  <MaiyaAeroBay_ShieldFlying>飞行中（无效）</MaiyaAeroBay_ShieldFlying>
+  <MaiyaAeroBay_ShieldEMPed>EMP瘫痪: {0}</MaiyaAeroBay_ShieldEMPed>
+  <MaiyaAeroBay_ShieldHP>HP: {0}/{1}</MaiyaAeroBay_ShieldHP>
+  <MaiyaAeroBay_ShieldDown>已过载</MaiyaAeroBay_ShieldDown>
+  <MaiyaAeroBay_ShieldLabel>穿梭机护盾</MaiyaAeroBay_ShieldLabel>
+  <MaiyaAeroBay_EMP>EMP瘫痪</MaiyaAeroBay_EMP>
+  
+  <MaiyaAeroBay_ShuttleAlreadyHasWeapon>此穿梭机已安装武器套件，无法重复安装</MaiyaAeroBay_ShuttleAlreadyHasWeapon>
+  <MaiyaAeroBay_ShuttleAlreadyHasShield>此穿梭机已安装防御套件，无法重复安装</MaiyaAeroBay_ShuttleAlreadyHasShield>
+  <MaiyaAeroBay_WeaponKitInstalled>已将 {0} 安装到 {1}</MaiyaAeroBay_WeaponKitInstalled>
+  <MaiyaAeroBay_ShieldKitInstalled>已将 {0} 安装到 {1}</MaiyaAeroBay_ShieldKitInstalled>
+
+  <!-- 安装套件 Gizmo -->
+  <MaiyaAeroBay_InstallKit>安装套件</MaiyaAeroBay_InstallKit>
+  <MaiyaAeroBay_InstallKitDesc>为此穿梭机安装升级、武器或防御套件。</MaiyaAeroBay_InstallKitDesc>
+  <MaiyaAeroBay_NoKitsAvailable>当前地图没有可用的套件</MaiyaAeroBay_NoKitsAvailable>
+  <MaiyaAeroBay_NoColonistCanReach>没有殖民者能够到达套件或穿梭机</MaiyaAeroBay_NoColonistCanReach>
+  <MaiyaAeroBay_InstallingKit>正在安装 {0} 到 {1}</MaiyaAeroBay_InstallingKit>
+  <MaiyaAeroBay_NotAKit>不是有效的套件</MaiyaAeroBay_NotAKit>
+  <MaiyaAeroBay_NoKitInstalled>未安装任何套件</MaiyaAeroBay_NoKitInstalled>
+  <MaiyaAeroBay_InteriorLevel>内部空间等级</MaiyaAeroBay_InteriorLevel>
+  <MaiyaAeroBay_WeaponType>武器类型</MaiyaAeroBay_WeaponType>
+  <MaiyaAeroBay_ShieldHP>护盾HP</MaiyaAeroBay_ShieldHP>
+  <MaiyaAeroBay_HasInterior>已安装内部空间套件</MaiyaAeroBay_HasInterior>
+  <MaiyaAeroBay_HasWeapon>已安装武器套件</MaiyaAeroBay_HasWeapon>
+  <MaiyaAeroBay_HasShield>已安装防御套件</MaiyaAeroBay_HasShield>
+
+  <!-- 状态显示简写 -->
+  <MaiyaAeroBay_InteriorShort>空间</MaiyaAeroBay_InteriorShort>
+  <MaiyaAeroBay_WeaponShort>武器</MaiyaAeroBay_WeaponShort>
+  <MaiyaAeroBay_ShieldShort>护盾</MaiyaAeroBay_ShieldShort>
+
+  <!-- 武器类型 -->
+  <MaiyaAeroBay_Weapon_DualMachineGun>双联机枪</MaiyaAeroBay_Weapon_DualMachineGun>
+  <MaiyaAeroBay_Weapon_Autocannon>机炮</MaiyaAeroBay_Weapon_Autocannon>
+  <MaiyaAeroBay_Weapon_RocketPod>火箭巢</MaiyaAeroBay_Weapon_RocketPod>
+  <MaiyaAeroBay_Weapon_LaserCannon>激光炮</MaiyaAeroBay_Weapon_LaserCannon>
+  <MaiyaAeroBay_WeaponLabel>{0}</MaiyaAeroBay_WeaponLabel>
+
+  <!-- 护盾类型 -->
+  <MaiyaAeroBay_Shield_Simple>简易护盾</MaiyaAeroBay_Shield_Simple>
+  <MaiyaAeroBay_Shield_Energy>能量护盾</MaiyaAeroBay_Shield_Energy>
+  <MaiyaAeroBay_Shield_Reinforced>强化护盾</MaiyaAeroBay_Shield_Reinforced>
+
+  <!-- 升级警告 -->
+  <MaiyaAeroBay_UpgradeWarning_Title>升级警告</MaiyaAeroBay_UpgradeWarning_Title>
+  <MaiyaAeroBay_UpgradeWarning_Content>内部空间当前有 {0} 名人员和 {1} 件物品。升级将销毁当前内部空间，其中所有人员和物品将永久消失！\n\n确定要继续吗？</MaiyaAeroBay_UpgradeWarning_Content>
+  <MaiyaAeroBay_UpgradeWarning_Continue>确定升级（后果自负）</MaiyaAeroBay_UpgradeWarning_Continue>
+  <MaiyaAeroBay_UpgradeWarning_Cancel>取消</MaiyaAeroBay_UpgradeWarning_Cancel>
+  
+  <!-- 民用穿梭机限制 -->
+  <MaiyaAeroBay_CivilianShuttleMaxLevel>民用穿梭机只能安装最高Lv.{0}的空间套件</MaiyaAeroBay_CivilianShuttleMaxLevel>
+
+  <!-- 动力套件 -->
+  <MaiyaAeroBay_PowerShort>动力</MaiyaAeroBay_PowerShort>
+  <MaiyaAeroBay_ShuttleAlreadyHasPower>此穿梭机已安装动力套件，无法重复安装</MaiyaAeroBay_ShuttleAlreadyHasPower>
+  <MaiyaAeroBay_PowerKitInstalled>已将 {0} 安装到 {1}，油箱{2}%，冷却{3}%</MaiyaAeroBay_PowerKitInstalled>
+
+  <!-- 舒适套件 -->
+  <MaiyaAeroBay_ComfortShort>舒适</MaiyaAeroBay_ComfortShort>
+  <MaiyaAeroBay_ShuttleAlreadyHasComfort>此穿梭机已安装舒适套件，无法重复安装</MaiyaAeroBay_ShuttleAlreadyHasComfort>
+  <MaiyaAeroBay_ComfortNeedsInterior>需要先安装空间套件才能安装舒适套件</MaiyaAeroBay_ComfortNeedsInterior>
+  <MaiyaAeroBay_ComfortKitInstalled>已将 {0} 安装到 {1}</MaiyaAeroBay_ComfortKitInstalled>
+
+  <!-- 套件状态 -->
+  <MaiyaAeroBay_ModifyShuttle>穿梭机改造</MaiyaAeroBay_ModifyShuttle>
+  <MaiyaAeroBay_ModifyShuttleDesc>查看穿梭机状态并安装套件</MaiyaAeroBay_ModifyShuttleDesc>
+  <MaiyaAeroBay_ModifyShuttleTitle>{0} 改造</MaiyaAeroBay_ModifyShuttleTitle>
+  <MaiyaAeroBay_CurrentStatus>当前状态：</MaiyaAeroBay_CurrentStatus>
+  <MaiyaAeroBay_AvailableKits>可安装套件：</MaiyaAeroBay_AvailableKits>
+  <MaiyaAeroBay_InstallKitToShuttle>安装{0}到{1}</MaiyaAeroBay_InstallKitToShuttle>
+  <MaiyaAeroBay_ComfortApplied>{0}获得舒适加成：饥饿消耗{1}% 休息效率{2}% 心情+{3}</MaiyaAeroBay_ComfortApplied>
+
+  <!-- 进入内部错误 -->
+  <MaiyaAeroBay_CannotEnterCompMissing>无法进入穿梭机内部：穿梭机组件丢失</MaiyaAeroBay_CannotEnterCompMissing>
+  <MaiyaAeroBay_CannotEnterNoPocketMap>无法进入穿梭机内部：内部空间未生成</MaiyaAeroBay_CannotEnterNoPocketMap>
+  <MaiyaAeroBay_CannotEnterInvalidMap>无法进入穿梭机内部：内部空间不可用</MaiyaAeroBay_CannotEnterInvalidMap>
+  <MaiyaAeroBay_CannotEnter>无法进入穿梭机内部</MaiyaAeroBay_CannotEnter>
+
+  <!-- 撤离对话框 -->
+  <MaiyaAeroBay_SelectPawnsToExit>选择要离开的居民</MaiyaAeroBay_SelectPawnsToExit>
+  <MaiyaAeroBay_EvacuateAll>全部撤离</MaiyaAeroBay_EvacuateAll>
+  <MaiyaAeroBay_EvacuateSelected>撤离选中</MaiyaAeroBay_EvacuateSelected>
+  <MaiyaAeroBay_NoPawnsToExit>没有可撤离的居民</MaiyaAeroBay_NoPawnsToExit>
+  <MaiyaAeroBay_SelectAtLeastOne>请选择至少一个居民</MaiyaAeroBay_SelectAtLeastOne>
+
+  <!-- 进入对话框 -->
+  <MaiyaAeroBay_SelectOneColonist>（每次仅限选择一位殖民者）</MaiyaAeroBay_SelectOneColonist>
+
+  <!-- 状态显示翻译键 -->
+  <MaiyaAeroBay_InteriorSpace>内部可用空间: {0} x {1} (Lv.{2})</MaiyaAeroBay_InteriorSpace>
+  <MaiyaAeroBay_StatusInterior>空间: Lv{0} ({1}×{2})</MaiyaAeroBay_StatusInterior>
+  <MaiyaAeroBay_StatusCargoCapacity>载重: {0}kg</MaiyaAeroBay_StatusCargoCapacity>
+  <MaiyaAeroBay_StatusOccupants>内部人数: {0}</MaiyaAeroBay_StatusOccupants>
+  <MaiyaAeroBay_StatusInteriorNone>空间: 未安装</MaiyaAeroBay_StatusInteriorNone>
+  <MaiyaAeroBay_StatusFuel>油箱: {0}/{1}</MaiyaAeroBay_StatusFuel>
+  <MaiyaAeroBay_StatusCooldownPower>冷却: {0} (原始{1})</MaiyaAeroBay_StatusCooldownPower>
+  <MaiyaAeroBay_StatusCooldown>冷却: {0}</MaiyaAeroBay_StatusCooldown>
+  <MaiyaAeroBay_StatusWeapon>武器: {0} (伤害{1} 射程{2})</MaiyaAeroBay_StatusWeapon>
+  <MaiyaAeroBay_StatusShield>护盾: {0} ({1}/{2}HP)</MaiyaAeroBay_StatusShield>
+  <MaiyaAeroBay_StatusPower>动力: 油箱{0}% 冷却{1}%</MaiyaAeroBay_StatusPower>
+  <MaiyaAeroBay_StatusComfort>舒适: 饥饿{0}% 休息{1}% 心情+{2}</MaiyaAeroBay_StatusComfort>
+  <MaiyaAeroBay_PowerInspect>油箱: {0}%\n冷却: {1}%</MaiyaAeroBay_PowerInspect>
+  <MaiyaAeroBay_ComfortInspect>饥饿消耗: {0}%\n休息效率: {1}%\n心情: +{2}</MaiyaAeroBay_ComfortInspect>
+  <MaiyaAeroBay_PowerFuelMsg>油箱容量 {0}%</MaiyaAeroBay_PowerFuelMsg>
+  <MaiyaAeroBay_PowerCooldownReduced>起飞冷却时间缩短{0}%</MaiyaAeroBay_PowerCooldownReduced>
+  <MaiyaAeroBay_PowerCooldownMsg>冷却 {0}%</MaiyaAeroBay_PowerCooldownMsg>
+  <MaiyaAeroBay_PowerKitInstalledMsg>{0} 已安装到 {1}，{2}，{3}</MaiyaAeroBay_PowerKitInstalledMsg>
+
+  <!-- 物资传送 -->
+  <MaiyaAeroBay_TransferItems>物资管理</MaiyaAeroBay_TransferItems>
+  <MaiyaAeroBay_TransferItemsDesc>装载或卸出穿梭机内部物资</MaiyaAeroBay_TransferItemsDesc>
+  <MaiyaAeroBay_TransferItemsTitle>穿梭机物资管理</MaiyaAeroBay_TransferItemsTitle>
+  <MaiyaAeroBay_LoadTab>← 装载</MaiyaAeroBay_LoadTab>
+  <MaiyaAeroBay_UnloadTab>卸出 →</MaiyaAeroBay_UnloadTab>
+  <MaiyaAeroBay_SelectAll>全选</MaiyaAeroBay_SelectAll>
+  <MaiyaAeroBay_DeselectAll>取消全选</MaiyaAeroBay_DeselectAll>
+  <MaiyaAeroBay_SelectedCount>已选择: {0} / {1}</MaiyaAeroBay_SelectedCount>
+  <MaiyaAeroBay_LoadItemsBtn>确认装载 ({0}件)</MaiyaAeroBay_LoadItemsBtn>
+  <MaiyaAeroBay_UnloadItemsBtn>确认卸出 ({0}件)</MaiyaAeroBay_UnloadItemsBtn>
+  <MaiyaAeroBay_LoadItemsSuccess>已将 {0} 件物资装载到穿梭机内部</MaiyaAeroBay_LoadItemsSuccess>
+  <MaiyaAeroBay_UnloadItemsSuccess>已将 {0} 件物资从穿梭机内部卸出</MaiyaAeroBay_UnloadItemsSuccess>
+
+  <!-- 电力系统 -->
+  <MaiyaAeroBay_InteriorConduit>穿梭机内部电缆</MaiyaAeroBay_InteriorConduit>
+  <MaiyaAeroBay_InteriorConduit_desc>穿梭机内部输电线路，将墙壁电力传输至各处</MaiyaAeroBay_InteriorConduit_desc>
+  <MaiyaAeroBay_InteriorWallDesc>穿梭机墙壁，每格自动输出50W电力</MaiyaAeroBay_InteriorWallDesc>
+
+  <!-- 紧急疏散 -->
+  <MaiyaAeroBay_EmergencyExitTitle>⚠ 紧急撤离</MaiyaAeroBay_EmergencyExitTitle>
+  <MaiyaAeroBay_EmergencyExitWarning>穿梭机已离开或失踪，人员将被传送到最近的安全地图</MaiyaAeroBay_EmergencyExitWarning>
+  <MaiyaAeroBay_EmergencyEvacuated>已紧急撤离 {0} 名人员到安全地图</MaiyaAeroBay_EmergencyEvacuated>
+  <MaiyaAeroBay_EmergencyEvacuateSelected>紧急撤离</MaiyaAeroBay_EmergencyEvacuateSelected>
+  <MaiyaAeroBay_NoSafeMapFound>找不到安全地图进行撤离</MaiyaAeroBay_NoSafeMapFound>
+
+</LanguageData>

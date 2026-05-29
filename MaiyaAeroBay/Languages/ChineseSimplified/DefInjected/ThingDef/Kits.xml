@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <MaiyaAeroBay_InteriorKit_I.useLabel>安装空间套件到穿梭机</MaiyaAeroBay_InteriorKit_I.useLabel>
+  <MaiyaAeroBay_InteriorKit_II.useLabel>安装空间套件到穿梭机</MaiyaAeroBay_InteriorKit_II.useLabel>
+  <MaiyaAeroBay_InteriorKit_III.useLabel>安装空间套件到穿梭机</MaiyaAeroBay_InteriorKit_III.useLabel>
+  <MaiyaAeroBay_InteriorKit_IV.useLabel>安装空间套件到穿梭机</MaiyaAeroBay_InteriorKit_IV.useLabel>
+  <MaiyaAeroBay_InteriorKit_V.useLabel>安装空间套件到穿梭机</MaiyaAeroBay_InteriorKit_V.useLabel>
+  <MaiyaAeroBay_WeaponDualMachineGun.useLabel>安装武器套件到穿梭机</MaiyaAeroBay_WeaponDualMachineGun.useLabel>
+  <MaiyaAeroBay_WeaponAutocannon.useLabel>安装武器套件到穿梭机</MaiyaAeroBay_WeaponAutocannon.useLabel>
+  <MaiyaAeroBay_WeaponRocketPod.useLabel>安装武器套件到穿梭机</MaiyaAeroBay_WeaponRocketPod.useLabel>
+  <MaiyaAeroBay_WeaponLaser.useLabel>安装武器套件到穿梭机</MaiyaAeroBay_WeaponLaser.useLabel>
+  <MaiyaAeroBay_ShieldSimple.useLabel>安装护盾套件到穿梭机</MaiyaAeroBay_ShieldSimple.useLabel>
+  <MaiyaAeroBay_ShieldEnergy.useLabel>安装护盾套件到穿梭机</MaiyaAeroBay_ShieldEnergy.useLabel>
+  <MaiyaAeroBay_ShieldReinforced.useLabel>安装护盾套件到穿梭机</MaiyaAeroBay_ShieldReinforced.useLabel>
+  <MaiyaAeroBay_PowerKit_I.useLabel>安装动力套件到穿梭机</MaiyaAeroBay_PowerKit_I.useLabel>
+  <MaiyaAeroBay_PowerKit_II.useLabel>安装动力套件到穿梭机</MaiyaAeroBay_PowerKit_II.useLabel>
+  <MaiyaAeroBay_PowerKit_III.useLabel>安装动力套件到穿梭机</MaiyaAeroBay_PowerKit_III.useLabel>
+  <MaiyaAeroBay_ComfortKit_I.useLabel>安装舒适套件到穿梭机</MaiyaAeroBay_ComfortKit_I.useLabel>
+  <MaiyaAeroBay_ComfortKit_II.useLabel>安装舒适套件到穿梭机</MaiyaAeroBay_ComfortKit_II.useLabel>
+  <MaiyaAeroBay_ComfortKit_III.useLabel>安装舒适套件到穿梭机</MaiyaAeroBay_ComfortKit_III.useLabel>
+  <MaiyaAeroBay_InteriorWall.description>穿梭机的坚固外壳墙壁，每格自动输出50W电力</MaiyaAeroBay_InteriorWall.description>
+  <MaiyaAeroBay_InteriorConduit.label>穿梭机内部电缆</MaiyaAeroBay_InteriorConduit.label>
+  <MaiyaAeroBay_InteriorConduit.description>穿梭机内部输电线路，将墙壁电力传输至各处</MaiyaAeroBay_InteriorConduit.description>
+</LanguageData>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="ResourceBase" Name="MaiyaAeroBayKitBase" Abstract="true">
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <altitudeLayer>Item</altitudeLayer>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>5</Mass>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <alwaysHaulable>true</alwaysHaulable>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <tradeability>All</tradeability>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="CompProperties_Usable">
+        <useJob>UseArtifact</useJob>
+        <useLabel>Install on shuttle</useLabel>
+        <useDuration>120</useDuration>
+      </li>
+      <li Class="MaiyaAeroBay.CompProperties_TargetableSingleShuttle"/>
+      <li Class="MaiyaAeroBay.CompProperties_TargetEffectInstallAeroBayKit"/>
+    </comps>
+  </ThingDef>
+
+  <!-- Lv.1 套件 -->
+  <ThingDef ParentName="MaiyaAeroBayKitBase">
+    <defName>MaiyaAeroBay_UpgradeKit_A</defName>
+    <label>穿梭机空间套件 Lv.1</label>
+    <description>为穿梭机开辟折叠内部空间。可用面积5×4，载重倍率×1.2。殖民者可进入休息和存放物品。\n\n每个穿梭机只能安装一个空间套件，无法升级替换，请慎重选择。民用穿梭机最高支持Lv.2。</description>
+    <graphicData>
+      <texPath>Things/Item/Special/AIPersonaCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(200,200,200)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>600</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <level>1</level>
+        <mapWidth>7</mapWidth>
+        <mapHeight>6</mapHeight>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Lv.2 套件 -->
+  <ThingDef ParentName="MaiyaAeroBayKitBase">
+    <defName>MaiyaAeroBay_UpgradeKit_B</defName>
+    <label>穿梭机空间套件 Lv.2</label>
+    <description>为穿梭机开辟折叠内部空间。可用面积6×5，载重倍率×1.5。殖民者可进入休息和存放物品。\n\n每个穿梭机只能安装一个空间套件，无法升级替换，请慎重选择。民用穿梭机最高支持Lv.2。</description>
+    <graphicData>
+      <texPath>Things/Item/Special/AIPersonaCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(100,200,100)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>1100</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <level>2</level>
+        <mapWidth>8</mapWidth>
+        <mapHeight>7</mapHeight>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Lv.3 套件 -->
+  <ThingDef ParentName="MaiyaAeroBayKitBase">
+    <defName>MaiyaAeroBay_UpgradeKit_C</defName>
+    <label>穿梭机空间套件 Lv.3</label>
+    <description>为穿梭机开辟折叠内部空间。可用面积7×5，载重倍率×3.0。殖民者可进入休息和存放物品。\n\n每个穿梭机只能安装一个空间套件，无法升级替换，请慎重选择。</description>
+    <graphicData>
+      <texPath>Things/Item/Special/AIPersonaCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(100,150,255)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>1600</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <level>3</level>
+        <mapWidth>9</mapWidth>
+        <mapHeight>7</mapHeight>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Lv.4 套件 -->
+  <ThingDef ParentName="MaiyaAeroBayKitBase">
+    <defName>MaiyaAeroBay_UpgradeKit_D</defName>
+    <label>穿梭机空间套件 Lv.4</label>
+    <description>为穿梭机开辟折叠内部空间。可用面积8×6，载重倍率×5.0。殖民者可进入休息和存放物品。\n\n每个穿梭机只能安装一个空间套件，无法升级替换，请慎重选择。</description>
+    <graphicData>
+      <texPath>Things/Item/Special/AIPersonaCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(180,100,255)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>2500</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <level>4</level>
+        <mapWidth>10</mapWidth>
+        <mapHeight>8</mapHeight>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Lv.5 套件 -->
+  <ThingDef ParentName="MaiyaAeroBayKitBase">
+    <defName>MaiyaAeroBay_UpgradeKit_E</defName>
+    <label>穿梭机空间套件 Lv.5</label>
+    <description>为穿梭机开辟最大的折叠内部空间。可用面积10×8，载重倍率×10.0。殖民者可进入休息和存放物品，空间足以布置完整的营地设施。\n\n每个穿梭机只能安装一个空间套件，无法升级替换，请慎重选择。</description>
+    <graphicData>
+      <texPath>Things/Item/Special/AIPersonaCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(255,200,50)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>3500</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <level>5</level>
+        <mapWidth>12</mapWidth>
+        <mapHeight>10</mapHeight>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Shuttle Expansion: Wonderland 穿梭机拓展：别有洞天</name>
+	<author>Maiya0126</author>
+	<packageId>Maiya.AeroBay</packageId>
+	<modVersion>1.0.02</modVersion>
+	<supportedVersions>
+		<li>1.6</li>
+	</supportedVersions>
+	<description>
+		[h1]Shuttle Expansion: Wonderland 穿梭机拓展：别有洞天[/h1]
+
+		[i]一位麦姓大叔实在看不下去帝国那拙劣的穿梭机工艺——斥巨资打造的铁疙瘩，内部空空如也，连张床都不放，简直是对技术的侮辱。于是他愤而另起炉灶，造出了轻巧实用的民用穿梭机，又研发出空间折叠套件，让小小的穿梭机别有洞天。至于武器和护盾？那是他被帝国税务官登门之后追加的……[/i]
+
+		[hr][/hr]
+
+		[h1]核心功能[/h1]
+
+		[b]民用穿梭机[/b] — 不需要稀有穿梭机引擎，研究电力后即可建造的低成本穿梭机。载重200kg，最大航程约30格。
+
+		[b]五类套件系统[/b] — 每艘穿梭机可各安装一个空间、武器、护盾、动力、舒适套件，自由搭配打造专属座驾。
+
+		[hr][/hr]
+
+		[h1]五类套件[/h1]
+
+		[b]空间套件（5级）[/b] — 开辟可进入的内部折叠空间，殖民者可以在里面休息、进食和存放物品。等级越高空间越大、载重倍率越高。
+		[*]Lv.1: 可用5×4，载重×1.2
+		[*]Lv.2: 可用6×5，载重×1.5
+		[*]Lv.3: 可用7×5，载重×3.0
+		[*]Lv.4: 可用8×6，载重×5.0
+		[*]Lv.5: 可用10×8，载重×10.0
+
+		[b]武器套件（4种）[/b] — 穿梭机停泊地面时自动攻击射程内敌人。
+		[*]双联机枪: 12伤害×4连发，射程28
+		[*]机炮: 30伤害单发，射程35
+		[*]火箭巢: 50伤害×3连发，射程40
+		[*]激光炮: 45穿甲伤害，射程50
+
+		[b]护盾套件（3种）[/b] — 穿梭机停泊地面时生成护盾抵消伤害，被EMP击中会暂时瘫痪。
+		[*]简易护盾: HP 150，恢复慢，EMP瘫痪10秒
+		[*]能量护盾: HP 300，恢复中，EMP瘫痪8秒
+		[*]强化护盾: HP 500，恢复快，EMP瘫痪5秒
+
+		[b]动力套件（3级）[/b] — 扩大油箱容量并缩短起飞冷却时间。
+		[*]I级: 油箱×1.2，冷却×0.8
+		[*]II级: 油箱×2.0，冷却×0.5
+		[*]III级: 油箱×5.0，冷却×0.2
+
+		[b]舒适套件（3级）[/b] — 改善内部居住环境，降低饥饿消耗、提升休息效率并增加心情。需先安装空间套件。殖民者进入内部空间时自动生效，离开后自动消失。
+		[*]I级: 饥饿×0.75，休息×1.25，心情+3
+		[*]II级: 饥饿×0.60，休息×1.50，心情+6
+		[*]III级: 饥饿×0.40，休息×2.00，心情+10
+
+		[hr][/hr]
+
+		[h1]民用穿梭机限制[/h1]
+
+		[*]空间套件最高支持Lv.2
+		[*]动力、武器和护盾套件无限制
+		[*]舒适套件需先安装空间套件
+		[*]每类套件每艘穿梭机限装一个，无法升级，选择前请规划好
+
+		[hr][/hr]
+
+		[h1]研究路线[/h1]
+
+		民用航空（电力）→ 穿梭机改造入门（Lv.1-2空间 + 低级套件）→ 穿梭机改造进阶（Lv.3-4空间 + 中级套件）→ 穿梭机改造精通（Lv.5空间 + 高级套件）
+
+		[hr][/hr]
+
+		[h1]English Description[/h1]
+
+		[i]A certain Dr. Mai couldn't stand the Empire's clumsy shuttle engineering — spending a fortune on a flying brick with zero interior space. So he built his own compact civilian shuttle and invented space-folding kits that make tiny shuttles wonderfully spacious inside. The weapon and shield kits? Those were added after the Empire's tax collector came knocking...[/i]
+
+		[b]Civilian Shuttle[/b] — Low-cost shuttle, no rare engine required. 200kg cargo, ~30 tile range.
+
+		[b]5 Kit Types[/b] — Each shuttle can have one of each: Interior, Weapon, Shield, Power, and Comfort kit.
+
+		[b]Interior Kits (Lv.1-5)[/b] — Enterable pocket space for colonists to rest and store items. Higher level = larger space + more cargo capacity.
+		[*]Lv.1: 5×4 usable, cargo ×1.2
+		[*]Lv.2: 6×5 usable, cargo ×1.5
+		[*]Lv.3: 7×5 usable, cargo ×3.0
+		[*]Lv.4: 8×6 usable, cargo ×5.0
+		[*]Lv.5: 10×8 usable, cargo ×10.0
+
+		[b]Weapon Kits[/b] — Auto-attack enemies in range while landed.
+		[*]Dual MG: 12 dmg ×4 burst, range 28
+		[*]Autocannon: 30 dmg, range 35
+		[*]Rocket Pod: 50 dmg ×3 burst, range 40
+		[*]Laser Cannon: 45 armor-piercing dmg, range 50
+
+		[b]Shield Kits[/b] — Absorb damage while landed, EMP causes temporary shutdown.
+		[*]Simple: 150 HP, slow recharge, 10s EMP
+		[*]Energy: 300 HP, medium recharge, 8s EMP
+		[*]Reinforced: 500 HP, fast recharge, 5s EMP
+
+		[b]Power Kits (Lv.I-III)[/b] — Expand fuel tank and reduce launch cooldown.
+		[*]I: Fuel ×1.2, Cooldown ×0.8
+		[*]II: Fuel ×2.0, Cooldown ×0.5
+		[*]III: Fuel ×5.0, Cooldown ×0.2
+
+		[b]Comfort Kits (Lv.I-III)[/b] — Better living conditions inside: less hunger, more rest, mood bonus. Requires interior kit. Auto-applies when entering, auto-removes when leaving.
+		[*]I: Hunger ×0.75, Rest ×1.25, Mood +3
+		[*]II: Hunger ×0.60, Rest ×1.50, Mood +6
+		[*]III: Hunger ×0.40, Rest ×2.00, Mood +10
+
+		[b]Civilian Shuttle Limits[/b] — Interior kit max Lv.2. Power/Weapon/Shield unlimited. Each kit type = one per shuttle, no upgrades.
+
+		Requires Odyssey DLC.
+	</description>
+	<loadAfter>
+		<li>Ludeon.RimWorld</li>
+		<li>Ludeon.RimWorld.Odyssey</li>
+		<li>brrainz.harmony</li>
+	</loadAfter>
+</ModMetaData>

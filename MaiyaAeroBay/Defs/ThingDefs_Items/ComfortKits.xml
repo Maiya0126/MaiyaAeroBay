@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="ResourceBase" Name="MaiyaAeroBayComfortKitBase" Abstract="true">
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <altitudeLayer>Item</altitudeLayer>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>4</Mass>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <alwaysHaulable>true</alwaysHaulable>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <tradeability>All</tradeability>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="CompProperties_Usable">
+        <useJob>UseArtifact</useJob>
+        <useLabel>Install comfort kit on shuttle</useLabel>
+        <useDuration>120</useDuration>
+      </li>
+      <li Class="MaiyaAeroBay.CompProperties_TargetableSingleShuttle"/>
+      <li Class="MaiyaAeroBay.CompProperties_TargetEffectInstallAeroBayKit"/>
+    </comps>
+  </ThingDef>
+
+  <!-- 舒适套件 I -->
+  <ThingDef ParentName="MaiyaAeroBayComfortKitBase">
+    <defName>MaiyaAeroBay_ComfortKit_I</defName>
+    <label>穿梭机舒适套件 I</label>
+    <description>改善穿梭机内部居住环境。饥饿消耗×0.75，休息效率×1.25，心情+3。殖民者进入内部空间时自动生效，离开后消失。\n\n需要先安装空间套件。每个穿梭机只能安装一个舒适套件，无法替换。</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/ArchiteCapsule</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(100,200,100)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>250</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Comfort</kitType>
+        <hungerRateMultiplier>0.75</hungerRateMultiplier>
+        <restRateMultiplier>1.25</restRateMultiplier>
+        <comfortMoodOffset>3</comfortMoodOffset>
+        <hediffDefName>MaiyaAeroBay_ComfortHediff_I</hediffDefName>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 舒适套件 II -->
+  <ThingDef ParentName="MaiyaAeroBayComfortKitBase">
+    <defName>MaiyaAeroBay_ComfortKit_II</defName>
+    <label>穿梭机舒适套件 II</label>
+    <description>改善穿梭机内部居住环境。饥饿消耗×0.60，休息效率×1.50，心情+6。殖民者进入内部空间时自动生效，离开后消失。\n\n需要先安装空间套件。每个穿梭机只能安装一个舒适套件，无法替换。</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/ArchiteCapsule</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(100,150,255)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>500</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Comfort</kitType>
+        <hungerRateMultiplier>0.6</hungerRateMultiplier>
+        <restRateMultiplier>1.5</restRateMultiplier>
+        <comfortMoodOffset>6</comfortMoodOffset>
+        <hediffDefName>MaiyaAeroBay_ComfortHediff_II</hediffDefName>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 舒适套件 III -->
+  <ThingDef ParentName="MaiyaAeroBayComfortKitBase">
+    <defName>MaiyaAeroBay_ComfortKit_III</defName>
+    <label>穿梭机舒适套件 III</label>
+    <description>大幅改善穿梭机内部居住环境。饥饿消耗×0.40，休息效率×2.00，心情+10。殖民者进入内部空间时自动生效，离开后消失。极致舒适，像家一样温暖。\n\n需要先安装空间套件。每个穿梭机只能安装一个舒适套件，无法替换。</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/ArchiteCapsule</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(255,200,50)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>900</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Comfort</kitType>
+        <hungerRateMultiplier>0.4</hungerRateMultiplier>
+        <restRateMultiplier>2.0</restRateMultiplier>
+        <comfortMoodOffset>10</comfortMoodOffset>
+        <hediffDefName>MaiyaAeroBay_ComfortHediff_III</hediffDefName>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <HediffDef>
+    <defName>MaiyaAeroBay_ComfortHediff_I</defName>
+    <label>穿梭机舒适环境 I</label>
+    <description>穿梭机内部的舒适环境：饥饿消耗降低，休息更高效。</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <stages>
+      <li>
+        <hungerRateFactor>0.75</hungerRateFactor>
+        <restFallFactor>0.75</restFallFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>MaiyaAeroBay_ComfortHediff_II</defName>
+    <label>穿梭机舒适环境 II</label>
+    <description>穿梭机内部的舒适环境：大幅降低饥饿消耗，休息效率显著提升。</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <stages>
+      <li>
+        <hungerRateFactor>0.6</hungerRateFactor>
+        <restFallFactor>0.6</restFallFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>MaiyaAeroBay_ComfortHediff_III</defName>
+    <label>穿梭机舒适环境 III</label>
+    <description>穿梭机内部的极致舒适环境：几乎感受不到饥饿，休息效率翻倍。</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <stages>
+      <li>
+        <hungerRateFactor>0.4</hungerRateFactor>
+        <restFallFactor>0.4</restFallFactor>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <ThoughtDef>
+    <defName>MaiyaAeroBay_ComfortThought</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>MaiyaAeroBay_ComfortHediff_I</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>舒适的穿梭舱</label>
+        <description>穿梭机内部比想象中舒服。</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>MaiyaAeroBay_ComfortThought_II</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>MaiyaAeroBay_ComfortHediff_II</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>舒适的穿梭舱</label>
+        <description>穿梭机内部像家一样温暖。</description>
+        <baseMoodEffect>6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>MaiyaAeroBay_ComfortThought_III</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>MaiyaAeroBay_ComfortHediff_III</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>极致舒适的穿梭舱</label>
+        <description>比自己的房间还舒服，不想走了。</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Shuttle Operations -->
+  <MaiyaAeroBay_EnterInterior>Enter Interior</MaiyaAeroBay_EnterInterior>
+  <MaiyaAeroBay_EnterInteriorDesc>Enter the shuttle's interior space</MaiyaAeroBay_EnterInteriorDesc>
+  <MaiyaAeroBay_ViewInterior>View Interior</MaiyaAeroBay_ViewInterior>
+  <MaiyaAeroBay_ViewInteriorDesc>View the shuttle's interior space</MaiyaAeroBay_ViewInteriorDesc>
+  <MaiyaAeroBay_NeedUpgradeFirst>You must upgrade the shuttle first to enter</MaiyaAeroBay_NeedUpgradeFirst>
+  
+  <!-- Dialogs -->
+  <MaiyaAeroBay_SelectPawnsToEnter>Select colonists to enter</MaiyaAeroBay_SelectPawnsToEnter>
+  <MaiyaAeroBay_SelectAtLeastOnePawn>Please select at least one colonist</MaiyaAeroBay_SelectAtLeastOnePawn>
+  <MaiyaAeroBay_ExitNotReady>Exit not ready</MaiyaAeroBay_ExitNotReady>
+  <MaiyaAeroBay_PawnCantReach>{0} cannot reach the shuttle</MaiyaAeroBay_PawnCantReach>
+  <MaiyaAeroBay_PawnDowned>{0} is downed</MaiyaAeroBay_PawnDowned>
+  
+  <!-- Upgrade Related -->
+  <MaiyaAeroBay_Upgrade>Upgrade</MaiyaAeroBay_Upgrade>
+  <MaiyaAeroBay_UpgradeDesc>Upgrade shuttle interior to Lv.{0}\nRequires: Steel {1}, Plastic {2}</MaiyaAeroBay_UpgradeDesc>
+  <MaiyaAeroBay_UpgradeSuccess>Shuttle upgraded to Lv.{0}</MaiyaAeroBay_UpgradeSuccess>
+  <MaiyaAeroBay_HasOccupantsCannotUpgrade>Cannot upgrade - there are people inside. Please have them exit first.</MaiyaAeroBay_HasOccupantsCannotUpgrade>
+  
+  <!-- Interior Space Info -->
+  <MaiyaAeroBay_InteriorSize>Interior: {0} x {1} (Lv.{2})</MaiyaAeroBay_InteriorSize>
+  
+  <!-- Cargo Transfer -->
+  <MaiyaAeroBay_TransferCargo>Transfer Cargo</MaiyaAeroBay_TransferCargo>
+  <MaiyaAeroBay_TransferCargoDesc>Transfer shuttle cargo to interior storage</MaiyaAeroBay_TransferCargoDesc>
+  <MaiyaAeroBay_NoCargoToTransfer>No cargo in shuttle</MaiyaAeroBay_NoCargoToTransfer>
+  <MaiyaAeroBay_NoStorageFound>Interior storage not found</MaiyaAeroBay_NoStorageFound>
+  <MaiyaAeroBay_TransferSuccess>Transferred {0} items</MaiyaAeroBay_TransferSuccess>
+  <MaiyaAeroBay_TransferFailed>Failed to transfer cargo</MaiyaAeroBay_TransferFailed>
+  
+  <!-- Job -->
+  <MaiyaAeroBay_EnteringInterior>Entering shuttle interior</MaiyaAeroBay_EnteringInterior>
+  
+  <!-- Tech Projects -->
+  <MaiyaAeroBay_BasicExpansion_label>Shuttle Modification Basics</MaiyaAeroBay_BasicExpansion_label>
+  <MaiyaAeroBay_BasicExpansion_desc>Unlocks basic shuttle modifications: Interior kits Lv.1-2, Comfort kit I, Power kit I, Simple shield kit, Dual MG kit.</MaiyaAeroBay_BasicExpansion_desc>
+  
+  <MaiyaAeroBay_AdvancedExpansion_label>Shuttle Modification Advanced</MaiyaAeroBay_AdvancedExpansion_label>
+  <MaiyaAeroBay_AdvancedExpansion_desc>Unlocks intermediate shuttle modifications: Interior kits Lv.3-4, Comfort kit II, Power kit II, Energy shield kit, Autocannon and Rocket pod kits.</MaiyaAeroBay_AdvancedExpansion_desc>
+  
+  <MaiyaAeroBay_UltimateExpansion_label>Shuttle Modification Mastery</MaiyaAeroBay_UltimateExpansion_label>
+  <MaiyaAeroBay_UltimateExpansion_desc>Unlocks advanced shuttle modifications: Interior kit Lv.5, Comfort kit III, Power kit III, Reinforced shield kit, Laser cannon kit.</MaiyaAeroBay_UltimateExpansion_desc>
+  
+  <!-- Terrain and Biome -->
+  <MaiyaAeroBay_InteriorFloor>Shuttle Floor</MaiyaAeroBay_InteriorFloor>
+  <MaiyaAeroBay_InteriorFloor_description>Metal floor inside the shuttle</MaiyaAeroBay_InteriorFloor_description>
+  
+  <MaiyaAeroBay_ShuttleRoof>Shuttle Roof</MaiyaAeroBay_ShuttleRoof>
+  <MaiyaAeroBay_ShuttleRoof_description>Enclosed roof of the shuttle</MaiyaAeroBay_ShuttleRoof_description>
+  
+  <MaiyaAeroBay_InteriorWall>Shuttle Wall</MaiyaAeroBay_InteriorWall>
+  <MaiyaAeroBay_InteriorWall_description>Sturdy hull walls of the shuttle</MaiyaAeroBay_InteriorWall_description>
+  
+  <MaiyaAeroBay_CargoPod>Cargo Pod</MaiyaAeroBay_CargoPod>
+  <MaiyaAeroBay_ExitPortal>Exit Portal</MaiyaAeroBay_ExitPortal>
+  <MaiyaAeroBay_ExitPortal_description>Interior exit connecting to the outside world</MaiyaAeroBay_ExitPortal_description>
+  <MaiyaAeroBay>Shuttle Expansion: Wonderland</MaiyaAeroBay>
+  <MaiyaAeroBay_CargoPod_description>Compact storage space in the shuttle bay for various items</MaiyaAeroBay_CargoPod_description>
+  
+  <MaiyaAeroBay_InteriorSpace_biome>Shuttle Interior</MaiyaAeroBay_InteriorSpace_biome>
+  <MaiyaAeroBay_InteriorSpace_biome_description>Interior space of the shuttle</MaiyaAeroBay_InteriorSpace_biome_description>
+
+  <!-- Evacuation -->
+  <MaiyaAeroBay_PawnsEvacuated>Evacuated {0} pawns to main map</MaiyaAeroBay_PawnsEvacuated>
+
+  <!-- Exit Button -->
+  <MaiyaAeroBay_ExitToShuttle>Exit Shuttle</MaiyaAeroBay_ExitToShuttle>
+  <MaiyaAeroBay_ExitToShuttleDesc>Exit the shuttle interior</MaiyaAeroBay_ExitToShuttleDesc>
+
+  <!-- Shuttle Operations -->
+  <MaiyaAeroBay_AllExit>Evacuate All</MaiyaAeroBay_AllExit>
+  <MaiyaAeroBay_ExitSuccess>Evacuated {0} pawns</MaiyaAeroBay_ExitSuccess>
+  <MaiyaAeroBay_NoPawnsToExit>No pawns to evacuate</MaiyaAeroBay_NoPawnsToExit>
+  <MaiyaAeroBay_ShuttleNotFound>Shuttle not found</MaiyaAeroBay_ShuttleNotFound>
+
+  <!-- Mod Settings -->
+  <MaiyaAeroBay_ModSettings>Shuttle Expansion: Wonderland Settings</MaiyaAeroBay_ModSettings>
+  <MaiyaAeroBay_UpgradeCostPercent>Upgrade Cost Percentage</MaiyaAeroBay_UpgradeCostPercent>
+  <MaiyaAeroBay_UpgradeCostPercentDesc>Adjust the percentage of resources required for upgrades (100% is default)</MaiyaAeroBay_UpgradeCostPercentDesc>
+
+  <!-- Upgrade Kit Items -->
+  <MaiyaAeroBay_UpgradeKit_A>Shuttle Upgrade Kit Lv.1</MaiyaAeroBay_UpgradeKit_A>
+  <MaiyaAeroBay_UpgradeKit_A_desc>Shuttle interior space upgrade kit. Installs a 7x6 interior space for colonists to rest and store items.\n\nUse on a shuttle to install. One kit per shuttle.</MaiyaAeroBay_UpgradeKit_A_desc>
+  
+  <MaiyaAeroBay_UpgradeKit_B>Shuttle Upgrade Kit Lv.2</MaiyaAeroBay_UpgradeKit_B>
+  <MaiyaAeroBay_UpgradeKit_B_desc>Shuttle interior space upgrade kit. Installs an 8x7 interior space for colonists to rest and store items.\n\nUse on a shuttle to install. One kit per shuttle.</MaiyaAeroBay_UpgradeKit_B_desc>
+  
+  <MaiyaAeroBay_UpgradeKit_C>Shuttle Upgrade Kit Lv.3</MaiyaAeroBay_UpgradeKit_C>
+  <MaiyaAeroBay_UpgradeKit_C_desc>Shuttle interior space upgrade kit. Installs a 9x7 interior space for colonists to rest and store items.\n\nUse on a shuttle to install. One kit per shuttle.</MaiyaAeroBay_UpgradeKit_C_desc>
+  
+  <MaiyaAeroBay_UpgradeKit_D>Shuttle Upgrade Kit Lv.4</MaiyaAeroBay_UpgradeKit_D>
+  <MaiyaAeroBay_UpgradeKit_D_desc>Shuttle interior space upgrade kit. Installs a 10x8 interior space for colonists to rest and store items.\n\nUse on a shuttle to install. One kit per shuttle.</MaiyaAeroBay_UpgradeKit_D_desc>
+  
+  <MaiyaAeroBay_UpgradeKit_E>Shuttle Upgrade Kit Lv.5</MaiyaAeroBay_UpgradeKit_E>
+  <MaiyaAeroBay_UpgradeKit_E_desc>Shuttle interior space upgrade kit. Installs a 12x10 maximum interior space for colonists to rest and store items.\n\nUse on a shuttle to install. One kit per shuttle.</MaiyaAeroBay_UpgradeKit_E_desc>
+  
+  <!-- Recipe Labels -->
+  <MaiyaAeroBay_UpgradeKit_A_label>Create Shuttle Upgrade Kit Lv.1</MaiyaAeroBay_UpgradeKit_A_label>
+  <MaiyaAeroBay_UpgradeKit_B_label>Create Shuttle Upgrade Kit Lv.2</MaiyaAeroBay_UpgradeKit_B_label>
+  <MaiyaAeroBay_UpgradeKit_C_label>Create Shuttle Upgrade Kit Lv.3</MaiyaAeroBay_UpgradeKit_C_label>
+  <MaiyaAeroBay_UpgradeKit_D_label>Create Shuttle Upgrade Kit Lv.4</MaiyaAeroBay_UpgradeKit_D_label>
+  <MaiyaAeroBay_UpgradeKit_E_label>Create Shuttle Upgrade Kit Lv.5</MaiyaAeroBay_UpgradeKit_E_label>
+
+  <!-- Kit Usage -->
+  <MaiyaAeroBay_NotAShuttle>Target is not a shuttle</MaiyaAeroBay_NotAShuttle>
+  <MaiyaAeroBay_ShuttleAlreadyHasInterior>This shuttle already has an interior kit installed</MaiyaAeroBay_ShuttleAlreadyHasInterior>
+  <MaiyaAeroBay_KitInstalled>Installed {0} on {1}, gained {2}x{3} interior space</MaiyaAeroBay_KitInstalled>
+
+  <!-- Civilian Shuttle -->
+  <MaiyaAeroBay_CivilianShuttle>Civilian Shuttle</MaiyaAeroBay_CivilianShuttle>
+  <MaiyaAeroBay_CivilianShuttle_desc>A chemfuel-powered civilian shuttle designed for medium-distance travel. While not as capable as military shuttles, it is cheap to build and doesn't require rare shuttle engines.\n\nCan install upgrade kits for interior space (max Lv.2). Weapon and shield kits are unrestricted. Carries 200kg, max range ~30 tiles.</MaiyaAeroBay_CivilianShuttle_desc>
+
+  <!-- Research Projects -->
+  <MaiyaAeroBay_CivilianAviation_label>Civilian Aviation</MaiyaAeroBay_CivilianAviation_label>
+  <MaiyaAeroBay_CivilianAviation_desc>Unlocks the ability to build civilian shuttles and shuttle upgrade kits. Civilian shuttles are low-cost medium-range transport that can install upgrade kits for interior space.</MaiyaAeroBay_CivilianAviation_desc>
+
+  <!-- Weapon Kits -->
+  <MaiyaAeroBay_WeaponKit_DualMG>Dual Machine Gun Kit</MaiyaAeroBay_WeaponKit_DualMG>
+  <MaiyaAeroBay_WeaponKit_DualMG_desc>Shuttle weapon kit. Installs dual machine guns that automatically attack enemies in range. Damage 12x4, range 28 tiles.\n\nUse on a shuttle to install. One weapon kit per shuttle. Only effective when shuttle is on the ground.</MaiyaAeroBay_WeaponKit_DualMG_desc>
+  
+  <MaiyaAeroBay_WeaponKit_Autocannon>Autocannon Kit</MaiyaAeroBay_WeaponKit_Autocannon>
+  <MaiyaAeroBay_WeaponKit_Autocannon_desc>Shuttle weapon kit. Installs a heavy autocannon that automatically attacks enemies in range. Damage 30, range 35 tiles.\n\nUse on a shuttle to install. One weapon kit per shuttle. Only effective when shuttle is on the ground.</MaiyaAeroBay_WeaponKit_Autocannon_desc>
+  
+  <MaiyaAeroBay_WeaponKit_Rocket>Rocket Pod Kit</MaiyaAeroBay_WeaponKit_Rocket>
+  <MaiyaAeroBay_WeaponKit_Rocket_desc>Shuttle weapon kit. Installs a rocket pod that automatically attacks enemies in range. Damage 50x3, range 40 tiles.\n\nUse on a shuttle to install. One weapon kit per shuttle. Only effective when shuttle is on the ground.</MaiyaAeroBay_WeaponKit_Rocket_desc>
+  
+  <MaiyaAeroBay_WeaponKit_Laser>Laser Cannon Kit</MaiyaAeroBay_WeaponKit_Laser>
+  <MaiyaAeroBay_WeaponKit_Laser_desc>Shuttle weapon kit. Installs a laser cannon that automatically attacks enemies in range. Damage 45 (armor-piercing), range 50 tiles.\n\nUse on a shuttle to install. One weapon kit per shuttle. Only effective when shuttle is on the ground.</MaiyaAeroBay_WeaponKit_Laser_desc>
+
+  <!-- Shield Kits -->
+  <MaiyaAeroBay_ShieldKit_Simple>Simple Shield Kit</MaiyaAeroBay_ShieldKit_Simple>
+  <MaiyaAeroBay_ShieldKit_Simple_desc>Shuttle defense kit. Installs a permanent shield that can block incoming attacks. Shield HP 150, slow recharge. EMP attack disables shield for 10 seconds.\n\nUse on a shuttle to install. One shield kit per shuttle. Only effective when shuttle is on the ground.</MaiyaAeroBay_ShieldKit_Simple_desc>
+  
+  <MaiyaAeroBay_ShieldKit_Energy>Energy Shield Kit</MaiyaAeroBay_ShieldKit_Energy>
+  <MaiyaAeroBay_ShieldKit_Energy_desc>Shuttle defense kit. Installs an energy shield that can block incoming attacks. Shield HP 300, medium recharge. EMP attack disables shield for 8 seconds.\n\nUse on a shuttle to install. One shield kit per shuttle. Only effective when shuttle is on the ground.</MaiyaAeroBay_ShieldKit_Energy_desc>
+  
+  <MaiyaAeroBay_ShieldKit_Reinforced>Reinforced Shield Kit</MaiyaAeroBay_ShieldKit_Reinforced>
+  <MaiyaAeroBay_ShieldKit_Reinforced_desc>Shuttle defense kit. Installs a reinforced shield that can block incoming attacks. Shield HP 500, fast recharge. EMP attack disables shield for 5 seconds.\n\nUse on a shuttle to install. One shield kit per shuttle. Only effective when shuttle is on the ground.</MaiyaAeroBay_ShieldKit_Reinforced_desc>
+
+  <!-- Status Info -->
+  <MaiyaAeroBay_WeaponStatus>Weapon: {0}</MaiyaAeroBay_WeaponStatus>
+  <MaiyaAeroBay_WeaponReady>Ready</MaiyaAeroBay_WeaponReady>
+  <MaiyaAeroBay_WeaponFlying>Flying (Inactive)</MaiyaAeroBay_WeaponFlying>
+  <MaiyaAeroBay_Cooldown>Cooldown: {0}</MaiyaAeroBay_Cooldown>
+  <MaiyaAeroBay_ForceFire>Force Fire</MaiyaAeroBay_ForceFire>
+  <MaiyaAeroBay_ForceFireDesc>Select target to force fire</MaiyaAeroBay_ForceFireDesc>
+  
+  <MaiyaAeroBay_ShieldStatus>Shield: {0}</MaiyaAeroBay_ShieldStatus>
+  <MaiyaAeroBay_ShieldFlying>Flying (Inactive)</MaiyaAeroBay_ShieldFlying>
+  <MaiyaAeroBay_ShieldEMPed>EMP Disabled: {0}</MaiyaAeroBay_ShieldEMPed>
+  <MaiyaAeroBay_ShieldHP>HP: {0}/{1}</MaiyaAeroBay_ShieldHP>
+  <MaiyaAeroBay_ShieldDown>Overloaded</MaiyaAeroBay_ShieldDown>
+  <MaiyaAeroBay_ShieldLabel>Shuttle Shield</MaiyaAeroBay_ShieldLabel>
+  <MaiyaAeroBay_EMP>EMP Disabled</MaiyaAeroBay_EMP>
+  
+  <MaiyaAeroBay_ShuttleAlreadyHasWeapon>This shuttle already has a weapon kit installed</MaiyaAeroBay_ShuttleAlreadyHasWeapon>
+  <MaiyaAeroBay_ShuttleAlreadyHasShield>This shuttle already has a shield kit installed</MaiyaAeroBay_ShuttleAlreadyHasShield>
+  <MaiyaAeroBay_WeaponKitInstalled>Installed {0} on {1}</MaiyaAeroBay_WeaponKitInstalled>
+  <MaiyaAeroBay_ShieldKitInstalled>Installed {0} on {1}</MaiyaAeroBay_ShieldKitInstalled>
+
+  <!-- Install Kit Gizmo -->
+  <MaiyaAeroBay_InstallKit>Install Kit</MaiyaAeroBay_InstallKit>
+  <MaiyaAeroBay_InstallKitDesc>Install upgrade, weapon, or shield kit on this shuttle.</MaiyaAeroBay_InstallKitDesc>
+  <MaiyaAeroBay_NoKitsAvailable>No kits available on the current map</MaiyaAeroBay_NoKitsAvailable>
+  <MaiyaAeroBay_NoColonistCanReach>No colonist can reach the kit or shuttle</MaiyaAeroBay_NoColonistCanReach>
+  <MaiyaAeroBay_InstallingKit>Installing {0} on {1}</MaiyaAeroBay_InstallingKit>
+  <MaiyaAeroBay_NotAKit>Not a valid kit</MaiyaAeroBay_NotAKit>
+  <MaiyaAeroBay_NoKitInstalled>No kits installed</MaiyaAeroBay_NoKitInstalled>
+  <MaiyaAeroBay_InteriorLevel>Interior Level</MaiyaAeroBay_InteriorLevel>
+  <MaiyaAeroBay_WeaponType>Weapon Type</MaiyaAeroBay_WeaponType>
+  <MaiyaAeroBay_ShieldHP>Shield HP</MaiyaAeroBay_ShieldHP>
+  <MaiyaAeroBay_HasInterior>Interior Kit Installed</MaiyaAeroBay_HasInterior>
+  <MaiyaAeroBay_HasWeapon>Weapon Kit Installed</MaiyaAeroBay_HasWeapon>
+  <MaiyaAeroBay_HasShield>Shield Kit Installed</MaiyaAeroBay_HasShield>
+
+  <!-- Status Shortcuts -->
+  <MaiyaAeroBay_InteriorShort>Space</MaiyaAeroBay_InteriorShort>
+  <MaiyaAeroBay_WeaponShort>Weapon</MaiyaAeroBay_WeaponShort>
+  <MaiyaAeroBay_ShieldShort>Shield</MaiyaAeroBay_ShieldShort>
+
+  <!-- Weapon Types -->
+  <MaiyaAeroBay_Weapon_DualMachineGun>Dual Machine Gun</MaiyaAeroBay_Weapon_DualMachineGun>
+  <MaiyaAeroBay_Weapon_Autocannon>Autocannon</MaiyaAeroBay_Weapon_Autocannon>
+  <MaiyaAeroBay_Weapon_RocketPod>Rocket Pod</MaiyaAeroBay_Weapon_RocketPod>
+  <MaiyaAeroBay_Weapon_LaserCannon>Laser Cannon</MaiyaAeroBay_Weapon_LaserCannon>
+  <MaiyaAeroBay_WeaponLabel>{0}</MaiyaAeroBay_WeaponLabel>
+
+  <!-- Shield Types -->
+  <MaiyaAeroBay_Shield_Simple>Simple Shield</MaiyaAeroBay_Shield_Simple>
+  <MaiyaAeroBay_Shield_Energy>Energy Shield</MaiyaAeroBay_Shield_Energy>
+  <MaiyaAeroBay_Shield_Reinforced>Reinforced Shield</MaiyaAeroBay_Shield_Reinforced>
+
+  <!-- Upgrade Warning -->
+  <MaiyaAeroBay_UpgradeWarning_Title>Upgrade Warning</MaiyaAeroBay_UpgradeWarning_Title>
+  <MaiyaAeroBay_UpgradeWarning_Content>Interior currently has {0} pawns and {1} items. Upgrading will destroy the current interior space, and all pawns and items will be permanently lost!\n\nContinue anyway?</MaiyaAeroBay_UpgradeWarning_Content>
+  <MaiyaAeroBay_UpgradeWarning_Continue>Confirm Upgrade (At Your Own Risk)</MaiyaAeroBay_UpgradeWarning_Continue>
+  <MaiyaAeroBay_UpgradeWarning_Cancel>Cancel</MaiyaAeroBay_UpgradeWarning_Cancel>
+  
+  <!-- Civilian Shuttle Limit -->
+  <MaiyaAeroBay_CivilianShuttleMaxLevel>Civilian shuttles can only install up to Lv.{0} interior kits</MaiyaAeroBay_CivilianShuttleMaxLevel>
+
+  <!-- Power Kit -->
+  <MaiyaAeroBay_PowerShort>Power</MaiyaAeroBay_PowerShort>
+  <MaiyaAeroBay_ShuttleAlreadyHasPower>This shuttle already has a power kit installed</MaiyaAeroBay_ShuttleAlreadyHasPower>
+  <MaiyaAeroBay_PowerKitInstalled>Installed {0} on {1}, fuel {2}%, cooldown {3}%</MaiyaAeroBay_PowerKitInstalled>
+
+  <!-- Comfort Kit -->
+  <MaiyaAeroBay_ComfortShort>Comfort</MaiyaAeroBay_ComfortShort>
+  <MaiyaAeroBay_ShuttleAlreadyHasComfort>This shuttle already has a comfort kit installed</MaiyaAeroBay_ShuttleAlreadyHasComfort>
+  <MaiyaAeroBay_ComfortNeedsInterior>Requires an interior kit before installing a comfort kit</MaiyaAeroBay_ComfortNeedsInterior>
+  <MaiyaAeroBay_ComfortKitInstalled>Installed {0} on {1}</MaiyaAeroBay_ComfortKitInstalled>
+
+  <!-- Kit Status -->
+  <MaiyaAeroBay_ModifyShuttle>Shuttle Modification</MaiyaAeroBay_ModifyShuttle>
+  <MaiyaAeroBay_ModifyShuttleDesc>View shuttle status and install kits</MaiyaAeroBay_ModifyShuttleDesc>
+  <MaiyaAeroBay_ModifyShuttleTitle>{0} Modification</MaiyaAeroBay_ModifyShuttleTitle>
+  <MaiyaAeroBay_CurrentStatus>Current Status:</MaiyaAeroBay_CurrentStatus>
+  <MaiyaAeroBay_AvailableKits>Available Kits:</MaiyaAeroBay_AvailableKits>
+  <MaiyaAeroBay_InstallKitToShuttle>Install {0} on {1}</MaiyaAeroBay_InstallKitToShuttle>
+  <MaiyaAeroBay_ComfortApplied>{0} gained comfort bonus: Hunger {1}% Rest {2}% Mood +{3}</MaiyaAeroBay_ComfortApplied>
+
+  <!-- Enter interior errors -->
+  <MaiyaAeroBay_CannotEnterCompMissing>Cannot enter shuttle: Component missing</MaiyaAeroBay_CannotEnterCompMissing>
+  <MaiyaAeroBay_CannotEnterNoPocketMap>Cannot enter shuttle: Interior not generated</MaiyaAeroBay_CannotEnterNoPocketMap>
+  <MaiyaAeroBay_CannotEnterInvalidMap>Cannot enter shuttle: Interior unavailable</MaiyaAeroBay_CannotEnterInvalidMap>
+  <MaiyaAeroBay_CannotEnter>Cannot enter shuttle interior</MaiyaAeroBay_CannotEnter>
+
+  <!-- Evacuate dialog -->
+  <MaiyaAeroBay_SelectPawnsToExit>Select colonists to exit</MaiyaAeroBay_SelectPawnsToExit>
+  <MaiyaAeroBay_EvacuateAll>Evacuate All</MaiyaAeroBay_EvacuateAll>
+  <MaiyaAeroBay_EvacuateSelected>Evacuate Selected</MaiyaAeroBay_EvacuateSelected>
+  <MaiyaAeroBay_NoPawnsToExit>No colonists available for evacuation</MaiyaAeroBay_NoPawnsToExit>
+  <MaiyaAeroBay_SelectAtLeastOne>Please select at least one colonist</MaiyaAeroBay_SelectAtLeastOne>
+
+  <!-- Enter dialog -->
+  <MaiyaAeroBay_SelectOneColonist>(Select one colonist at a time)</MaiyaAeroBay_SelectOneColonist>
+
+  <!-- Status display translation keys -->
+  <MaiyaAeroBay_InteriorSpace>Interior: {0} x {1} (Lv.{2})</MaiyaAeroBay_InteriorSpace>
+  <MaiyaAeroBay_StatusInterior>Space: Lv{0} ({1}x{2})</MaiyaAeroBay_StatusInterior>
+  <MaiyaAeroBay_StatusCargoCapacity>Cargo: {0}kg</MaiyaAeroBay_StatusCargoCapacity>
+  <MaiyaAeroBay_StatusOccupants>Occupants: {0}</MaiyaAeroBay_StatusOccupants>
+  <MaiyaAeroBay_StatusInteriorNone>Space: Not installed</MaiyaAeroBay_StatusInteriorNone>
+  <MaiyaAeroBay_StatusFuel>Fuel: {0}/{1}</MaiyaAeroBay_StatusFuel>
+  <MaiyaAeroBay_StatusCooldownPower>Cooldown: {0} (Base {1})</MaiyaAeroBay_StatusCooldownPower>
+  <MaiyaAeroBay_StatusCooldown>Cooldown: {0}</MaiyaAeroBay_StatusCooldown>
+  <MaiyaAeroBay_StatusWeapon>Weapon: {0} (Dmg {1} Range {2})</MaiyaAeroBay_StatusWeapon>
+  <MaiyaAeroBay_StatusShield>Shield: {0} ({1}/{2}HP)</MaiyaAeroBay_StatusShield>
+  <MaiyaAeroBay_StatusPower>Power: Fuel {0}% Cooldown {1}%</MaiyaAeroBay_StatusPower>
+  <MaiyaAeroBay_StatusComfort>Comfort: Hunger {0}% Rest {1}% Mood +{2}</MaiyaAeroBay_StatusComfort>
+  <MaiyaAeroBay_PowerInspect>Fuel: {0}%\nCooldown: {1}%</MaiyaAeroBay_PowerInspect>
+  <MaiyaAeroBay_ComfortInspect>Hunger: {0}%\nRest: {1}%\nMood: +{2}</MaiyaAeroBay_ComfortInspect>
+  <MaiyaAeroBay_PowerFuelMsg>Fuel capacity {0}%</MaiyaAeroBay_PowerFuelMsg>
+  <MaiyaAeroBay_PowerCooldownReduced>Launch cooldown reduced by {0}%</MaiyaAeroBay_PowerCooldownReduced>
+  <MaiyaAeroBay_PowerCooldownMsg>Cooldown {0}%</MaiyaAeroBay_PowerCooldownMsg>
+  <MaiyaAeroBay_PowerKitInstalledMsg>{0} installed on {1}, {2}, {3}</MaiyaAeroBay_PowerKitInstalledMsg>
+
+  <!-- Item Transfer -->
+  <MaiyaAeroBay_TransferItems>Manage Items</MaiyaAeroBay_TransferItems>
+  <MaiyaAeroBay_TransferItemsDesc>Load or unload items from the shuttle interior</MaiyaAeroBay_TransferItemsDesc>
+  <MaiyaAeroBay_TransferItemsTitle>Shuttle Item Management</MaiyaAeroBay_TransferItemsTitle>
+  <MaiyaAeroBay_LoadTab>← Load</MaiyaAeroBay_LoadTab>
+  <MaiyaAeroBay_UnloadTab>Unload →</MaiyaAeroBay_UnloadTab>
+  <MaiyaAeroBay_SelectAll>Select All</MaiyaAeroBay_SelectAll>
+  <MaiyaAeroBay_DeselectAll>Deselect All</MaiyaAeroBay_DeselectAll>
+  <MaiyaAeroBay_SelectedCount>Selected: {0} / {1}</MaiyaAeroBay_SelectedCount>
+  <MaiyaAeroBay_LoadItemsBtn>Confirm Load ({0} items)</MaiyaAeroBay_LoadItemsBtn>
+  <MaiyaAeroBay_UnloadItemsBtn>Confirm Unload ({0} items)</MaiyaAeroBay_UnloadItemsBtn>
+  <MaiyaAeroBay_LoadItemsSuccess>Loaded {0} items into shuttle interior</MaiyaAeroBay_LoadItemsSuccess>
+  <MaiyaAeroBay_UnloadItemsSuccess>Unloaded {0} items from shuttle interior</MaiyaAeroBay_UnloadItemsSuccess>
+
+  <!-- Power System -->
+  <MaiyaAeroBay_InteriorConduit>Shuttle Interior Conduit</MaiyaAeroBay_InteriorConduit>
+  <MaiyaAeroBay_InteriorConduit_desc>Power transmission cables inside the shuttle, delivering wall-generated electricity</MaiyaAeroBay_InteriorConduit_desc>
+  <MaiyaAeroBay_InteriorWallDesc>Shuttle wall, each cell automatically outputs 50W of power</MaiyaAeroBay_InteriorWallDesc>
+
+  <!-- Emergency Evacuation -->
+  <MaiyaAeroBay_EmergencyExitTitle>⚠ Emergency Evacuation</MaiyaAeroBay_EmergencyExitTitle>
+  <MaiyaAeroBay_EmergencyExitWarning>Shuttle has departed or is missing. Personnel will be teleported to the nearest safe map.</MaiyaAeroBay_EmergencyExitWarning>
+  <MaiyaAeroBay_EmergencyEvacuated>Emergency evacuated {0} pawns to a safe map</MaiyaAeroBay_EmergencyEvacuated>
+  <MaiyaAeroBay_EmergencyEvacuateSelected>Emergency Evac</MaiyaAeroBay_EmergencyEvacuateSelected>
+  <MaiyaAeroBay_NoSafeMapFound>No safe map found for evacuation</MaiyaAeroBay_NoSafeMapFound>
+
+</LanguageData>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <JobDef>
+    <defName>MaiyaAeroBay_InstallKit</defName>
+    <driverClass>MaiyaAeroBay.JobDriver_InstallAeroBayKit</driverClass>
+    <reportString>installing TargetB on TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
+</Defs>

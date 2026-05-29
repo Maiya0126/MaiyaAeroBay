@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <JobDef>
+    <defName>EnterShuttleInterior</defName>
+    <driverClass>MaiyaAeroBay.JobDriver_EnterShuttleInterior</driverClass>
+    <reportString>MaiyaAeroBay_EnteringInterior</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <alwaysShowWeapon>false</alwaysShowWeapon>
+    <suspendable>false</suspendable>
+    <playerInterruptible>true</playerInterruptible>
+  </JobDef>
+
+</Defs>

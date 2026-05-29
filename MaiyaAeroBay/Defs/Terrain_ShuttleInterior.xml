@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+<TerrainDef>
+  <defName>MaiyaAeroBay_InteriorFloor</defName>
+  <label>穿梭舱地板</label>
+  <description>穿梭机内部金属地板</description>
+  <texturePath>Things/Building/Surface/MetalTile</texturePath>
+  <constructEffect>ConstructMetal</constructEffect>
+  <edgeType>FadeRough</edgeType>
+  <renderPrecedence>250</renderPrecedence>
+  <pathCost>0</pathCost>
+  <fertility>0</fertility>
+  <affordances>
+    <li>Light</li>
+    <li>Medium</li>
+    <li>Heavy</li>
+  </affordances>
+  <statBases>
+    <Beauty>2</Beauty>
+    <Cleanliness>0.6</Cleanliness>
+  </statBases>
+  <uiOrder>2540</uiOrder>
+  <color>(0.4,0.4,0.4)</color>
+</TerrainDef>
+
+<RoofDef>
+  <defName>MaiyaAeroBay_ShuttleRoof</defName>
+  <label>穿梭机顶棚</label>
+  <description>穿梭机的封闭顶棚</description>
+  <isThickRoof>true</isThickRoof>
+  <isNatural>false</isNatural>
+  <filthLeaving>Filth_RubbleRock</filthLeaving>
+  <soundPunchThrough>Roof_Collapse</soundPunchThrough>
+</RoofDef>
+
+<ThingDef ParentName="BuildingBase">
+  <defName>MaiyaAeroBay_InteriorWall</defName>
+  <label>穿梭机墙壁</label>
+  <description>穿梭机的坚固外壳墙壁，自带电力输出</description>
+  <thingClass>Building</thingClass>
+  <category>Building</category>
+  <altitudeLayer>Building</altitudeLayer>
+  <useHitPoints>false</useHitPoints>
+  <selectable>false</selectable>
+  <destroyable>false</destroyable>
+  <rotatable>false</rotatable>
+  <designationCategory IsNull="True"/>
+  <graphicData>
+    <texPath>Things/Building/Linked/Wall</texPath>
+    <graphicClass>Graphic_Appearances</graphicClass>
+    <linkType>CornerFiller</linkType>
+    <linkFlags>
+      <li>Wall</li>
+    </linkFlags>
+    <color>(0.85, 0.85, 0.9)</color>
+  </graphicData>
+  <comps>
+    <li Class="CompProperties_Power">
+      <compClass>CompPowerPlant</compClass>
+      <basePowerConsumption>-50</basePowerConsumption>
+      <transmitsPower>true</transmitsPower>
+    </li>
+  </comps>
+  <tickerType>Normal</tickerType>
+  <building>
+    <paintable>false</paintable>
+    <deconstructible>false</deconstructible>
+    <claimable>false</claimable>
+    <neverBuildable>true</neverBuildable>
+    <isEdifice>true</isEdifice>
+  </building>
+  <statBases>
+    <Flammability>0</Flammability>
+  </statBases>
+  <fillPercent>1</fillPercent>
+  <passability>Impassable</passability>
+  <pathCost>0</pathCost>
+  <size>(1,1)</size>
+  <blockWind>true</blockWind>
+  <holdsRoof>true</holdsRoof>
+  <staticSunShadowHeight>1.0</staticSunShadowHeight>
+  <castEdgeShadows>true</castEdgeShadows>
+</ThingDef>
+
+<ThingDef ParentName="BuildingBase">
+  <defName>MaiyaAeroBay_ExitPortal</defName>
+  <label>穿梭机出口</label>
+  <description>穿梭机内部出口，连接外部世界</description>
+  <thingClass>MaiyaAeroBay.ExitPortal</thingClass>
+  <category>Building</category>
+  <altitudeLayer>Building</altitudeLayer>
+  <selectable>true</selectable>
+  <statBases>
+    <MaxHitPoints>200</MaxHitPoints>
+    <Flammability>0</Flammability>
+    <Mass>5</Mass>
+  </statBases>
+  <size>(1,1)</size>
+  <passability>Standable</passability>
+  <fillPercent>0.5</fillPercent>
+  <building>
+    <claimable>false</claimable>
+    <deconstructible>true</deconstructible>
+    <alwaysUninstallable>true</alwaysUninstallable>
+  </building>
+  <minifiedDef>MinifiedThing</minifiedDef>
+  <thingCategories>
+    <li>BuildingsMisc</li>
+  </thingCategories>
+  <graphicData>
+    <texPath>Things/Building/Asset/Exit</texPath>
+    <graphicClass>Graphic_Single</graphicClass>
+    <drawSize>(1,1)</drawSize>
+    <color>(0.2,1.0,0.8)</color>
+  </graphicData>
+  <comps>
+    <li Class="CompProperties_Glower">
+      <glowRadius>4</glowRadius>
+      <glowColor>(50,255,200,0)</glowColor>
+    </li>
+  </comps>
+  <designationCategory IsNull="True"/>
+</ThingDef>
+
+<ThingDef ParentName="BuildingBase">
+  <defName>MaiyaAeroBay_CargoPod</defName>
+  <label>机载货物舱</label>
+  <description>穿梭机底部的紧凑存储空间，可存放各类物品</description>
+  <thingClass>Building_Storage</thingClass>
+  <category>Building</category>
+  <altitudeLayer>Building</altitudeLayer>
+  <selectable>true</selectable>
+  <statBases>
+    <MaxHitPoints>300</MaxHitPoints>
+    <Flammability>0</Flammability>
+    <Beauty>0</Beauty>
+    <Mass>10</Mass>
+  </statBases>
+  <size>(1,1)</size>
+  <passability>PassThroughOnly</passability>
+  <fillPercent>0.3</fillPercent>
+  <building>
+    <maxItemsInCell>200</maxItemsInCell>
+    <preventDeteriorationOnTop>true</preventDeteriorationOnTop>
+    <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+    <deconstructible>true</deconstructible>
+    <alwaysUninstallable>true</alwaysUninstallable>
+    <storageGroupTag>Storage</storageGroupTag>
+    <fixedStorageSettings>
+      <filter>
+        <categories>
+          <li>Foods</li>
+          <li>Manufactured</li>
+          <li>ResourcesRaw</li>
+          <li>Items</li>
+          <li>Weapons</li>
+          <li>Apparel</li>
+          <li>BodyParts</li>
+        </categories>
+      </filter>
+    </fixedStorageSettings>
+    <defaultStorageSettings>
+      <priority>Preferred</priority>
+      <filter>
+        <categories>
+          <li>Foods</li>
+          <li>Manufactured</li>
+          <li>ResourcesRaw</li>
+          <li>Items</li>
+          <li>Weapons</li>
+          <li>Apparel</li>
+          <li>BodyParts</li>
+        </categories>
+      </filter>
+    </defaultStorageSettings>
+  </building>
+  <minifiedDef>MinifiedThing</minifiedDef>
+  <thingCategories>
+    <li>BuildingsMisc</li>
+  </thingCategories>
+  <graphicData>
+    <texPath>Things/Building/Asset/Cargo</texPath>
+    <graphicClass>Graphic_Single</graphicClass>
+    <drawSize>(1,1)</drawSize>
+  </graphicData>
+  <inspectorTabs>
+    <li>ITab_Storage</li>
+  </inspectorTabs>
+  <designationCategory IsNull="True"/>
+</ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>MaiyaAeroBay_InteriorConduit</defName>
+    <label>MaiyaAeroBay_InteriorConduit</label>
+    <description>MaiyaAeroBay_InteriorConduit_desc</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Conduits</altitudeLayer>
+    <useHitPoints>false</useHitPoints>
+    <selectable>false</selectable>
+    <destroyable>false</destroyable>
+    <rotatable>false</rotatable>
+    <designationCategory IsNull="True"/>
+    <graphicData>
+      <texPath>Things/Building/Linked/PowerConduit_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>Transmitter</linkType>
+      <linkFlags>
+        <li>PowerConduit</li>
+      </linkFlags>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTransmitter</compClass>
+        <transmitsPower>true</transmitsPower>
+      </li>
+    </comps>
+    <building>
+      <isPowerConduit>true</isPowerConduit>
+      <isEdifice>false</isEdifice>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <canConstructInCorner>true</canConstructInCorner>
+    </building>
+    <drawerType>MapMeshOnly</drawerType>
+    <clearBuildingArea>false</clearBuildingArea>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <neverMultiSelect>true</neverMultiSelect>
+    <passability>Standable</passability>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+  </ThingDef>
+
+</Defs>

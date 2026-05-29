@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 防御套件基类 -->
+  <ThingDef ParentName="ResourceBase" Name="MaiyaAeroBayShieldKitBase" Abstract="true">
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <altitudeLayer>Item</altitudeLayer>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>5</Mass>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <alwaysHaulable>true</alwaysHaulable>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <tradeability>All</tradeability>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="CompProperties_Usable">
+        <useJob>UseArtifact</useJob>
+        <useLabel>Install shield on shuttle</useLabel>
+        <useDuration>120</useDuration>
+      </li>
+      <li Class="MaiyaAeroBay.CompProperties_TargetableSingleShuttle"/>
+      <li Class="MaiyaAeroBay.CompProperties_TargetEffectInstallAeroBayKit"/>
+    </comps>
+  </ThingDef>
+
+  <!-- 简易护盾套件 -->
+  <ThingDef ParentName="MaiyaAeroBayShieldKitBase">
+    <defName>MaiyaAeroBay_ShieldKit_Simple</defName>
+    <label>穿梭机简易护盾套件</label>
+    <description>为穿梭机安装简易能量护盾，停泊地面时自动激活。护盾HP 150，缓慢恢复；被EMP击中瘫痪10秒。\n\n每个穿梭机只能安装一个护盾套件，无法替换。仅在地面时生效。</description>
+    <graphicData>
+      <texPath>Things/Item/Equipment/Special/BroadshieldCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(100,200,100)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>350</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Shield</kitType>
+        <shieldType>Simple</shieldType>
+        <shieldMaxHP>150</shieldMaxHP>
+        <shieldRechargeRate>1</shieldRechargeRate>
+        <shieldEMPDisarmTicks>600</shieldEMPDisarmTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 能量护盾套件 -->
+  <ThingDef ParentName="MaiyaAeroBayShieldKitBase">
+    <defName>MaiyaAeroBay_ShieldKit_Energy</defName>
+    <label>穿梭机能量护盾套件</label>
+    <description>为穿梭机安装标准能量护盾，停泊地面时自动激活。护盾HP 300，中等速度恢复；被EMP击中瘫痪8秒。\n\n每个穿梭机只能安装一个护盾套件，无法替换。仅在地面时生效。</description>
+    <graphicData>
+      <texPath>Things/Item/Equipment/Special/BroadshieldCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(100,150,255)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>600</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Shield</kitType>
+        <shieldType>Energy</shieldType>
+        <shieldMaxHP>300</shieldMaxHP>
+        <shieldRechargeRate>2</shieldRechargeRate>
+        <shieldEMPDisarmTicks>480</shieldEMPDisarmTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 强化护盾套件 -->
+  <ThingDef ParentName="MaiyaAeroBayShieldKitBase">
+    <defName>MaiyaAeroBay_ShieldKit_Reinforced</defName>
+    <label>穿梭机强化护盾套件</label>
+    <description>为穿梭机安装强化型能量护盾，停泊地面时自动激活。护盾HP 500，快速恢复；被EMP击中仅瘫痪5秒。\n\n每个穿梭机只能安装一个护盾套件，无法替换。仅在地面时生效。</description>
+    <graphicData>
+      <texPath>Things/Item/Equipment/Special/BroadshieldCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(255,200,50)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>1000</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
+        <kitType>Shield</kitType>
+        <shieldType>Reinforced</shieldType>
+        <shieldMaxHP>500</shieldMaxHP>
+        <shieldRechargeRate>3</shieldRechargeRate>
+        <shieldEMPDisarmTicks>300</shieldEMPDisarmTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
