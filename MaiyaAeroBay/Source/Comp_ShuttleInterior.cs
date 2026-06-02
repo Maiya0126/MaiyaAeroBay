@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -76,7 +76,7 @@ namespace MaiyaAeroBay
         public void SetUpgradeLevel(int level)
         {
             upgradeLevel = Mathf.Clamp(level, 0, Props.maxUpgradeLevel);
-            if (upgradeLevel > 0)
+            if (upgradeLevel > 0 && MaiyaAeroBayMod.settings.interiorSpaceEnabled)
             {
                 GeneratePocketMap();
             }
@@ -197,7 +197,7 @@ namespace MaiyaAeroBay
                     {
                         CompShuttleComfort.RemoveFromPawnByShuttle(base.parent, pawn);
                         if (pawn.Spawned)
-                            pawn.DeSpawn(DestroyMode.Vanish);
+                            pawn.DeSpawn();
                         try
                         {
                             IntVec3 pos = CellFinder.RandomSpawnCellForPawnNear(spawnPos, safeMap, 3);
@@ -296,6 +296,11 @@ namespace MaiyaAeroBay
 
             if (!PocketMapExists)
             {
+                if (!MaiyaAeroBayMod.settings.interiorSpaceEnabled)
+                {
+                    Messages.Message("MaiyaAeroBay_InteriorSpaceDisabled".Translate(), parent, MessageTypeDefOf.RejectInput);
+                    return;
+                }
                 GeneratePocketMap();
             }
 

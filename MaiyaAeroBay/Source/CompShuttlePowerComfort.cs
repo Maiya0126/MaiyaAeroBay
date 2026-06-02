@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -8,26 +8,55 @@ namespace MaiyaAeroBay
     {
         public static void ApplyFuelCapacityMultiplier(ThingWithComps shuttle, float multiplier)
         {
+            if (!MaiyaAeroBayMod.settings.powerFuelEnabled) return;
             var refuelable = shuttle.TryGetComp<CompRefuelable>();
             if (refuelable == null) return;
-
-            float newFuelCapacity = refuelable.Props.fuelCapacity * multiplier;
-
-            var newProps = new CompProperties_Refuelable();
-            foreach (var field in typeof(CompProperties_Refuelable).GetFields(
-                System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance))
+            float baseFuelCapacity = shuttle.def.GetCompProperties<CompProperties_Refuelable>().fuelCapacity;
+            float newCapacity = baseFuelCapacity * multiplier;
+            var props = refuelable.Props;
+            props.fuelCapacity = newCapacity;
+            if (props.targetFuelLevelConfigurable)
             {
-                if (field.IsInitOnly) continue;
-                try { field.SetValue(newProps, field.GetValue(refuelable.Props)); } catch { }
+                float baseTarget = shuttle.def.GetCompProperties<CompProperties_Refuelable>().initialConfigurableTargetFuelLevel;
+                props.initialConfigurableTargetFuelLevel = baseTarget * multiplier;
             }
-            newProps.fuelCapacity = newFuelCapacity;
-            if (newProps.targetFuelLevelConfigurable && newProps.initialConfigurableTargetFuelLevel > 0f)
-                newProps.initialConfigurableTargetFuelLevel *= multiplier;
-            refuelable.props = newProps;
+            refuelable.TargetFuelLevel = newCapacity;
+            refuelable.allowAutoRefuel = true;
+        }
 
-            refuelable.TargetFuelLevel = newFuelCapacity;
+        public static void ApplyCooldownMultiplier(ThingWithComps shuttle, float multiplier)
+        {
+            if (!MaiyaAeroBayMod.settings.powerCooldownEnabled) return;
+            var launchable = shuttle.TryGetComp<CompLaunchable>();
+            if (launchable == null) return;
+            int baseCooldown = shuttle.def.GetCompProperties<CompProperties_Launchable>().cooldownTicks;
+            launchable.Props.cooldownTicks = (int)(baseCooldown * multiplier);
+        }
+
+        public static void ResetFuelCapacity(ThingWithComps shuttle)
+        {
+            var refuelable = shuttle.TryGetComp<CompRefuelable>();
+            if (refuelable == null) return;
+            float baseFuelCapacity = shuttle.def.GetCompProperties<CompProperties_Refuelable>().fuelCapacity;
+            var props = refuelable.Props;
+            props.fuelCapacity = baseFuelCapacity;
+            if (props.targetFuelLevelConfigurable)
+            {
+                float baseTarget = shuttle.def.GetCompProperties<CompProperties_Refuelable>().initialConfigurableTargetFuelLevel;
+                props.initialConfigurableTargetFuelLevel = baseTarget;
+            }
+            refuelable.TargetFuelLevel = baseFuelCapacity;
+        }
+
+        public static void ResetCooldownTicks(ThingWithComps shuttle)
+        {
+            var launchable = shuttle.TryGetComp<CompLaunchable>();
+            if (launchable == null) return;
+            int baseCooldown = shuttle.def.GetCompProperties<CompProperties_Launchable>().cooldownTicks;
+            launchable.Props.cooldownTicks = baseCooldown;
         }
     }
+
     public class CompProperties_ShuttlePower : CompProperties
     {
         public float fuelCapacityMultiplier = 1f;
@@ -42,7 +71,6 @@ namespace MaiyaAeroBay
     public class CompShuttlePower : ThingComp
     {
         public CompProperties_ShuttlePower Props => (CompProperties_ShuttlePower)props;
-
         public bool installed = false;
         private float s_fuelCapacityMultiplier = 1f;
         private float s_cooldownMultiplier = 1f;
@@ -53,6 +81,20 @@ namespace MaiyaAeroBay
             return "MaiyaAeroBay_PowerInspect".Translate(
                 (Props.fuelCapacityMultiplier * 100f).ToString("F0"),
                 (Props.cooldownMultiplier * 100f).ToString("F0"));
+        }
+
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            if (installed && s_fuelCapacityMultiplier > 1f)
+            {
+                var twc = parent as ThingWithComps;
+                if (twc != null)
+                {
+                    ShuttleFuelHelper.ApplyFuelCapacityMultiplier(twc, s_fuelCapacityMultiplier);
+                    ShuttleFuelHelper.ApplyCooldownMultiplier(twc, s_cooldownMultiplier);
+                }
+            }
         }
 
         public override void PostExposeData()
@@ -80,9 +122,21 @@ namespace MaiyaAeroBay
             newProps.cooldownMultiplier = s_cooldownMultiplier;
             props = newProps;
 
-            if (s_fuelCapacityMultiplier > 1f && parent is ThingWithComps twc)
+            if (s_fuelCapacityMultiplier > 1f)
             {
-                ShuttleFuelHelper.ApplyFuelCapacityMultiplier(twc, s_fuelCapacityMultiplier);
+                var twc = parent as ThingWithComps;
+                if (twc != null)
+                {
+                    ShuttleFuelHelper.ApplyFuelCapacityMultiplier(twc, s_fuelCapacityMultiplier);
+                }
+            }
+            if (s_cooldownMultiplier < 1f)
+            {
+                var twc2 = parent as ThingWithComps;
+                if (twc2 != null)
+                {
+                    ShuttleFuelHelper.ApplyCooldownMultiplier(twc2, s_cooldownMultiplier);
+                }
             }
         }
 
@@ -110,7 +164,6 @@ namespace MaiyaAeroBay
     public class CompShuttleComfort : ThingComp
     {
         public CompProperties_ShuttleComfort Props => (CompProperties_ShuttleComfort)props;
-
         public bool installed = false;
         private float s_hungerRateMultiplier = 1f;
         private float s_restRateMultiplier = 1f;

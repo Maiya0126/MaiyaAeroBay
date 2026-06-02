@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
@@ -132,6 +132,7 @@ namespace MaiyaAeroBay
             Thing wall = ThingMaker.MakeThing(wallDef);
             wall.SetFaction(Faction.OfPlayer);
             GenSpawn.Spawn(wall, cell, map);
+            MaiyaAeroBayMod.SetWallPowerOutput(wall.TryGetComp<CompPowerPlant>(), MaiyaAeroBayMod.settings.wallPowerPerCell);
         }
 
         private void CreateRoof(Map map, IntVec3 size, RoofDef roofDef)
@@ -155,7 +156,7 @@ namespace MaiyaAeroBay
             var building = map.edificeGrid[exitPos];
             if (building != null)
             {
-                building.Destroy(DestroyMode.Vanish);
+                building.Destroy();
             }
 
             var portalDef = DefDatabase<ThingDef>.GetNamed("MaiyaAeroBay_ExitPortal", false);

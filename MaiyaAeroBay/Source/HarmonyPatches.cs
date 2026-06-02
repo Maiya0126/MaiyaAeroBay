@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -487,6 +487,10 @@ namespace MaiyaAeroBay
         [HarmonyPostfix]
         public static void Postfix(CompTransporter __instance, ref float __result)
         {
+            if (!MaiyaAeroBayMod.settings.interiorMassEnabled)
+            {
+                return;
+            }
             var shuttle = __instance.parent;
             if (shuttle == null) return;
 
@@ -496,72 +500,6 @@ namespace MaiyaAeroBay
                 float multiplier = interior.Props.GetMassMultiplier(interior.UpgradeLevel);
                 __result *= multiplier;
             }
-        }
-    }
-
-    [HarmonyPatch]
-    public static class ShuttleFuelCapacityPatch
-    {
-        [HarmonyPatch(typeof(CompLaunchable), "MaxFuelLevel", MethodType.Getter)]
-        [HarmonyPostfix]
-        public static void PostfixMaxFuelLevel(CompLaunchable __instance, ref float __result)
-        {
-            var shuttle = __instance.parent;
-            if (shuttle == null) return;
-
-            var power = shuttle.TryGetComp<CompShuttlePower>();
-            if (power == null || !power.installed) return;
-
-            __result *= power.Props.fuelCapacityMultiplier;
-        }
-    }
-
-    [HarmonyPatch]
-    public static class ShuttleCooldownPatch
-    {
-        [HarmonyPatch(typeof(CompLaunchable), "CompInspectStringExtra")]
-        [HarmonyPostfix]
-        public static void PostfixInspect(CompLaunchable __instance, ref string __result)
-        {
-            var shuttle = __instance.parent;
-            if (shuttle == null) return;
-
-            var power = shuttle.TryGetComp<CompShuttlePower>();
-            if (power == null || !power.installed) return;
-
-            if (power.Props.cooldownMultiplier >= 1f) return;
-
-            string oldCooldown = __instance.Props.cooldownTicks.ToStringTicksToPeriod();
-            int newCooldown = (int)(__instance.Props.cooldownTicks * power.Props.cooldownMultiplier);
-            string newCooldownStr = newCooldown.ToStringTicksToPeriod();
-
-            if (__result != null && __result.Contains(oldCooldown))
-            {
-                __result = __result.Replace(oldCooldown, newCooldownStr);
-            }
-        }
-    }
-
-    [HarmonyPatch]
-    public static class ShuttleCooldownLogicPatch
-    {
-        [HarmonyPatch(typeof(CompLaunchable), "TryLaunch")]
-        [HarmonyPostfix]
-        public static void PostfixTryLaunch(CompLaunchable __instance)
-        {
-            var shuttle = __instance.parent;
-            if (shuttle == null) return;
-
-            var power = shuttle.TryGetComp<CompShuttlePower>();
-            if (power == null || !power.installed) return;
-
-            if (power.Props.cooldownMultiplier >= 1f) return;
-
-            int originalCooldown = __instance.Props.cooldownTicks;
-            int reducedCooldown = (int)(originalCooldown * power.Props.cooldownMultiplier);
-            int reduction = originalCooldown - reducedCooldown;
-
-            __instance.lastLaunchTick += reduction;
         }
     }
 }

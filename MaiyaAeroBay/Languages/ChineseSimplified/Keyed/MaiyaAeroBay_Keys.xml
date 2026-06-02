@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
   <!-- 穿梭机操作 -->
@@ -78,10 +78,14 @@
   <MaiyaAeroBay_ShuttleNotFound>穿梭机未找到</MaiyaAeroBay_ShuttleNotFound>
 
   <!-- Mod设置 -->
-  <MaiyaAeroBay_ModSettings>别有洞天设置</MaiyaAeroBay_ModSettings>
-  <MaiyaAeroBay_UpgradeCostPercent>升级资源消耗百分比</MaiyaAeroBay_UpgradeCostPercent>
-  <MaiyaAeroBay_UpgradeCostPercentDesc>调整升级所需资源的百分比（100%为默认消耗）</MaiyaAeroBay_UpgradeCostPercentDesc>
-
+  <MaiyaAeroBay_KitFeatureTogglesDesc>控制套件安装后哪些功能生效，关闭后对已安装的套件也会生效</MaiyaAeroBay_KitFeatureTogglesDesc>
+  <MaiyaAeroBay_InteriorKitSettings>空间套件功能选择</MaiyaAeroBay_InteriorKitSettings>
+  <MaiyaAeroBay_InteriorSpaceEnabled>新增内部空间</MaiyaAeroBay_InteriorSpaceEnabled>
+  <MaiyaAeroBay_InteriorMassEnabled>增加载重容量</MaiyaAeroBay_InteriorMassEnabled>
+  <MaiyaAeroBay_PowerKitSettings>动力套件功能选择</MaiyaAeroBay_PowerKitSettings>
+  <MaiyaAeroBay_PowerFuelEnabled>增加燃料容量</MaiyaAeroBay_PowerFuelEnabled>
+  <MaiyaAeroBay_WallPowerPerCell>墙壁每格发电量</MaiyaAeroBay_WallPowerPerCell>
+  <MaiyaAeroBay_PowerCooldownEnabled>减少冷却时间</MaiyaAeroBay_PowerCooldownEnabled>
   <!-- 升级套件物品 -->
   <MaiyaAeroBay_UpgradeKit_A>穿梭舱升级套件 Lv.1</MaiyaAeroBay_UpgradeKit_A>
   <MaiyaAeroBay_UpgradeKit_A_desc>穿梭机内部空间升级套件。安装后可获得 7x6 的内部空间，可供殖民者休息和存储物品。\n\n对穿梭机使用此套件来安装。每个穿梭机只能安装一个套件。</MaiyaAeroBay_UpgradeKit_A_desc>
@@ -284,5 +288,7 @@
   <MaiyaAeroBay_EmergencyEvacuated>已紧急撤离 {0} 名人员到安全地图</MaiyaAeroBay_EmergencyEvacuated>
   <MaiyaAeroBay_EmergencyEvacuateSelected>紧急撤离</MaiyaAeroBay_EmergencyEvacuateSelected>
   <MaiyaAeroBay_NoSafeMapFound>找不到安全地图进行撤离</MaiyaAeroBay_NoSafeMapFound>
+
+  <MaiyaAeroBay_InteriorSpaceDisabled>内部空间功能已在模组设置中关闭</MaiyaAeroBay_InteriorSpaceDisabled>
 
 </LanguageData>

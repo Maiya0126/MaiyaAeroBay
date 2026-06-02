@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
   <!-- Shuttle Operations -->
@@ -78,9 +78,14 @@
   <MaiyaAeroBay_ShuttleNotFound>Shuttle not found</MaiyaAeroBay_ShuttleNotFound>
 
   <!-- Mod Settings -->
-  <MaiyaAeroBay_ModSettings>Shuttle Expansion: Wonderland Settings</MaiyaAeroBay_ModSettings>
-  <MaiyaAeroBay_UpgradeCostPercent>Upgrade Cost Percentage</MaiyaAeroBay_UpgradeCostPercent>
-  <MaiyaAeroBay_UpgradeCostPercentDesc>Adjust the percentage of resources required for upgrades (100% is default)</MaiyaAeroBay_UpgradeCostPercentDesc>
+  <MaiyaAeroBay_KitFeatureTogglesDesc>Controls which features take effect after installing kits. Changes apply to already installed kits.</MaiyaAeroBay_KitFeatureTogglesDesc>
+  <MaiyaAeroBay_InteriorKitSettings>Interior Kit Features</MaiyaAeroBay_InteriorKitSettings>
+  <MaiyaAeroBay_InteriorSpaceEnabled>Add Interior Space</MaiyaAeroBay_InteriorSpaceEnabled>
+  <MaiyaAeroBay_InteriorMassEnabled>Increase Mass Capacity</MaiyaAeroBay_InteriorMassEnabled>
+  <MaiyaAeroBay_PowerKitSettings>Power Kit Features</MaiyaAeroBay_PowerKitSettings>
+  <MaiyaAeroBay_PowerFuelEnabled>Increase Fuel Capacity</MaiyaAeroBay_PowerFuelEnabled>
+  <MaiyaAeroBay_WallPowerPerCell>Wall Power Per Cell</MaiyaAeroBay_WallPowerPerCell>
+  <MaiyaAeroBay_PowerCooldownEnabled>Reduce Cooldown Time</MaiyaAeroBay_PowerCooldownEnabled>
 
   <!-- Upgrade Kit Items -->
   <MaiyaAeroBay_UpgradeKit_A>Shuttle Upgrade Kit Lv.1</MaiyaAeroBay_UpgradeKit_A>
@@ -284,5 +289,7 @@
   <MaiyaAeroBay_EmergencyEvacuated>Emergency evacuated {0} pawns to a safe map</MaiyaAeroBay_EmergencyEvacuated>
   <MaiyaAeroBay_EmergencyEvacuateSelected>Emergency Evac</MaiyaAeroBay_EmergencyEvacuateSelected>
   <MaiyaAeroBay_NoSafeMapFound>No safe map found for evacuation</MaiyaAeroBay_NoSafeMapFound>
+
+  <MaiyaAeroBay_InteriorSpaceDisabled>Interior space feature is disabled in mod settings</MaiyaAeroBay_InteriorSpaceDisabled>
 
 </LanguageData>
