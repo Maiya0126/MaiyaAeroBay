@@ -223,7 +223,7 @@
       <claimable>false</claimable>
       <canConstructInCorner>true</canConstructInCorner>
     </building>
-    <drawerType>MapMeshOnly</drawerType>
+    <drawerType>None</drawerType>
     <clearBuildingArea>false</clearBuildingArea>
     <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
     <neverMultiSelect>true</neverMultiSelect>

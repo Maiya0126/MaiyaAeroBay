@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
   <!-- 穿梭机操作 -->
@@ -291,4 +291,8 @@
 
   <MaiyaAeroBay_InteriorSpaceDisabled>内部空间功能已在模组设置中关闭</MaiyaAeroBay_InteriorSpaceDisabled>
 
+
+  <MaiyaAeroBay_InteriorPowerInfo>发电: {0}W / 储能: {1}Wd</MaiyaAeroBay_InteriorPowerInfo>
+  <MaiyaAeroBay_InteriorPowerNotice>发电 {0}W, 储能 {1}Wd</MaiyaAeroBay_InteriorPowerNotice>
+  <MaiyaAeroBay_InteriorEnterNotice>空间等级 Lv.{0}</MaiyaAeroBay_InteriorEnterNotice>
 </LanguageData>

@@ -87,6 +87,21 @@ namespace MaiyaAeroBay
                     comfortComp.ApplyComfortHediff(pawn);
                 }
 
+                string enterMsg = "MaiyaAeroBay_InteriorEnterNotice".Translate(comp.UpgradeLevel);
+                var nets = pocketMap?.powerNetManager?.AllNetsListForReading;
+                if (nets != null && nets.Count > 0)
+                {
+                    float totalProduction = 0f;
+                    float totalStorage = 0f;
+                    foreach (var net in nets)
+                    {
+                        totalProduction += net.CurrentEnergyGainRate() / CompPower.WattsToWattDaysPerTick;
+                        totalStorage += net.CurrentStoredEnergy();
+                    }
+                    enterMsg += " " + "MaiyaAeroBay_InteriorPowerNotice".Translate(totalProduction.ToString("F0"), totalStorage.ToString("F0"));
+                }
+                Messages.Message(enterMsg, shuttleRef, MessageTypeDefOf.PositiveEvent);
+
                 if (pawn.IsPlayerControlled && wasDrafted)
                 {
                     pawn.drafter.Drafted = true;

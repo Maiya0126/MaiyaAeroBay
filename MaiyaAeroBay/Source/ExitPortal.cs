@@ -157,6 +157,27 @@ namespace MaiyaAeroBay
             return null;
         }
 
+        public override string GetInspectString()
+        {
+            string baseStr = base.GetInspectString();
+            var nets = Map?.powerNetManager?.AllNetsListForReading;
+            if (nets != null && nets.Count > 0)
+            {
+                float totalProduction = 0f;
+                float totalStorage = 0f;
+                foreach (var net in nets)
+                {
+                    totalProduction += net.CurrentEnergyGainRate() / CompPower.WattsToWattDaysPerTick;
+                    totalStorage += net.CurrentStoredEnergy();
+                }
+                string powerInfo = "MaiyaAeroBay_InteriorPowerInfo".Translate(totalProduction.ToString("F0"), totalStorage.ToString("F0"));
+                if (!string.IsNullOrEmpty(baseStr))
+                    baseStr += "\n";
+                baseStr += powerInfo;
+            }
+            return baseStr;
+        }
+
         public void EvacuateAll()
         {
             List<Pawn> allPawns = Map.mapPawns.AllPawnsSpawned

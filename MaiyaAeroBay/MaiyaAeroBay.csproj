@@ -120,7 +120,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 <PropertyGroup>
-    <PostBuildEvent>set MOD_DIR=D:\Games\steamapps\common\Rimworld\Mods\MaiyaMod10 Maiya AeroBay 麦丫穿梭舱
+    <PostBuildEvent>set MOD_DIR=D:\Games\steamapps\common\Rimworld\Mods\MaiyaMod10 Maiya AeroBay
 copy /y "$(TargetPath)" "%MOD_DIR%\Assemblies\"
 if exist "$(ProjectDir)Defs" xcopy /y /i "$(ProjectDir)Defs" "%MOD_DIR%\Defs\"
 if exist "$(ProjectDir)About" xcopy /y /i "$(ProjectDir)About" "%MOD_DIR%\About\"

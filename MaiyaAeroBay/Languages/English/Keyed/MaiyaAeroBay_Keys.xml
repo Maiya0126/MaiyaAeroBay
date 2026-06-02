@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
   <!-- Shuttle Operations -->
@@ -292,4 +292,8 @@
 
   <MaiyaAeroBay_InteriorSpaceDisabled>Interior space feature is disabled in mod settings</MaiyaAeroBay_InteriorSpaceDisabled>
 
+
+  <MaiyaAeroBay_InteriorPowerInfo>Power output: {0}W / Stored: {1}Wd</MaiyaAeroBay_InteriorPowerInfo>
+  <MaiyaAeroBay_InteriorPowerNotice>Power {0}W, Stored {1}Wd</MaiyaAeroBay_InteriorPowerNotice>
+  <MaiyaAeroBay_InteriorEnterNotice>Interior Level Lv.{0}</MaiyaAeroBay_InteriorEnterNotice>
 </LanguageData>

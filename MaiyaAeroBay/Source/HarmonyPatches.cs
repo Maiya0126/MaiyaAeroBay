@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,23 +88,6 @@ namespace MaiyaAeroBay
                 {
                     level = GetInteriorLevel(targetMap);
                     if (level > 0) interiorMap = targetMap;
-                }
-
-                if (interiorMap == null)
-                {
-                    foreach (Map m in Find.Maps)
-                    {
-                        if (!m.IsPocketMap) continue;
-                        if (m.generatorDef == null || m.generatorDef.defName != "MaiyaAeroBay_InteriorSpace") continue;
-                        int lvl = GetInteriorLevel(m);
-                        if (lvl <= 0) continue;
-                        if (m.mapPawns.AllPawnsSpawned.Any(p => p.IsColonist))
-                        {
-                            interiorMap = m;
-                            level = lvl;
-                            break;
-                        }
-                    }
                 }
 
                 if (interiorMap == null || level <= 0) return true;
@@ -436,12 +419,10 @@ namespace MaiyaAeroBay
             {
                 var entries = Find.ColonistBar.Entries;
                 if (entries == null || entries.Count == 0) return;
-                var entry = entries.FirstOrDefault(x => x.group == group);
-                if (entry.map == null) return;
-
-                Map map = entry.map;
+                var interiorInGroup = entries.FirstOrDefault(x => x.group == group && x.map != null && x.map.IsPocketMap && LTOColonyGroupsCompat.GetInteriorLevel(x.map) > 0);
+                if (interiorInGroup.map == null) return;
+                Map map = interiorInGroup.map;
                 int level = LTOColonyGroupsCompat.GetInteriorLevel(map);
-                if (level <= 0) return;
 
                 Color color = InteriorLevelColors.ForLevel(level);
 
@@ -499,6 +480,70 @@ namespace MaiyaAeroBay
             {
                 float multiplier = interior.Props.GetMassMultiplier(interior.UpgradeLevel);
                 __result *= multiplier;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Game), "DeinitAndRemoveMap")]
+    public static class ShuttlePocketMapEvacPatch
+    {
+        [HarmonyPrefix]
+        public static void Prefix(Map map)
+        {
+            try
+            {
+                if (map == null) return;
+                foreach (PocketMapParent pmp in Find.World.pocketMaps.ToList())
+                {
+                    if (pmp.sourceMap != map || !pmp.HasMap) continue;
+                    Map pocketMap = pmp.Map;
+                    if (pocketMap == null) continue;
+                    var shuttles = new List<Comp_ShuttleInterior>();
+                    foreach (Thing thing in map.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
+                    {
+                        var comp = thing.TryGetComp<Comp_ShuttleInterior>();
+                        if (comp != null && comp.PocketMap == pocketMap)
+                            shuttles.Add(comp);
+                    }
+                    Map fallbackMap = Find.AnyPlayerHomeMap;
+                    if (fallbackMap == null)
+                    {
+                        foreach (Map m in Find.Maps)
+                        {
+                            if (m != map && m != pocketMap)
+                            {
+                                fallbackMap = m;
+                                break;
+                            }
+                        }
+                    }
+                    if (fallbackMap == null) continue;
+                    List<Pawn> pawnsToEvac = new List<Pawn>();
+                    foreach (Thing t in pocketMap.listerThings.AllThings)
+                    {
+                        if (t is Pawn p && (p.IsColonist || p.RaceProps.Animal))
+                            pawnsToEvac.Add(p);
+                    }
+                    foreach (Pawn p in pawnsToEvac.ToList())
+                    {
+                        if (shuttles.Count > 0)
+                            CompShuttleComfort.RemoveFromPawnByShuttle(shuttles[0].parent, p);
+                        if (p.Spawned) p.DeSpawn();
+                        IntVec3 loc = CellFinder.RandomSpawnCellForPawnNear(fallbackMap.Center, fallbackMap, 10);
+                        GenSpawn.Spawn(p, loc, fallbackMap, Rot4.Random);
+                    }
+                    if (pawnsToEvac.Count > 0)
+                        Messages.Message("MaiyaAeroBay_PawnsEvacuated".Translate(pawnsToEvac.Count), MessageTypeDefOf.PositiveEvent);
+                    pmp.sourceMap = fallbackMap;
+                    foreach (var shuttle in shuttles)
+                    {
+                        shuttle.OnSourceMapRemoved(fallbackMap);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("[MaiyaAeroBay] Emergency evacuation on map removal failed: " + ex.Message);
             }
         }
     }

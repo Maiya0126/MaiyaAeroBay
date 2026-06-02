@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -323,6 +323,17 @@ namespace MaiyaAeroBay
                 return;
             }
             Find.WindowStack.Add(new Dialog_TransferItems(this));
+        }
+
+        public void OnSourceMapRemoved(Map newSourceMap)
+        {
+            if (pocketMapParent != null && pocketMapParent.sourceMap == null)
+            {
+                pocketMapParent.sourceMap = newSourceMap;
+            }
+            if (parent is ThingWithComps twc && twc.Map != null)
+            {
+            }
         }
 
         private void GeneratePocketMap()
