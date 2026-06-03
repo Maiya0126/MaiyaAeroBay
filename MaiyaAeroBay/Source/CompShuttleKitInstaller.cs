@@ -84,9 +84,6 @@ namespace MaiyaAeroBay
             if (refuelable != null)
             {
                 float maxFuel = refuelable.Props.fuelCapacity;
-                var powerForFuel = parent.TryGetComp<CompShuttlePower>();
-                if (powerForFuel != null && powerForFuel.installed)
-                    maxFuel *= powerForFuel.Props.fuelCapacityMultiplier;
                 sb.AppendLine("MaiyaAeroBay_StatusFuel".Translate(refuelable.Fuel.ToString("F0"), maxFuel.ToString("F0")));
             }
 
@@ -96,9 +93,9 @@ namespace MaiyaAeroBay
                 var power = parent.TryGetComp<CompShuttlePower>();
                 if (power != null && power.installed)
                 {
-                    int baseTicks = launchable.Props.cooldownTicks;
-                    int actualTicks = (int)(baseTicks * power.Props.cooldownMultiplier);
-                    sb.AppendLine("MaiyaAeroBay_StatusCooldownPower".Translate(actualTicks.ToStringTicksToPeriod(), baseTicks.ToStringTicksToPeriod()));
+                    int actualTicks = launchable.Props.cooldownTicks;
+                    int originalTicks = ShuttleFuelHelper.GetOriginalCooldownTicks(parent.def);
+                    sb.AppendLine("MaiyaAeroBay_StatusCooldownPower".Translate(actualTicks.ToStringTicksToPeriod(), originalTicks.ToStringTicksToPeriod()));
                 }
                 else
                 {

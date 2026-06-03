@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using RimWorld;
 using Verse;
 
@@ -6,18 +8,126 @@ namespace MaiyaAeroBay
 {
     public static class ShuttleFuelHelper
     {
+        private static Dictionary<string, float> _originalFuelCapacity = new Dictionary<string, float>();
+        private static Dictionary<string, float> _originalTargetFuelLevel = new Dictionary<string, float>();
+        private static Dictionary<string, int> _originalCooldownTicks = new Dictionary<string, int>();
+
+        public static float GetOriginalFuelCapacity(ThingDef def)
+        {
+            string key = def.defName;
+            if (!_originalFuelCapacity.ContainsKey(key))
+            {
+                var props = def.GetCompProperties<CompProperties_Refuelable>();
+                _originalFuelCapacity[key] = props?.fuelCapacity ?? 0f;
+            }
+            return _originalFuelCapacity[key];
+        }
+
+        public static float GetOriginalTargetFuelLevel(ThingDef def)
+        {
+            string key = def.defName;
+            if (!_originalTargetFuelLevel.ContainsKey(key))
+            {
+                var props = def.GetCompProperties<CompProperties_Refuelable>();
+                _originalTargetFuelLevel[key] = props?.initialConfigurableTargetFuelLevel ?? 0f;
+            }
+            return _originalTargetFuelLevel[key];
+        }
+
+        public static int GetOriginalCooldownTicks(ThingDef def)
+        {
+            string key = def.defName;
+            if (!_originalCooldownTicks.ContainsKey(key))
+            {
+                var props = def.GetCompProperties<CompProperties_Launchable>();
+                _originalCooldownTicks[key] = props?.cooldownTicks ?? 0;
+            }
+            return _originalCooldownTicks[key];
+        }
+
+        private static void EnsurePerInstanceRefuelableProps(CompRefuelable refuelable, ThingDef def)
+        {
+            var defProps = def.GetCompProperties<CompProperties_Refuelable>();
+            if (refuelable.props == defProps)
+            {
+                refuelable.props = CopyRefuelableProps(defProps);
+            }
+        }
+
+        private static void EnsurePerInstanceLaunchableProps(CompLaunchable launchable, ThingDef def)
+        {
+            var defProps = def.GetCompProperties<CompProperties_Launchable>();
+            if (launchable.props == defProps)
+            {
+                launchable.props = CopyLaunchableProps(defProps);
+            }
+        }
+
+        private static CompProperties_Refuelable CopyRefuelableProps(CompProperties_Refuelable original)
+        {
+            var copy = new CompProperties_Refuelable();
+            copy.fuelConsumptionRate = original.fuelConsumptionRate;
+            copy.fuelCapacity = original.fuelCapacity;
+            copy.initialFuelPercent = original.initialFuelPercent;
+            copy.autoRefuelPercent = original.autoRefuelPercent;
+            copy.fuelConsumptionPerTickInRain = original.fuelConsumptionPerTickInRain;
+            copy.fuelFilter = original.fuelFilter;
+            copy.destroyOnNoFuel = original.destroyOnNoFuel;
+            copy.consumeFuelOnlyWhenUsed = original.consumeFuelOnlyWhenUsed;
+            copy.consumeFuelOnlyWhenPowered = original.consumeFuelOnlyWhenPowered;
+            copy.showFuelGizmo = original.showFuelGizmo;
+            copy.initialAllowAutoRefuel = original.initialAllowAutoRefuel;
+            copy.showAllowAutoRefuelToggle = original.showAllowAutoRefuelToggle;
+            copy.allowRefuelIfNotEmpty = original.allowRefuelIfNotEmpty;
+            copy.fuelIsMortarBarrel = original.fuelIsMortarBarrel;
+            copy.targetFuelLevelConfigurable = original.targetFuelLevelConfigurable;
+            copy.initialConfigurableTargetFuelLevel = original.initialConfigurableTargetFuelLevel;
+            copy.drawOutOfFuelOverlay = original.drawOutOfFuelOverlay;
+            copy.minimumFueledThreshold = original.minimumFueledThreshold;
+            copy.drawFuelGaugeInMap = original.drawFuelGaugeInMap;
+            copy.atomicFueling = original.atomicFueling;
+            copy.factorByDifficulty = original.factorByDifficulty;
+            copy.fuelLabel = original.fuelLabel;
+            copy.fuelGizmoLabel = original.fuelGizmoLabel;
+            copy.outOfFuelMessage = original.outOfFuelMessage;
+            copy.fuelIconPath = original.fuelIconPath;
+            copy.externalTicking = original.externalTicking;
+            copy.hideGizmosIfNotPlayerFaction = original.hideGizmosIfNotPlayerFaction;
+            copy.functionsInVacuum = original.functionsInVacuum;
+            copy.canEjectFuel = original.canEjectFuel;
+            var fuelMultField = typeof(CompProperties_Refuelable).GetField("fuelMultiplier", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (fuelMultField != null)
+                fuelMultField.SetValue(copy, fuelMultField.GetValue(original));
+            return copy;
+        }
+
+        private static CompProperties_Launchable CopyLaunchableProps(CompProperties_Launchable original)
+        {
+            var copy = new CompProperties_Launchable();
+            copy.fixedLaunchDistanceMax = original.fixedLaunchDistanceMax;
+            copy.fuelPerTile = original.fuelPerTile;
+            copy.minFuelCost = original.minFuelCost;
+            copy.skyfallerLeaving = original.skyfallerLeaving;
+            copy.activeTransporterDef = original.activeTransporterDef;
+            copy.worldObjectDef = original.worldObjectDef;
+            copy.cooldownTicks = original.cooldownTicks;
+            copy.cooldownEndedMessage = original.cooldownEndedMessage;
+            return copy;
+        }
+
         public static void ApplyFuelCapacityMultiplier(ThingWithComps shuttle, float multiplier)
         {
             if (!MaiyaAeroBayMod.settings.powerFuelEnabled) return;
             var refuelable = shuttle.TryGetComp<CompRefuelable>();
             if (refuelable == null) return;
-            float baseFuelCapacity = shuttle.def.GetCompProperties<CompProperties_Refuelable>().fuelCapacity;
+            float baseFuelCapacity = GetOriginalFuelCapacity(shuttle.def);
             float newCapacity = baseFuelCapacity * multiplier;
+            EnsurePerInstanceRefuelableProps(refuelable, shuttle.def);
             var props = refuelable.Props;
             props.fuelCapacity = newCapacity;
             if (props.targetFuelLevelConfigurable)
             {
-                float baseTarget = shuttle.def.GetCompProperties<CompProperties_Refuelable>().initialConfigurableTargetFuelLevel;
+                float baseTarget = GetOriginalTargetFuelLevel(shuttle.def);
                 props.initialConfigurableTargetFuelLevel = baseTarget * multiplier;
             }
             refuelable.TargetFuelLevel = newCapacity;
@@ -29,7 +139,8 @@ namespace MaiyaAeroBay
             if (!MaiyaAeroBayMod.settings.powerCooldownEnabled) return;
             var launchable = shuttle.TryGetComp<CompLaunchable>();
             if (launchable == null) return;
-            int baseCooldown = shuttle.def.GetCompProperties<CompProperties_Launchable>().cooldownTicks;
+            int baseCooldown = GetOriginalCooldownTicks(shuttle.def);
+            EnsurePerInstanceLaunchableProps(launchable, shuttle.def);
             launchable.Props.cooldownTicks = (int)(baseCooldown * multiplier);
         }
 
@@ -37,23 +148,15 @@ namespace MaiyaAeroBay
         {
             var refuelable = shuttle.TryGetComp<CompRefuelable>();
             if (refuelable == null) return;
-            float baseFuelCapacity = shuttle.def.GetCompProperties<CompProperties_Refuelable>().fuelCapacity;
-            var props = refuelable.Props;
-            props.fuelCapacity = baseFuelCapacity;
-            if (props.targetFuelLevelConfigurable)
-            {
-                float baseTarget = shuttle.def.GetCompProperties<CompProperties_Refuelable>().initialConfigurableTargetFuelLevel;
-                props.initialConfigurableTargetFuelLevel = baseTarget;
-            }
-            refuelable.TargetFuelLevel = baseFuelCapacity;
+            refuelable.props = shuttle.def.GetCompProperties<CompProperties_Refuelable>();
+            refuelable.TargetFuelLevel = GetOriginalFuelCapacity(shuttle.def);
         }
 
         public static void ResetCooldownTicks(ThingWithComps shuttle)
         {
             var launchable = shuttle.TryGetComp<CompLaunchable>();
             if (launchable == null) return;
-            int baseCooldown = shuttle.def.GetCompProperties<CompProperties_Launchable>().cooldownTicks;
-            launchable.Props.cooldownTicks = baseCooldown;
+            launchable.props = shuttle.def.GetCompProperties<CompProperties_Launchable>();
         }
     }
 
