@@ -46,6 +46,9 @@ namespace MaiyaAeroBay
             listingStandard.CheckboxLabeled("MaiyaAeroBay_PowerFuelEnabled".Translate(), ref settings.powerFuelEnabled);
             listingStandard.CheckboxLabeled("MaiyaAeroBay_PowerCooldownEnabled".Translate(), ref settings.powerCooldownEnabled);
             listingStandard.Gap();
+            listingStandard.Label("MaiyaAeroBay_RideHailingSettings".Translate());
+            listingStandard.CheckboxLabeled("MaiyaAeroBay_RideHailingEnabled".Translate(), ref settings.rideHailingEnabled);
+            listingStandard.Gap();
             listingStandard.Label("MaiyaAeroBay_WallPowerPerCell".Translate() + ": " + settings.wallPowerPerCell.ToString("F0") + "W");
             settings.wallPowerPerCell = listingStandard.Slider(settings.wallPowerPerCell, 0f, 200f);
             if (powerFuelEnabled != settings.powerFuelEnabled || powerCooldownEnabled != settings.powerCooldownEnabled)

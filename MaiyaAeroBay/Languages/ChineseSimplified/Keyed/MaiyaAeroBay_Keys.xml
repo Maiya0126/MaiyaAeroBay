@@ -295,4 +295,64 @@
   <MaiyaAeroBay_InteriorPowerInfo>发电: {0}W / 储能: {1}Wd</MaiyaAeroBay_InteriorPowerInfo>
   <MaiyaAeroBay_InteriorPowerNotice>发电 {0}W, 储能 {1}Wd</MaiyaAeroBay_InteriorPowerNotice>
   <MaiyaAeroBay_InteriorEnterNotice>空间等级 Lv.{0}</MaiyaAeroBay_InteriorEnterNotice>
+
+  <!-- 嘀嘀 / RimRide -->
+  <MaiyaAeroBay_ShuttleAlreadyHasRideHailing>此穿梭机已安装嘀嘀套件，无法重复安装</MaiyaAeroBay_ShuttleAlreadyHasRideHailing>
+  <MaiyaAeroBay_RideHailingKitInstalled>{0} 已安装到 {1}，嘀嘀模式已就绪！</MaiyaAeroBay_RideHailingKitInstalled>
+  <MaiyaAeroBay_StatusRideHailing>嘀嘀: {0} ({1}星) 完成{2}单 收入{3}银</MaiyaAeroBay_StatusRideHailing>
+  <MaiyaAeroBay_RideHailingSettings>嘀嘀 / RimRide</MaiyaAeroBay_RideHailingSettings>
+  <MaiyaAeroBay_RideHailingEnabled>启用嘀嘀网约运输</MaiyaAeroBay_RideHailingEnabled>
+
+  <MaiyaAeroBay_RideHailingToggle>嘀嘀模式</MaiyaAeroBay_RideHailingToggle>
+  <MaiyaAeroBay_RideHailingToggleDesc>开启后可接收网约运输订单，完成订单赚取银币并提升信誉星级</MaiyaAeroBay_RideHailingToggleDesc>
+  <MaiyaAeroBay_RideHailingOnline>嘀嘀模式已上线，等待订单中...</MaiyaAeroBay_RideHailingOnline>
+  <MaiyaAeroBay_RideHailingOffline>嘀嘀模式已下线</MaiyaAeroBay_RideHailingOffline>
+  <MaiyaAeroBay_RideViewOrders>查看订单</MaiyaAeroBay_RideViewOrders>
+  <MaiyaAeroBay_RideViewOrdersDesc>查看当前可用订单和活跃订单</MaiyaAeroBay_RideViewOrdersDesc>
+  <MaiyaAeroBay_RideHailingInspect>嘀嘀 {0} {1}星 | 完成{2}单 收入{3}银</MaiyaAeroBay_RideHailingInspect>
+  <MaiyaAeroBay_RideHailingActiveOrder>当前订单: {0} {1}→{2} 奖励{3}银</MaiyaAeroBay_RideHailingActiveOrder>
+  <MaiyaAeroBay_RideHailingIncome>收入: {0}银</MaiyaAeroBay_RideHailingIncome>
+
+  <MaiyaAeroBay_RideOrderTypePerson>运人</MaiyaAeroBay_RideOrderTypePerson>
+  <MaiyaAeroBay_RideOrderTypeCargo>运货</MaiyaAeroBay_RideOrderTypeCargo>
+  <MaiyaAeroBay_RideDispatchMandatory>指定派单</MaiyaAeroBay_RideDispatchMandatory>
+  <MaiyaAeroBay_RideDispatchOptional>系统拍单</MaiyaAeroBay_RideDispatchOptional>
+  <MaiyaAeroBay_RideReward>奖励: {0}银</MaiyaAeroBay_RideReward>
+  <MaiyaAeroBay_RideDeadline>剩余: {0}</MaiyaAeroBay_RideDeadline>
+  <MaiyaAeroBay_RidePassengerName>乘客: {0}</MaiyaAeroBay_RidePassengerName>
+  <MaiyaAeroBay_RideCargoInfo>货物: {0}x {1}</MaiyaAeroBay_RideCargoInfo>
+  <MaiyaAeroBay_RideAcceptBtn>接单</MaiyaAeroBay_RideAcceptBtn>
+
+  <MaiyaAeroBay_RideOrdersTitle>{0} - 嘀嘀订单</MaiyaAeroBay_RideOrdersTitle>
+  <MaiyaAeroBay_RideStarInfo>信誉: {0} {1}星 | 完成{2}单 | 收入{3}银</MaiyaAeroBay_RideStarInfo>
+  <MaiyaAeroBay_RideActiveOrderHeader>当前订单:</MaiyaAeroBay_RideActiveOrderHeader>
+  <MaiyaAeroBay_RidePendingOrdersHeader>待接订单 ({0}):</MaiyaAeroBay_RidePendingOrdersHeader>
+  <MaiyaAeroBay_RideNoOrders>暂无可用订单，保持在线等待系统派单...</MaiyaAeroBay_RideNoOrders>
+
+  <MaiyaAeroBay_RidePickedUpPerson>已接上乘客 {0}，请飞往 {1}</MaiyaAeroBay_RidePickedUpPerson>
+  <MaiyaAeroBay_RidePickedUpCargo>已装载货物 {0}，请飞往 {1}</MaiyaAeroBay_RidePickedUpCargo>
+  <MaiyaAeroBay_RidePickedUp>{0}</MaiyaAeroBay_RidePickedUp>
+  <MaiyaAeroBay_RideAcceptPerson>乘客 {0}: {1} → {2}</MaiyaAeroBay_RideAcceptPerson>
+  <MaiyaAeroBay_RideAcceptCargo>{0}x{1}: {2} → {3}</MaiyaAeroBay_RideAcceptCargo>
+  <MaiyaAeroBay_RideAccepted>已接单: {0}</MaiyaAeroBay_RideAccepted>
+  <MaiyaAeroBay_RideCompleted>订单完成！+{0}银 信誉{1}星 ({2})</MaiyaAeroBay_RideCompleted>
+  <MaiyaAeroBay_RideFailedPenalty>{0} -{1}银</MaiyaAeroBay_RideFailedPenalty>
+  <MaiyaAeroBay_RideFailed>{0}</MaiyaAeroBay_RideFailed>
+  <MaiyaAeroBay_RideFailedTimeout>订单超时未完成</MaiyaAeroBay_RideFailedTimeout>
+
+  <MaiyaAeroBay_RideWelcomeTitle>嘀嘀 / RimRide</MaiyaAeroBay_RideWelcomeTitle>
+  <MaiyaAeroBay_RideWelcomeDesc>为穿梭机安装"嘀嘀套件"即可开启网约运输模式！在友方据点间接送乘客或运送货物赚取银币。</MaiyaAeroBay_RideWelcomeDesc>
+  <MaiyaAeroBay_RideWelcomeFeatures>▸ 完成订单积累信誉星级，解锁更高报酬任务\n▸ 指定派单（近距）必须完成，系统拍单（远距）自由选择\n▸ 超时或取消仅轻度惩罚，不会影响殖民地运转</MaiyaAeroBay_RideWelcomeFeatures>
+  <MaiyaAeroBay_RideWelcomeNote>你也可以随时在模组设置中开关此功能。</MaiyaAeroBay_RideWelcomeNote>
+  <MaiyaAeroBay_RideWelcomeEnable>开启嘀嘀</MaiyaAeroBay_RideWelcomeEnable>
+  <MaiyaAeroBay_RideWelcomeDisable>暂不开启</MaiyaAeroBay_RideWelcomeDisable>
+
+  <MaiyaAeroBay_PassengerA>旅客</MaiyaAeroBay_PassengerA>
+  <MaiyaAeroBay_PassengerB>商人</MaiyaAeroBay_PassengerB>
+  <MaiyaAeroBay_PassengerC>探险家</MaiyaAeroBay_PassengerC>
+
+  <MaiyaAeroBay_RideStatePickup>前往接客</MaiyaAeroBay_RideStatePickup>
+  <MaiyaAeroBay_RideStateDeliver>前往送达</MaiyaAeroBay_RideStateDeliver>
+  <MaiyaAeroBay_RideStatusWaiting>等待订单</MaiyaAeroBay_RideStatusWaiting>
+  <MaiyaAeroBay_RideStatusOffline>已下线</MaiyaAeroBay_RideStatusOffline>
 </LanguageData>

@@ -33,6 +33,10 @@ namespace MaiyaAeroBay
         public int comfortMoodOffset = 0;
         public string hediffDefName = "";
 
+        public int fareBasePrice = 50;
+        public int baseOrderRange = 20;
+        public float orderIntervalDays = 8f;
+
         public CompProperties_AeroBayKit()
         {
             compClass = typeof(CompAeroBayKit);

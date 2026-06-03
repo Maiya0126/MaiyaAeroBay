@@ -12,7 +12,30 @@ namespace MaiyaAeroBay
         Weapon,
         Shield,
         Power,
-        Comfort
+        Comfort,
+        RideHailing
+    }
+
+    public enum RideOrderType
+    {
+        TransportPerson,
+        TransportCargo
+    }
+
+    public enum RideDispatchMode
+    {
+        Mandatory,
+        Optional
+    }
+
+    public enum RideOrderState
+    {
+        Pending,
+        Accepted,
+        PickedUp,
+        Completed,
+        Failed,
+        Cancelled
     }
 
     public enum WeaponType

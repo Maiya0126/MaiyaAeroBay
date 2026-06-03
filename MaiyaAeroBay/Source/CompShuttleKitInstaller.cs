@@ -130,6 +130,14 @@ namespace MaiyaAeroBay
                     (comfort.Props.restRateMultiplier * 100f).ToString("F0"),
                     comfort.Props.comfortMoodOffset));
 
+            var rideHailing = parent.TryGetComp<CompShuttleRideHailing>();
+            if (rideHailing != null && rideHailing.installed)
+                sb.AppendLine("MaiyaAeroBay_StatusRideHailing".Translate(
+                    CompShuttleRideHailing.StarIconString(rideHailing.StarRating),
+                    rideHailing.StarRating.ToString("F1"),
+                    rideHailing.OrdersCompleted,
+                    rideHailing.TotalIncome));
+
             return sb.ToString().TrimEndNewlines();
         }
 
@@ -197,6 +205,9 @@ namespace MaiyaAeroBay
                         return false;
                     var interiorForComfort = parent.TryGetComp<Comp_ShuttleInterior>();
                     return interiorForComfort != null && interiorForComfort.UpgradeLevel > 0;
+                case ShuttleKitType.RideHailing:
+                    var rideHailing = parent.TryGetComp<CompShuttleRideHailing>();
+                    return rideHailing == null || !rideHailing.installed;
                 default:
                     return false;
             }
@@ -242,6 +253,11 @@ namespace MaiyaAeroBay
                     var interiorForComfort = parent.TryGetComp<Comp_ShuttleInterior>();
                     if (interiorForComfort == null || interiorForComfort.UpgradeLevel <= 0)
                         return "MaiyaAeroBay_ComfortNeedsInterior".Translate();
+                    break;
+                case ShuttleKitType.RideHailing:
+                    var rideHailing = parent.TryGetComp<CompShuttleRideHailing>();
+                    if (rideHailing != null && rideHailing.installed)
+                        return "MaiyaAeroBay_ShuttleAlreadyHasRideHailing".Translate();
                     break;
             }
 
@@ -425,6 +441,10 @@ namespace MaiyaAeroBay
                 {
                     def.comps.Add(new CompProperties_ShuttleComfort());
                 }
+                if (!def.comps.Any(c => c is CompProperties_ShuttleRideHailing))
+                {
+                    def.comps.Add(new CompProperties_ShuttleRideHailing());
+                }
             }
         }
 
@@ -494,6 +514,14 @@ namespace MaiyaAeroBay
                         var c = (CompShuttleComfort)Activator.CreateInstance(typeof(CompShuttleComfort));
                         c.parent = shuttle;
                         c.Initialize(new CompProperties_ShuttleComfort());
+                        allComps.Add(c);
+                        modified = true;
+                    }
+                    if (!allComps.Any(c => c is CompShuttleRideHailing))
+                    {
+                        var c = (CompShuttleRideHailing)Activator.CreateInstance(typeof(CompShuttleRideHailing));
+                        c.parent = shuttle;
+                        c.Initialize(new CompProperties_ShuttleRideHailing());
                         allComps.Add(c);
                         modified = true;
                     }

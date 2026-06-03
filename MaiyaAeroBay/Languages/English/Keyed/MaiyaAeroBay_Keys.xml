@@ -296,4 +296,64 @@
   <MaiyaAeroBay_InteriorPowerInfo>Power output: {0}W / Stored: {1}Wd</MaiyaAeroBay_InteriorPowerInfo>
   <MaiyaAeroBay_InteriorPowerNotice>Power {0}W, Stored {1}Wd</MaiyaAeroBay_InteriorPowerNotice>
   <MaiyaAeroBay_InteriorEnterNotice>Interior Level Lv.{0}</MaiyaAeroBay_InteriorEnterNotice>
+
+  <!-- RimRide / Ride Hailing -->
+  <MaiyaAeroBay_ShuttleAlreadyHasRideHailing>This shuttle already has a RimRide kit installed</MaiyaAeroBay_ShuttleAlreadyHasRideHailing>
+  <MaiyaAeroBay_RideHailingKitInstalled>Installed {0} on {1}, RimRide mode is ready!</MaiyaAeroBay_RideHailingKitInstalled>
+  <MaiyaAeroBay_StatusRideHailing>RimRide: {0} ({1}star) {2}orders {3}silver</MaiyaAeroBay_StatusRideHailing>
+  <MaiyaAeroBay_RideHailingSettings>RimRide</MaiyaAeroBay_RideHailingSettings>
+  <MaiyaAeroBay_RideHailingEnabled>Enable RimRide transport missions</MaiyaAeroBay_RideHailingEnabled>
+
+  <MaiyaAeroBay_RideHailingToggle>RimRide Mode</MaiyaAeroBay_RideHailingToggle>
+  <MaiyaAeroBay_RideHailingToggleDesc>Turn on to receive transport orders. Complete orders to earn silver and increase your star rating</MaiyaAeroBay_RideHailingToggleDesc>
+  <MaiyaAeroBay_RideHailingOnline>RimRide online, waiting for orders...</MaiyaAeroBay_RideHailingOnline>
+  <MaiyaAeroBay_RideHailingOffline>RimRide offline</MaiyaAeroBay_RideHailingOffline>
+  <MaiyaAeroBay_RideViewOrders>View Orders</MaiyaAeroBay_RideViewOrders>
+  <MaiyaAeroBay_RideViewOrdersDesc>View available and active transport orders</MaiyaAeroBay_RideViewOrdersDesc>
+  <MaiyaAeroBay_RideHailingInspect>RimRide {0} {1}star | {2}orders {3}silver</MaiyaAeroBay_RideHailingInspect>
+  <MaiyaAeroBay_RideHailingActiveOrder>Active: {0} {1}->{2} Reward:{3}s</MaiyaAeroBay_RideHailingActiveOrder>
+  <MaiyaAeroBay_RideHailingIncome>Income: {0}s</MaiyaAeroBay_RideHailingIncome>
+
+  <MaiyaAeroBay_RideOrderTypePerson>Passenger</MaiyaAeroBay_RideOrderTypePerson>
+  <MaiyaAeroBay_RideOrderTypeCargo>Cargo</MaiyaAeroBay_RideOrderTypeCargo>
+  <MaiyaAeroBay_RideDispatchMandatory>Mandatory</MaiyaAeroBay_RideDispatchMandatory>
+  <MaiyaAeroBay_RideDispatchOptional>Optional</MaiyaAeroBay_RideDispatchOptional>
+  <MaiyaAeroBay_RideReward>Reward: {0}s</MaiyaAeroBay_RideReward>
+  <MaiyaAeroBay_RideDeadline>Time left: {0}</MaiyaAeroBay_RideDeadline>
+  <MaiyaAeroBay_RidePassengerName>Passenger: {0}</MaiyaAeroBay_RidePassengerName>
+  <MaiyaAeroBay_RideCargoInfo>Cargo: {0}x {1}</MaiyaAeroBay_RideCargoInfo>
+  <MaiyaAeroBay_RideAcceptBtn>Accept</MaiyaAeroBay_RideAcceptBtn>
+
+  <MaiyaAeroBay_RideOrdersTitle>{0} - RimRide Orders</MaiyaAeroBay_RideOrdersTitle>
+  <MaiyaAeroBay_RideStarInfo>Rating: {0} {1}star | {2}orders | {3}silver</MaiyaAeroBay_RideStarInfo>
+  <MaiyaAeroBay_RideActiveOrderHeader>Active Order:</MaiyaAeroBay_RideActiveOrderHeader>
+  <MaiyaAeroBay_RidePendingOrdersHeader>Pending Orders ({0}):</MaiyaAeroBay_RidePendingOrdersHeader>
+  <MaiyaAeroBay_RideNoOrders>No orders available. Stay online and wait for dispatch...</MaiyaAeroBay_RideNoOrders>
+
+  <MaiyaAeroBay_RidePickedUpPerson>Picked up passenger {0}, fly to {1}</MaiyaAeroBay_RidePickedUpPerson>
+  <MaiyaAeroBay_RidePickedUpCargo>Loaded {0}, fly to {1}</MaiyaAeroBay_RidePickedUpCargo>
+  <MaiyaAeroBay_RidePickedUp>{0}</MaiyaAeroBay_RidePickedUp>
+  <MaiyaAeroBay_RideAcceptPerson>Passenger {0}: {1} -> {2}</MaiyaAeroBay_RideAcceptPerson>
+  <MaiyaAeroBay_RideAcceptCargo>{0}x{1}: {2} -> {3}</MaiyaAeroBay_RideAcceptCargo>
+  <MaiyaAeroBay_RideAccepted>Order accepted: {0}</MaiyaAeroBay_RideAccepted>
+  <MaiyaAeroBay_RideCompleted>Order complete! +{0}s Rating {1}star ({2})</MaiyaAeroBay_RideCompleted>
+  <MaiyaAeroBay_RideFailedPenalty>{0} -{1}s</MaiyaAeroBay_RideFailedPenalty>
+  <MaiyaAeroBay_RideFailed>{0}</MaiyaAeroBay_RideFailed>
+  <MaiyaAeroBay_RideFailedTimeout>Order timed out</MaiyaAeroBay_RideFailedTimeout>
+
+  <MaiyaAeroBay_RideWelcomeTitle>RimRide</MaiyaAeroBay_RideWelcomeTitle>
+  <MaiyaAeroBay_RideWelcomeDesc>Install a RimRide Kit on your shuttle to unlock transport missions! Earn silver by carrying passengers or cargo between friendly settlements.</MaiyaAeroBay_RideWelcomeDesc>
+  <MaiyaAeroBay_RideWelcomeFeatures>▸ Complete orders to build up your star rating and unlock higher-paying missions\n▸ Mandatory orders (short range) must be completed; Optional orders (long range) can be declined\n▸ Timeouts and cancellations incur only light penalties</MaiyaAeroBay_RideWelcomeFeatures>
+  <MaiyaAeroBay_RideWelcomeNote>You can also toggle this feature anytime in mod settings.</MaiyaAeroBay_RideWelcomeNote>
+  <MaiyaAeroBay_RideWelcomeEnable>Enable RimRide</MaiyaAeroBay_RideWelcomeEnable>
+  <MaiyaAeroBay_RideWelcomeDisable>Not Now</MaiyaAeroBay_RideWelcomeDisable>
+
+  <MaiyaAeroBay_PassengerA>Traveler</MaiyaAeroBay_PassengerA>
+  <MaiyaAeroBay_PassengerB>Merchant</MaiyaAeroBay_PassengerB>
+  <MaiyaAeroBay_PassengerC>Explorer</MaiyaAeroBay_PassengerC>
+
+  <MaiyaAeroBay_RideStatePickup>En route to pickup</MaiyaAeroBay_RideStatePickup>
+  <MaiyaAeroBay_RideStateDeliver>En route to deliver</MaiyaAeroBay_RideStateDeliver>
+  <MaiyaAeroBay_RideStatusWaiting>Waiting for orders</MaiyaAeroBay_RideStatusWaiting>
+  <MaiyaAeroBay_RideStatusOffline>Offline</MaiyaAeroBay_RideStatusOffline>
 </LanguageData>

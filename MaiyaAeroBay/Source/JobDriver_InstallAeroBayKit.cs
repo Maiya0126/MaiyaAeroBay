@@ -85,6 +85,9 @@ private void Install()
                 case ShuttleKitType.Comfort:
                     success = InstallComfortKit(shuttleWithComps, kitComp);
                     break;
+                case ShuttleKitType.RideHailing:
+                    success = InstallRideHailingKit(shuttleWithComps, kitComp);
+                    break;
             }
 
             if (success)
@@ -320,6 +323,41 @@ private void Install()
             Messages.Message("MaiyaAeroBay_ComfortKitInstalled".Translate(
                 kitComp.parent.def.label,
                 shuttle.Label),
+                shuttle, MessageTypeDefOf.PositiveEvent);
+            return true;
+        }
+
+        private bool InstallRideHailingKit(ThingWithComps shuttle, CompAeroBayKit kitComp)
+        {
+            var existingRideHailing = shuttle.TryGetComp<CompShuttleRideHailing>();
+            if (existingRideHailing != null && existingRideHailing.installed)
+            {
+                Messages.Message("MaiyaAeroBay_ShuttleAlreadyHasRideHailing".Translate(), MessageTypeDefOf.RejectInput);
+                return false;
+            }
+
+            CompProperties_ShuttleRideHailing rhProps = new CompProperties_ShuttleRideHailing();
+            rhProps.fareBasePrice = kitComp.Props.fareBasePrice;
+            rhProps.baseOrderRange = kitComp.Props.baseOrderRange;
+            rhProps.orderIntervalDays = kitComp.Props.orderIntervalDays;
+
+            if (existingRideHailing != null)
+            {
+                existingRideHailing.props = rhProps;
+                existingRideHailing.SavePropsToFields();
+            }
+            else
+            {
+                ThingComp rhComp = (ThingComp)Activator.CreateInstance(typeof(CompShuttleRideHailing));
+                rhComp.props = rhProps;
+                shuttle.AllComps.Add(rhComp);
+                rhComp.parent = shuttle;
+                ((CompShuttleRideHailing)rhComp).SavePropsToFields();
+                RebuildCompsByType(shuttle);
+            }
+
+            Messages.Message("MaiyaAeroBay_RideHailingKitInstalled".Translate(
+                kitComp.parent.def.label, shuttle.Label),
                 shuttle, MessageTypeDefOf.PositiveEvent);
             return true;
         }

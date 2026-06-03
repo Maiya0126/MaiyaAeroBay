@@ -72,6 +72,12 @@
     <Compile Include="Source\CompShuttleShield.cs" />
     <Compile Include="Source\CompShuttlePowerComfort.cs" />
     <Compile Include="Source\CompShuttleKitInstaller.cs" />
+    <Compile Include="Source\CompShuttleRideHailing.cs" />
+    <Compile Include="Source\RideOrder.cs" />
+    <Compile Include="Source\WorldComponent_RideHailingManager.cs" />
+    <Compile Include="Source\Dialog_RideOrders.cs" />
+    <Compile Include="Source\Dialog_RideHailingWelcome.cs" />
+    <Compile Include="Source\Gizmo_RideHailingStatus.cs" />
     <Compile Include="Source\CompTargetable_SingleShuttle.cs" />
     <Compile Include="Source\CompTargetEffect_InstallAeroBayKit.cs" />
     <Compile Include="Source\JobDriver_InstallAeroBayKit.cs" />
@@ -105,6 +111,7 @@
     <Content Include="Defs\ThingDefs_Items\ShieldKits.xml" />
     <Content Include="Defs\ThingDefs_Items\PowerKits.xml" />
     <Content Include="Defs\ThingDefs_Items\ComfortKits.xml" />
+    <Content Include="Defs\ThingDefs_Items\RideHailingKit.xml" />
     <Content Include="Defs\ThingDefs_Buildings\CivilianShuttle.xml" />
     <Content Include="Defs\JobDefs\Jobs.xml" />
     <Content Include="Defs\RecipeDefs\Recipes.xml" />

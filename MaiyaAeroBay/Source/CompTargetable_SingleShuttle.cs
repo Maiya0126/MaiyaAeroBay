@@ -96,6 +96,16 @@ namespace MaiyaAeroBay
                             return false;
                         }
                         break;
+                    case ShuttleKitType.RideHailing:
+                        if (thing.TryGetComp<CompShuttleRideHailing>() is CompShuttleRideHailing rh && rh.installed)
+                        {
+                            if (showMessages)
+                            {
+                                Messages.Message("MaiyaAeroBay_ShuttleAlreadyHasRideHailing".Translate(), MessageTypeDefOf.RejectInput);
+                            }
+                            return false;
+                        }
+                        break;
                 }
             }
 

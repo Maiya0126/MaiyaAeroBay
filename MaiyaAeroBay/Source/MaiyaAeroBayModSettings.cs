@@ -9,6 +9,7 @@ namespace MaiyaAeroBay
         public bool powerFuelEnabled = true;
         public bool powerCooldownEnabled = true;
         public float wallPowerPerCell = 50f;
+        public bool rideHailingEnabled = true;
 
         public override void ExposeData()
         {
@@ -18,6 +19,7 @@ namespace MaiyaAeroBay
             Scribe_Values.Look(ref powerFuelEnabled, "powerFuelEnabled", true);
             Scribe_Values.Look(ref powerCooldownEnabled, "powerCooldownEnabled", true);
             Scribe_Values.Look(ref wallPowerPerCell, "wallPowerPerCell", 50f);
+            Scribe_Values.Look(ref rideHailingEnabled, "rideHailingEnabled", true);
         }
     }
 }
