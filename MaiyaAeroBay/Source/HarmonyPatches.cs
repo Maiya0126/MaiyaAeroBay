@@ -81,23 +81,17 @@ namespace MaiyaAeroBay
             try
             {
                 Map targetMap = LTORelfector.GetMapForGroup(group);
-                int level = 0;
-                Map interiorMap = null;
+                if (targetMap == null || targetMap.Index < 0) return true;
 
-                if (targetMap != null)
-                {
-                    level = GetInteriorLevel(targetMap);
-                    if (level > 0) interiorMap = targetMap;
-                }
-
-                if (interiorMap == null || level <= 0) return true;
+                int level = GetInteriorLevel(targetMap);
+                if (level <= 0) return true;
 
                 Color color = InteriorLevelColors.ForLevel(level);
                 Rect? groupRect = LTORelfector.GetGroupFrameRect(group);
                 if (!groupRect.HasValue) return true;
 
                 Rect position = groupRect.Value;
-                float alpha = (interiorMap == Find.CurrentMap && !WorldRendererUtility.WorldSelected) ? 1f : 0.75f;
+                float alpha = (targetMap == Find.CurrentMap && Find.CurrentMap != null && !WorldRendererUtility.WorldSelected) ? 1f : 0.75f;
                 Color drawColor = new Color(color.r, color.g, color.b, 0.4f * alpha);
                 Widgets.DrawRectFast(position, drawColor);
 
@@ -112,54 +106,62 @@ namespace MaiyaAeroBay
 
         internal static int GetInteriorLevel(Map map)
         {
-            if (map == null || !map.IsPocketMap) return 0;
-            if (map.generatorDef == null) return 0;
-            if (map.generatorDef.defName != "MaiyaAeroBay_InteriorSpace") return 0;
-
-            int level = 0;
-            var pocketMapParent = map.Parent as PocketMapParent;
-            if (pocketMapParent != null)
+            try
             {
-                Map sourceMap = pocketMapParent.sourceMap;
-                if (sourceMap != null)
+                if (map == null || map.Index < 0 || !map.IsPocketMap) return 0;
+                if (map.generatorDef == null) return 0;
+                if (map.generatorDef.defName != "MaiyaAeroBay_InteriorSpace") return 0;
+
+                int level = 0;
+                var pocketMapParent = map.Parent as PocketMapParent;
+                if (pocketMapParent != null)
                 {
-                    foreach (var thing in sourceMap.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
+                    Map sourceMap = pocketMapParent.sourceMap;
+                    if (sourceMap != null && sourceMap.Index >= 0)
                     {
-                        var interior = thing.TryGetComp<Comp_ShuttleInterior>();
-                        if (interior != null && interior.PocketMap == map)
+                        foreach (var thing in sourceMap.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
                         {
-                            level = interior.UpgradeLevel;
-                            break;
+                            var interior = thing.TryGetComp<Comp_ShuttleInterior>();
+                            if (interior != null && interior.PocketMap == map)
+                            {
+                                level = interior.UpgradeLevel;
+                                break;
+                            }
                         }
                     }
                 }
-            }
 
-            if (level <= 0)
-            {
-                var mapComp = map.GetComponent<InteriorMapComponent>();
-                if (mapComp?.ParentShuttle != null)
-                    level = mapComp.ParentShuttle.UpgradeLevel;
-            }
-
-            if (level <= 0)
-            {
-                foreach (Map extMap in Find.Maps)
+                if (level <= 0)
                 {
-                    foreach (var thing in extMap.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
-                    {
-                        var interior = thing.TryGetComp<Comp_ShuttleInterior>();
-                        if (interior != null && interior.PocketMap == map)
-                        {
-                            level = interior.UpgradeLevel;
-                            break;
-                        }
-                    }
-                    if (level > 0) break;
+                    var mapComp = map.GetComponent<InteriorMapComponent>();
+                    if (mapComp?.ParentShuttle != null)
+                        level = mapComp.ParentShuttle.UpgradeLevel;
                 }
-            }
 
-            return level;
+                if (level <= 0)
+                {
+                    foreach (Map extMap in Find.Maps)
+                    {
+                        if (extMap == null) continue;
+                        foreach (var thing in extMap.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
+                        {
+                            var interior = thing.TryGetComp<Comp_ShuttleInterior>();
+                            if (interior != null && interior.PocketMap == map)
+                            {
+                                level = interior.UpgradeLevel;
+                                break;
+                            }
+                        }
+                        if (level > 0) break;
+                    }
+                }
+
+                return level;
+            }
+            catch
+            {
+                return 0;
+            }
         }
     }
 
