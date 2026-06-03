@@ -111,7 +111,7 @@ namespace MaiyaAeroBay
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            if (pocketMapParent != null && pocketMapParent.sourceMap == null && parent.Map != null)
+            if (pocketMapParent != null && parent.Map != null)
             {
                 pocketMapParent.sourceMap = parent.Map;
             }

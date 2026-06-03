@@ -484,6 +484,42 @@ namespace MaiyaAeroBay
         }
     }
 
+    [HarmonyPatch(typeof(MapParent), "CheckRemoveMapNow")]
+    public static class ShuttlePocketMapPreventRemovalPatch
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(MapParent __instance)
+        {
+            try
+            {
+                if (!__instance.HasMap) return true;
+                Map map = __instance.Map;
+                foreach (PocketMapParent pmp in Find.World.pocketMaps.ToList())
+                {
+                    if (pmp.sourceMap == map && pmp.HasMap && pmp.Map.mapPawns.AnyPawnBlockingMapRemoval)
+                    {
+                        return false;
+                    }
+                }
+                foreach (Thing thing in map.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
+                {
+                    var interior = thing.TryGetComp<Comp_ShuttleInterior>();
+                    if (interior != null && interior.PocketMapExists && interior.pocketMapParent != null)
+                    {
+                        var pmp = interior.pocketMapParent;
+                        if (pmp.HasMap && pmp.Map.mapPawns.AnyPawnBlockingMapRemoval)
+                        {
+                            pmp.sourceMap = map;
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch { }
+            return true;
+        }
+    }
+
     [HarmonyPatch(typeof(Game), "DeinitAndRemoveMap")]
     public static class ShuttlePocketMapEvacPatch
     {
