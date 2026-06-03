@@ -298,6 +298,12 @@
   <MaiyaAeroBay_InteriorEnterNotice>Interior Level Lv.{0}</MaiyaAeroBay_InteriorEnterNotice>
 
   <!-- RimRide / Ride Hailing -->
+  <MaiyaAeroBay_RideHailingKitLabel>RimRide Kit</MaiyaAeroBay_RideHailingKitLabel>
+  <MaiyaAeroBay_RideHailingKitDesc>Install a ride-hailing system on your shuttle and unlock RimRide mode! Earn silver by carrying passengers or cargo between friendly settlements. Complete orders to build up your star rating and unlock higher-paying missions.\n\nEach shuttle can only have one RimRide kit installed. Cannot be replaced.</MaiyaAeroBay_RideHailingKitDesc>
+  <MaiyaAeroBay_RideHailingKitUseLabel>Install RimRide kit on shuttle</MaiyaAeroBay_RideHailingKitUseLabel>
+  <MaiyaAeroBay_MakeRideHailingKitLabel>Craft RimRide Kit</MaiyaAeroBay_MakeRideHailingKitLabel>
+  <MaiyaAeroBay_MakeRideHailingKitDesc>Craft a shuttle ride-hailing kit.</MaiyaAeroBay_MakeRideHailingKitDesc>
+  <MaiyaAeroBay_MakeRideHailingKitJobString>Crafting RimRide kit.</MaiyaAeroBay_MakeRideHailingKitJobString>
   <MaiyaAeroBay_ShuttleAlreadyHasRideHailing>This shuttle already has a RimRide kit installed</MaiyaAeroBay_ShuttleAlreadyHasRideHailing>
   <MaiyaAeroBay_RideHailingKitInstalled>Installed {0} on {1}, RimRide mode is ready!</MaiyaAeroBay_RideHailingKitInstalled>
   <MaiyaAeroBay_StatusRideHailing>RimRide: {0} ({1}star) {2}orders {3}silver</MaiyaAeroBay_StatusRideHailing>

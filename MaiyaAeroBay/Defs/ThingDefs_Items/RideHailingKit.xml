@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef Name="MaiyaAeroBayRideHailingKitBase" ParentName="ResourceBase" Abstract="True">
+
+  <ThingDef ParentName="ResourceBase" Name="MaiyaAeroBayRideHailingKitBase" Abstract="true">
     <thingClass>ThingWithComps</thingClass>
     <category>Item</category>
     <resourceReadoutPriority>Middle</resourceReadoutPriority>
     <useHitPoints>true</useHitPoints>
-    <pathCost>15</pathCost>
     <selectable>true</selectable>
     <altitudeLayer>Item</altitudeLayer>
     <stackLimit>1</stackLimit>
     <statBases>
-      <MaxHitPoints>50</MaxHitPoints>
-      <MarketValue>280</MarketValue>
-      <Mass>3</Mass>
-      <Flammability>0.2</Flammability>
-      <DeteriorationRate>0.5</DeteriorationRate>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>4</Mass>
     </statBases>
-    <graphicData>
-      <texPath>Things/Item/Special/RideHailingKit</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <alwaysHaulable>true</alwaysHaulable>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <tradeability>All</tradeability>
     <comps>
       <li Class="CompProperties_Forbiddable"/>
       <li Class="CompProperties_Usable">
         <useJob>UseArtifact</useJob>
-        <useLabel>安装网约套件到穿梭机</useLabel>
+        <useLabel>MaiyaAeroBay_RideHailingKitUseLabel</useLabel>
+        <useDuration>120</useDuration>
       </li>
       <li Class="MaiyaAeroBay.CompProperties_TargetableSingleShuttle"/>
       <li Class="MaiyaAeroBay.CompProperties_TargetEffectInstallAeroBayKit"/>
@@ -33,8 +35,16 @@
 
   <ThingDef ParentName="MaiyaAeroBayRideHailingKitBase">
     <defName>MaiyaAeroBay_RideHailingKit</defName>
-    <label>嘀嘀套件 / RimRide Kit</label>
-    <description>为穿梭机安装网约运输系统，开启嘀嘀模式！可在友方据点间接送乘客或运送货物赚取银币。完成订单积累信誉星级，解锁更高报酬任务。\n\n每个穿梭机只能安装一个网约套件，无法替换。</description>
+    <label>MaiyaAeroBay_RideHailingKitLabel</label>
+    <description>MaiyaAeroBay_RideHailingKitDesc</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/SignalChip</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(255,180,50)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>280</MarketValue>
+    </statBases>
     <comps>
       <li Class="MaiyaAeroBay.CompProperties_AeroBayKit">
         <kitType>RideHailing</kitType>
@@ -44,4 +54,5 @@
       </li>
     </comps>
   </ThingDef>
+
 </Defs>
