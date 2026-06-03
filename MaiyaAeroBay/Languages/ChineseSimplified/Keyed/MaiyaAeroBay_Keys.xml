@@ -296,17 +296,11 @@
   <MaiyaAeroBay_InteriorPowerNotice>发电 {0}W, 储能 {1}Wd</MaiyaAeroBay_InteriorPowerNotice>
   <MaiyaAeroBay_InteriorEnterNotice>空间等级 Lv.{0}</MaiyaAeroBay_InteriorEnterNotice>
 
-  <!-- 嘀嘀 / RimRide -->
-  <MaiyaAeroBay_RideHailingKitLabel>嘀嘀套件</MaiyaAeroBay_RideHailingKitLabel>
-  <MaiyaAeroBay_RideHailingKitDesc>为穿梭机安装网约运输系统，开启嘀嘀模式！可在友方据点间接送乘客或运送货物赚取银币。完成订单积累信誉星级，解锁更高报酬任务。\n\n每个穿梭机只能安装一个网约套件，无法替换。</MaiyaAeroBay_RideHailingKitDesc>
-  <MaiyaAeroBay_RideHailingKitUseLabel>安装嘀嘀套件到穿梭机</MaiyaAeroBay_RideHailingKitUseLabel>
-  <MaiyaAeroBay_MakeRideHailingKitLabel>制作嘀嘀套件</MaiyaAeroBay_MakeRideHailingKitLabel>
-  <MaiyaAeroBay_MakeRideHailingKitDesc>制作穿梭机网约运输套件。</MaiyaAeroBay_MakeRideHailingKitDesc>
-  <MaiyaAeroBay_MakeRideHailingKitJobString>正在制作嘀嘀套件。</MaiyaAeroBay_MakeRideHailingKitJobString>
+  <!-- 嘀嘀 / R-ber -->
   <MaiyaAeroBay_ShuttleAlreadyHasRideHailing>此穿梭机已安装嘀嘀套件，无法重复安装</MaiyaAeroBay_ShuttleAlreadyHasRideHailing>
   <MaiyaAeroBay_RideHailingKitInstalled>{0} 已安装到 {1}，嘀嘀模式已就绪！</MaiyaAeroBay_RideHailingKitInstalled>
   <MaiyaAeroBay_StatusRideHailing>嘀嘀: {0} ({1}星) 完成{2}单 收入{3}银</MaiyaAeroBay_StatusRideHailing>
-  <MaiyaAeroBay_RideHailingSettings>嘀嘀 / RimRide</MaiyaAeroBay_RideHailingSettings>
+  <MaiyaAeroBay_RideHailingSettings>嘀嘀 / R-ber</MaiyaAeroBay_RideHailingSettings>
   <MaiyaAeroBay_RideHailingEnabled>启用嘀嘀网约运输</MaiyaAeroBay_RideHailingEnabled>
 
   <MaiyaAeroBay_RideHailingToggle>嘀嘀模式</MaiyaAeroBay_RideHailingToggle>
@@ -346,7 +340,7 @@
   <MaiyaAeroBay_RideFailed>{0}</MaiyaAeroBay_RideFailed>
   <MaiyaAeroBay_RideFailedTimeout>订单超时未完成</MaiyaAeroBay_RideFailedTimeout>
 
-  <MaiyaAeroBay_RideWelcomeTitle>嘀嘀 / RimRide</MaiyaAeroBay_RideWelcomeTitle>
+  <MaiyaAeroBay_RideWelcomeTitle>嘀嘀 / R-ber</MaiyaAeroBay_RideWelcomeTitle>
   <MaiyaAeroBay_RideWelcomeDesc>为穿梭机安装"嘀嘀套件"即可开启网约运输模式！在友方据点间接送乘客或运送货物赚取银币。</MaiyaAeroBay_RideWelcomeDesc>
   <MaiyaAeroBay_RideWelcomeFeatures>▸ 完成订单积累信誉星级，解锁更高报酬任务\n▸ 指定派单（近距）必须完成，系统拍单（远距）自由选择\n▸ 超时或取消仅轻度惩罚，不会影响殖民地运转</MaiyaAeroBay_RideWelcomeFeatures>
   <MaiyaAeroBay_RideWelcomeNote>你也可以随时在模组设置中开关此功能。</MaiyaAeroBay_RideWelcomeNote>
@@ -361,4 +355,9 @@
   <MaiyaAeroBay_RideStateDeliver>前往送达</MaiyaAeroBay_RideStateDeliver>
   <MaiyaAeroBay_RideStatusWaiting>等待订单</MaiyaAeroBay_RideStatusWaiting>
   <MaiyaAeroBay_RideStatusOffline>已下线</MaiyaAeroBay_RideStatusOffline>
+
+  <MaiyaAeroBay_DebugRideShortPerson>[调试] 短途运人</MaiyaAeroBay_DebugRideShortPerson>
+  <MaiyaAeroBay_DebugRideLongPerson>[调试] 远程运人</MaiyaAeroBay_DebugRideLongPerson>
+  <MaiyaAeroBay_DebugRideShortCargo>[调试] 短途货运</MaiyaAeroBay_DebugRideShortCargo>
+  <MaiyaAeroBay_DebugRideLongCargo>[调试] 远程货运</MaiyaAeroBay_DebugRideLongCargo>
 </LanguageData>

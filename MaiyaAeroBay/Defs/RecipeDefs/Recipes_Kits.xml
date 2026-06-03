@@ -686,9 +686,9 @@
 
   <RecipeDef>
     <defName>Make_MaiyaAeroBay_RideHailingKit</defName>
-    <label>MaiyaAeroBay_MakeRideHailingKitLabel</label>
-    <description>MaiyaAeroBay_MakeRideHailingKitDesc</description>
-    <jobString>MaiyaAeroBay_MakeRideHailingKitJobString</jobString>
+    <label>制作嘀嘀套件</label>
+    <description>制作穿梭机网约运输套件。</description>
+    <jobString>正在制作嘀嘀套件。</jobString>
     <workAmount>3500</workAmount>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
     <effectWorking>Smith</effectWorking>

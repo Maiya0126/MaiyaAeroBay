@@ -48,7 +48,7 @@ namespace MaiyaAeroBay
             if (nextOrderCheckTick < 0 || tick >= nextOrderCheckTick)
             {
                 TryGenerateOrders();
-                int interval = Mathf.RoundToInt(60000f * 2f);
+                int interval = Mathf.RoundToInt(60000f * 0.5f);
                 nextOrderCheckTick = tick + Rand.Range(interval / 2, interval);
             }
         }
@@ -217,6 +217,57 @@ namespace MaiyaAeroBay
                 }
             }
             return null;
+        }
+
+        public RideOrder DebugGenerateOrder(CompShuttleRideHailing comp, RideOrderType type, bool longRange)
+        {
+            var settlements = Find.WorldObjects.Settlements
+                .Where(s => s.Faction != null && !s.Faction.HostileTo(Faction.OfPlayer) && s.Faction != Faction.OfPlayer)
+                .ToList();
+
+            if (settlements.Count < 2) return null;
+
+            Settlement pickup = settlements.RandomElement();
+            Settlement dropoff = settlements.Where(s => s != pickup).RandomElement();
+            if (dropoff == null) return null;
+
+            int dist = Find.WorldGrid.TraversalDistanceBetween(pickup.Tile, dropoff.Tile);
+            if (!longRange && dist > 15)
+            {
+                foreach (var s in settlements)
+                {
+                    foreach (var s2 in settlements)
+                    {
+                        if (s == s2) continue;
+                        int d = Find.WorldGrid.TraversalDistanceBetween(s.Tile, s2.Tile);
+                        if (d > 0 && d <= 15)
+                        {
+                            pickup = s;
+                            dropoff = s2;
+                            dist = d;
+                            break;
+                        }
+                    }
+                    if (dist <= 15) break;
+                }
+            }
+
+            int baseReward = longRange ? 200 : 80;
+            int reward = Mathf.RoundToInt(baseReward * Rand.Range(0.8f, 1.3f));
+            int completeTimeout = Find.TickManager.TicksGame + (longRange ? 8 : 3) * 60000;
+
+            var order = new RideOrder(
+                type,
+                longRange ? RideDispatchMode.Optional : RideDispatchMode.Mandatory,
+                pickup.Tile, dropoff.Tile,
+                pickup.Label, dropoff.Label,
+                pickup.Faction,
+                reward, longRange ? 0 : 20,
+                longRange ? 0.2f : 0.15f, longRange ? 0.1f : 0.3f,
+                -1, completeTimeout);
+
+            pendingOrders.Add(order);
+            return order;
         }
     }
 }

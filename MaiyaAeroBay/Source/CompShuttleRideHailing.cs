@@ -11,7 +11,7 @@ namespace MaiyaAeroBay
     {
         public int fareBasePrice = 50;
         public int baseOrderRange = 20;
-        public float orderIntervalDays = 8f;
+        public float orderIntervalDays = 2f;
 
         public CompProperties_ShuttleRideHailing()
         {
@@ -52,7 +52,7 @@ namespace MaiyaAeroBay
             get
             {
                 if (rideHailingIcon == null)
-                    rideHailingIcon = ContentFinder<Texture2D>.Get("UI/Commands/RideHailing", false);
+                    rideHailingIcon = ContentFinder<Texture2D>.Get("UI/Commands/car", false);
                 return rideHailingIcon;
             }
         }
@@ -63,7 +63,7 @@ namespace MaiyaAeroBay
             get
             {
                 if (rideOrderIcon == null)
-                    rideOrderIcon = ContentFinder<Texture2D>.Get("UI/Commands/RideOrder", false);
+                    rideOrderIcon = ContentFinder<Texture2D>.Get("UI/Commands/car", false);
                 return rideOrderIcon;
             }
         }
@@ -225,7 +225,7 @@ namespace MaiyaAeroBay
             order.state = RideOrderState.Accepted;
             order.assignedShuttleID = parent.ThingID;
 
-            int travelTicks = Mathf.CeilToInt(order.orderType == RideOrderType.TransportPerson ? 3f : 4f) * 60000;
+            int travelTicks = Mathf.CeilToInt(order.orderType == RideOrderType.TransportPerson ? 1f : 1.5f) * 60000;
             order.completeDeadlineTick = Find.TickManager.TicksGame + travelTicks;
 
             var manager = GetManager();
@@ -246,7 +246,7 @@ namespace MaiyaAeroBay
             {
                 defaultLabel = "MaiyaAeroBay_RideHailingToggle".Translate(),
                 defaultDesc = "MaiyaAeroBay_RideHailingToggleDesc".Translate(),
-                icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/CallShuttle", false),
+                icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
                 isActive = () => s_isAcceptingRides,
                 toggleAction = () =>
                 {
@@ -275,6 +275,38 @@ namespace MaiyaAeroBay
             }
 
             yield return new Gizmo_RideHailingStatus { rideHailing = this };
+
+            if (Prefs.DevMode)
+            {
+                yield return new Command_Action
+                {
+                    defaultLabel = "MaiyaAeroBay_DebugRideShortPerson".Translate(),
+                    defaultDesc = "Debug: generate short-range person order",
+                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
+                    action = () => DebugGenerateOrder(RideOrderType.TransportPerson, false)
+                };
+                yield return new Command_Action
+                {
+                    defaultLabel = "MaiyaAeroBay_DebugRideLongPerson".Translate(),
+                    defaultDesc = "Debug: generate long-range person order",
+                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
+                    action = () => DebugGenerateOrder(RideOrderType.TransportPerson, true)
+                };
+                yield return new Command_Action
+                {
+                    defaultLabel = "MaiyaAeroBay_DebugRideShortCargo".Translate(),
+                    defaultDesc = "Debug: generate short-range cargo order",
+                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
+                    action = () => DebugGenerateOrder(RideOrderType.TransportCargo, false)
+                };
+                yield return new Command_Action
+                {
+                    defaultLabel = "MaiyaAeroBay_DebugRideLongCargo".Translate(),
+                    defaultDesc = "Debug: generate long-range cargo order",
+                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
+                    action = () => DebugGenerateOrder(RideOrderType.TransportCargo, true)
+                };
+            }
         }
 
         public override string CompInspectStringExtra()
@@ -336,6 +368,21 @@ namespace MaiyaAeroBay
         internal void SavePropsToFields()
         {
             installed = true;
+        }
+
+        private void DebugGenerateOrder(RideOrderType type, bool longRange)
+        {
+            var manager = GetManager();
+            if (manager == null) return;
+            var order = manager.DebugGenerateOrder(this, type, longRange);
+            if (order != null)
+            {
+                Messages.Message("Debug: order generated - " + order.pickupLabel + " → " + order.dropoffLabel, parent, MessageTypeDefOf.PositiveEvent);
+            }
+            else
+            {
+                Messages.Message("Debug: failed to generate order (not enough settlements?)", parent, MessageTypeDefOf.RejectInput);
+            }
         }
     }
 }

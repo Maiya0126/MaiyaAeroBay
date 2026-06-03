@@ -18,6 +18,9 @@
   <MaiyaAeroBay_ComfortKit_I.useLabel>安装舒适套件到穿梭机</MaiyaAeroBay_ComfortKit_I.useLabel>
   <MaiyaAeroBay_ComfortKit_II.useLabel>安装舒适套件到穿梭机</MaiyaAeroBay_ComfortKit_II.useLabel>
   <MaiyaAeroBay_ComfortKit_III.useLabel>安装舒适套件到穿梭机</MaiyaAeroBay_ComfortKit_III.useLabel>
+  <MaiyaAeroBay_RideHailingKit.label>嘀嘀套件</MaiyaAeroBay_RideHailingKit.label>
+  <MaiyaAeroBay_RideHailingKit.description>为穿梭机安装网约运输系统，开启嘀嘀模式！可在友方据点间接送乘客或运送货物赚取银币。完成订单积累信誉星级，解锁更高报酬任务。\n\n每个穿梭机只能安装一个网约套件，无法替换。</MaiyaAeroBay_RideHailingKit.description>
+  <MaiyaAeroBay_RideHailingKit.useLabel>安装嘀嘀套件到穿梭机</MaiyaAeroBay_RideHailingKit.useLabel>
   <MaiyaAeroBay_InteriorWall.description>穿梭机的坚固外壳墙壁，每格自动输出50W电力</MaiyaAeroBay_InteriorWall.description>
   <MaiyaAeroBay_InteriorConduit.label>穿梭机内部电缆</MaiyaAeroBay_InteriorConduit.label>
   <MaiyaAeroBay_InteriorConduit.description>穿梭机内部输电线路，将墙壁电力传输至各处</MaiyaAeroBay_InteriorConduit.description>

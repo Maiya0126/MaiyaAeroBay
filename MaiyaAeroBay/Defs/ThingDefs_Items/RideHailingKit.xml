@@ -25,7 +25,7 @@
       <li Class="CompProperties_Forbiddable"/>
       <li Class="CompProperties_Usable">
         <useJob>UseArtifact</useJob>
-        <useLabel>MaiyaAeroBay_RideHailingKitUseLabel</useLabel>
+        <useLabel>Install R-ber kit on shuttle</useLabel>
         <useDuration>120</useDuration>
       </li>
       <li Class="MaiyaAeroBay.CompProperties_TargetableSingleShuttle"/>
@@ -35,8 +35,8 @@
 
   <ThingDef ParentName="MaiyaAeroBayRideHailingKitBase">
     <defName>MaiyaAeroBay_RideHailingKit</defName>
-    <label>MaiyaAeroBay_RideHailingKitLabel</label>
-    <description>MaiyaAeroBay_RideHailingKitDesc</description>
+    <label>R-ber Kit</label>
+    <description>Install a ride-hailing system on your shuttle and unlock R-ber mode! Earn silver by carrying passengers or cargo between friendly settlements. Complete orders to build up your star rating and unlock higher-paying missions.\n\nEach shuttle can only have one R-ber kit installed. Cannot be replaced.</description>
     <graphicData>
       <texPath>Things/Item/Resource/SignalChip</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -50,7 +50,7 @@
         <kitType>RideHailing</kitType>
         <fareBasePrice>50</fareBasePrice>
         <baseOrderRange>20</baseOrderRange>
-        <orderIntervalDays>8</orderIntervalDays>
+        <orderIntervalDays>2</orderIntervalDays>
       </li>
     </comps>
   </ThingDef>
