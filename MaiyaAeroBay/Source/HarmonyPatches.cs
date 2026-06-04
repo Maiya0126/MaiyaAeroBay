@@ -417,33 +417,50 @@ namespace MaiyaAeroBay
         [HarmonyPrefix]
         public static void PreOnGUI()
         {
-            groupLevelCache.Clear();
-            var entries = Find.ColonistBar.Entries;
-            if (entries == null || entries.Count == 0) return;
-
-            var done = new HashSet<int>();
-            for (int i = 0; i < entries.Count; i++)
+            try
             {
-                var e = entries[i];
-                if (e.map == null || done.Contains(e.group)) continue;
-                done.Add(e.group);
+                groupLevelCache.Clear();
+                var entries = Find.ColonistBar.Entries;
+                if (entries == null || entries.Count == 0) return;
 
-                int level = 0;
-                if (e.map.IsPocketMap && e.map.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace")
-                {
-                    level = LTOColonyGroupsCompat.GetInteriorLevel(e.map);
-                }
-                else
-                {
-                    var pmp = Find.World.pocketMaps.FirstOrDefault(p =>
-                        p.sourceMap == e.map && p.HasMap &&
-                        p.Map.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace");
-                    if (pmp != null)
-                        level = LTOColonyGroupsCompat.GetInteriorLevel(pmp.Map);
-                }
+                int pocketMapCount = Find.World.pocketMaps.Count;
+                var maiyaPMPs = Find.World.pocketMaps.Where(p => p.HasMap && p.Map?.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace").ToList();
+                Log.Message($"[MaiyaAeroBay] PreOnGUI: entries={entries.Count}, pocketMaps={pocketMapCount}, maiyaPMPs={maiyaPMPs.Count}");
 
-                if (level > 0)
-                    groupLevelCache[e.group] = level;
+                var done = new HashSet<int>();
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    var e = entries[i];
+                    if (e.map == null || done.Contains(e.group)) continue;
+                    done.Add(e.group);
+
+                    int level = 0;
+                    if (e.map.IsPocketMap && e.map.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace")
+                    {
+                        level = LTOColonyGroupsCompat.GetInteriorLevel(e.map);
+                    }
+                    else
+                    {
+                        foreach (var pmp in maiyaPMPs)
+                        {
+                            if (pmp.sourceMap == e.map)
+                            {
+                                level = LTOColonyGroupsCompat.GetInteriorLevel(pmp.Map);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (level > 0)
+                    {
+                        groupLevelCache[e.group] = level;
+                        Log.Message($"[MaiyaAeroBay] PreOnGUI: group={e.group} level={level} isPocket={e.map.IsPocketMap}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("[MaiyaAeroBay] PreOnGUI error: " + ex.Message + "\n" + ex.StackTrace);
             }
         }
 
