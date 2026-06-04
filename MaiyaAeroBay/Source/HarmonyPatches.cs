@@ -156,6 +156,51 @@ namespace MaiyaAeroBay
                     }
                 }
 
+                if (level <= 0)
+                {
+                    foreach (Caravan caravan in Find.WorldObjects.Caravans)
+                    {
+                        var shuttle = caravan.Shuttle;
+                        if (shuttle == null) continue;
+                        var interior = shuttle.TryGetComp<Comp_ShuttleInterior>();
+                        if (interior != null && interior.PocketMap == map)
+                        {
+                            level = interior.UpgradeLevel;
+                            break;
+                        }
+                    }
+                }
+
+                if (level <= 0)
+                {
+                    foreach (var tt in Find.WorldObjects.TravellingTransporters)
+                    {
+                        var childHolders = new List<IThingHolder>();
+                        tt.GetChildHolders(childHolders);
+                        foreach (IThingHolder holder in childHolders)
+                        {
+                            if (holder is IThingHolder inner && inner.GetDirectlyHeldThings() != null)
+                            {
+                                for (int i = 0; i < inner.GetDirectlyHeldThings().Count; i++)
+                                {
+                                    var t = inner.GetDirectlyHeldThings()[i];
+                                    if (t is Building_PassengerShuttle)
+                                    {
+                                        var interior = t.TryGetComp<Comp_ShuttleInterior>();
+                                        if (interior != null && interior.PocketMap == map)
+                                        {
+                                            level = interior.UpgradeLevel;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            if (level > 0) break;
+                        }
+                        if (level > 0) break;
+                    }
+                }
+
                 return level;
             }
             catch

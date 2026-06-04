@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 
 namespace MaiyaAeroBay
@@ -6,6 +8,7 @@ namespace MaiyaAeroBay
     public class InteriorMapComponent : MapComponent
     {
         private Thing parentShuttleThing;
+        private bool repairAttempted;
 
         public Comp_ShuttleInterior ParentShuttle
         {
@@ -13,7 +16,15 @@ namespace MaiyaAeroBay
             {
                 if (parentShuttleThing != null)
                 {
-                    return parentShuttleThing.TryGetComp<Comp_ShuttleInterior>();
+                    var comp = parentShuttleThing.TryGetComp<Comp_ShuttleInterior>();
+                    if (comp != null) return comp;
+                }
+                if (!repairAttempted)
+                {
+                    repairAttempted = true;
+                    RepairParentShuttle();
+                    if (parentShuttleThing != null)
+                        return parentShuttleThing.TryGetComp<Comp_ShuttleInterior>();
                 }
                 return null;
             }
@@ -27,11 +38,66 @@ namespace MaiyaAeroBay
         {
             base.ExposeData();
             Scribe_References.Look(ref parentShuttleThing, "parentShuttleThing");
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+                repairAttempted = false;
         }
 
         public void SetParentShuttle(Comp_ShuttleInterior shuttle)
         {
             parentShuttleThing = shuttle?.parent;
+            repairAttempted = false;
+        }
+
+        private void RepairParentShuttle()
+        {
+            foreach (Map extMap in Find.Maps)
+            {
+                if (extMap == null || extMap == map) continue;
+                foreach (var thing in extMap.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
+                {
+                    var interior = thing.TryGetComp<Comp_ShuttleInterior>();
+                    if (interior != null && interior.PocketMap == map)
+                    {
+                        parentShuttleThing = thing;
+                        return;
+                    }
+                }
+            }
+            foreach (Caravan caravan in Find.WorldObjects.Caravans)
+            {
+                var shuttle = caravan.Shuttle;
+                if (shuttle == null) continue;
+                var interior = shuttle.TryGetComp<Comp_ShuttleInterior>();
+                if (interior != null && interior.PocketMap == map)
+                {
+                    parentShuttleThing = shuttle;
+                    return;
+                }
+            }
+            foreach (var tt in Find.WorldObjects.TravellingTransporters)
+            {
+                var childHolders = new List<IThingHolder>();
+                tt.GetChildHolders(childHolders);
+                foreach (IThingHolder holder in childHolders)
+                {
+                    if (holder is IThingHolder inner && inner.GetDirectlyHeldThings() != null)
+                    {
+                        for (int i = 0; i < inner.GetDirectlyHeldThings().Count; i++)
+                        {
+                            var t = inner.GetDirectlyHeldThings()[i];
+                            if (t is Building_PassengerShuttle)
+                            {
+                                var interior = t.TryGetComp<Comp_ShuttleInterior>();
+                                if (interior != null && interior.PocketMap == map)
+                                {
+                                    parentShuttleThing = t;
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public override void MapComponentTick()
