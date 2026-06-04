@@ -473,38 +473,50 @@ namespace MaiyaAeroBay
                 var entries = Find.ColonistBar.Entries;
                 if (entries == null || entries.Count == 0) return;
 
-                if (Prefs.DevMode)
+                var entry = entries.FirstOrDefault(x => x.group == group);
+                if (entry.map == null) return;
+                Map map = entry.map;
+
+                if (map.IsPocketMap)
                 {
-                    var pocketEntries = entries.Where(x => x.map != null && x.map.IsPocketMap && x.map.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace").ToList();
-                    if (pocketEntries.Count > 0)
+                    int level = LTOColonyGroupsCompat.GetInteriorLevel(map);
+                    if (level <= 0) return;
+                    DrawColorForGroup(group, map, level);
+                }
+                else
+                {
+                    foreach (PocketMapParent pmp in Find.World.pocketMaps)
                     {
-                        Log.Message($"[MaiyaAeroBay] DrawGroupFrame group={group}, pocketMapEntries={pocketEntries.Count}, pocketMapGroup={pocketEntries[0].group}, level={LTOColonyGroupsCompat.GetInteriorLevel(pocketEntries[0].map)}");
+                        if (pmp.sourceMap != map || !pmp.HasMap) continue;
+                        int level = LTOColonyGroupsCompat.GetInteriorLevel(pmp.Map);
+                        if (level > 0)
+                        {
+                            DrawColorForGroup(group, map, level);
+                            return;
+                        }
                     }
                 }
-
-                var interiorInGroup = entries.FirstOrDefault(x => x.group == group && x.map != null && x.map.IsPocketMap && LTOColonyGroupsCompat.GetInteriorLevel(x.map) > 0);
-                if (interiorInGroup.map == null) return;
-                Map map = interiorInGroup.map;
-                int level = LTOColonyGroupsCompat.GetInteriorLevel(map);
-
-                Color color = InteriorLevelColors.ForLevel(level);
-
-                Rect frameRect = GroupFrameRect(group);
-                if (frameRect.width <= 0 || frameRect.height <= 0) return;
-                float alpha = (map == Find.CurrentMap && !WorldRendererUtility.WorldSelected) ? 0.35f : 0.2f;
-
-                Color tint = color;
-                tint.a = alpha;
-                Widgets.DrawRectFast(frameRect, tint);
-
-                Color borderColor = color;
-                borderColor.a = Mathf.Min(alpha + 0.2f, 1f);
-                Widgets.DrawBox(frameRect, 2, SolidColorMaterials.NewSolidColorTexture(borderColor));
             }
             catch (Exception ex)
             {
                 Log.Error("[MaiyaAeroBay] ColonistBarGroupFramePatch error: " + ex.Message);
             }
+        }
+
+        private static void DrawColorForGroup(int group, Map map, int level)
+        {
+            Color color = InteriorLevelColors.ForLevel(level);
+            Rect frameRect = GroupFrameRect(group);
+            if (frameRect.width <= 0 || frameRect.height <= 0) return;
+            float alpha = (map == Find.CurrentMap && !WorldRendererUtility.WorldSelected) ? 0.35f : 0.2f;
+
+            Color tint = color;
+            tint.a = alpha;
+            Widgets.DrawRectFast(frameRect, tint);
+
+            Color borderColor = color;
+            borderColor.a = Mathf.Min(alpha + 0.2f, 1f);
+            Widgets.DrawBox(frameRect, 2, SolidColorMaterials.NewSolidColorTexture(borderColor));
         }
 
         private static Rect GroupFrameRect(int group)
