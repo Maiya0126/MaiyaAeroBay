@@ -55,6 +55,7 @@ namespace MaiyaAeroBay
             }
 
             CheckExpiredOrders();
+            CheckWorldArrival();
 
             if (!MaiyaAeroBayMod.settings.rideHailingEnabled) return;
 
@@ -66,6 +67,68 @@ namespace MaiyaAeroBay
                 int interval = Mathf.RoundToInt(60000f * intervalDays);
                 nextOrderCheckTick = tick + Rand.Range(Mathf.Max(interval / 2, 100), Mathf.Max(interval, 200));
             }
+        }
+
+        private void CheckWorldArrival()
+        {
+            if (Find.TickManager.TicksGame % 120 != 0) return;
+            if (!MaiyaAeroBayMod.settings.rideHailingEnabled) return;
+
+            foreach (var order in activeOrders.ToList())
+            {
+                if (order.state != RideOrderState.Accepted && order.state != RideOrderState.PickedUp) continue;
+
+                int shuttleTile = FindShuttleWorldTile(order.assignedShuttleID);
+                if (shuttleTile < 0) continue;
+
+                if (order.state == RideOrderState.Accepted && shuttleTile == order.pickupTile)
+                {
+                    order.state = RideOrderState.PickedUp;
+                    UpdatePickupMarkerCompleted(order);
+                    var comp = FindShuttleCompAnywhere(order.assignedShuttleID);
+                    string detail = order.orderType == RideOrderType.TransportPerson
+                        ? "MaiyaAeroBay_RidePickedUpPerson".Translate(order.passengerName, order.dropoffLabel)
+                        : "MaiyaAeroBay_RidePickedUpCargo".Translate(order.cargoDef?.label ?? "cargo", order.dropoffLabel);
+                    Messages.Message("MaiyaAeroBay_RidePickedUp".Translate(detail), MessageTypeDefOf.PositiveEvent);
+                }
+                else if (order.state == RideOrderState.PickedUp && shuttleTile == order.dropoffTile)
+                {
+                    var comp = FindShuttleCompAnywhere(order.assignedShuttleID);
+                    if (comp != null)
+                    {
+                        comp.CompleteOrder(order, this);
+                    }
+                    else
+                    {
+                        order.state = RideOrderState.Completed;
+                        EndQuestForOrder(order, QuestEndOutcome.Success);
+                        RemoveOrder(order);
+                        Messages.Message("MaiyaAeroBay_RideCompletedSimple".Translate(order.rewardSilver),
+                            MessageTypeDefOf.PositiveEvent);
+                    }
+                }
+            }
+        }
+
+        private int FindShuttleWorldTile(string thingID)
+        {
+            foreach (var map in Find.Maps)
+            {
+                foreach (var thing in map.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
+                {
+                    if (thing.ThingID == thingID)
+                        return map.Tile;
+                }
+            }
+            foreach (var caravan in Find.WorldObjects.Caravans)
+            {
+                foreach (var thing in caravan.AllThings)
+                {
+                    if (thing.ThingID == thingID)
+                        return caravan.Tile;
+                }
+            }
+            return -1;
         }
 
         private void ShowWelcomeDialog()
