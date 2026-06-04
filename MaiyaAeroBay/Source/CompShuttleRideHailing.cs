@@ -168,9 +168,10 @@ namespace MaiyaAeroBay
             manager.EndQuestForOrder(order, QuestEndOutcome.Success);
             manager.RemoveOrder(order);
 
-            Messages.Message("MaiyaAeroBay_RideCompleted".Translate(
-                order.rewardSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
-                MessageTypeDefOf.PositiveEvent);
+            Find.LetterStack.ReceiveLetter(
+                "MaiyaAeroBay_RideCompleteLetterTitle".Translate(),
+                "MaiyaAeroBay_RideCompleted".Translate(order.rewardSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                LetterDefOf.PositiveEvent);
         }
 
         public void CompleteOrder(RideOrder order, WorldComponent_RideHailingManager manager)
@@ -196,9 +197,11 @@ namespace MaiyaAeroBay
             manager.EndQuestForOrder(order, QuestEndOutcome.Success);
             manager.RemoveOrder(order);
 
-            Messages.Message("MaiyaAeroBay_RideCompleted".Translate(
-                order.rewardSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
-                parent, MessageTypeDefOf.PositiveEvent);
+            Find.LetterStack.ReceiveLetter(
+                "MaiyaAeroBay_RideCompleteLetterTitle".Translate(),
+                "MaiyaAeroBay_RideCompleted".Translate(order.rewardSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                LetterDefOf.PositiveEvent,
+                new LookTargets(parent));
         }
 
         public void FailOrder(RideOrder order, WorldComponent_RideHailingManager manager, string reason)
@@ -207,16 +210,9 @@ namespace MaiyaAeroBay
             s_ordersFailed++;
             StarRating -= order.starPenalty;
 
-            if (order.penaltySilver > 0)
-            {
-                TryDeductSilver(order.penaltySilver);
-                Messages.Message("MaiyaAeroBay_RideFailedPenalty".Translate(reason, order.penaltySilver),
-                    MessageTypeDefOf.NegativeEvent);
-            }
-            else
-            {
-                Messages.Message("MaiyaAeroBay_RideFailed".Translate(reason), MessageTypeDefOf.NegativeEvent);
-            }
+            string failText = order.penaltySilver > 0
+                ? "MaiyaAeroBay_RideFailedPenalty".Translate(reason, order.penaltySilver)
+                : "MaiyaAeroBay_RideFailed".Translate(reason);
 
             if (order.faction != null)
             {
@@ -224,6 +220,12 @@ namespace MaiyaAeroBay
             }
 
             manager.RemoveOrder(order);
+
+            Find.LetterStack.ReceiveLetter(
+                "MaiyaAeroBay_RideFailLetterTitle".Translate(),
+                failText,
+                LetterDefOf.NegativeEvent,
+                parent != null ? new LookTargets(parent) : LookTargets.Invalid);
         }
 
         public void CancelOrder(RideOrder order, WorldComponent_RideHailingManager manager)
@@ -285,6 +287,12 @@ namespace MaiyaAeroBay
                 ? "MaiyaAeroBay_RideAcceptPerson".Translate(order.passengerName, order.pickupLabel, order.dropoffLabel)
                 : "MaiyaAeroBay_RideAcceptCargo".Translate(order.cargoCount, order.cargoDef?.label ?? "cargo", order.pickupLabel, order.dropoffLabel);
             Messages.Message("MaiyaAeroBay_RideAccepted".Translate(detail), parent, MessageTypeDefOf.PositiveEvent);
+
+            Find.LetterStack.ReceiveLetter(
+                "MaiyaAeroBay_RideLetterTitle".Translate(order.GetOrderTypeLabel()),
+                "MaiyaAeroBay_RideLetterText".Translate(detail, order.rewardSilver, order.GetDispatchModeLabel()),
+                LetterDefOf.PositiveEvent,
+                new LookTargets(parent));
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()

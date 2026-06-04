@@ -374,6 +374,11 @@
   <MaiyaAeroBay_RideDropoffAction>嘀嘀{0}: 在{1}交客/卸货</MaiyaAeroBay_RideDropoffAction>
   <MaiyaAeroBay_RideCompletedSimple>订单完成！+{0}银</MaiyaAeroBay_RideCompletedSimple>
 
+  <MaiyaAeroBay_RideLetterTitle>嘀嘀新订单</MaiyaAeroBay_RideLetterTitle>
+  <MaiyaAeroBay_RideLetterText>已接单: {0}\n奖励: {1}银 | {2}</MaiyaAeroBay_RideLetterText>
+  <MaiyaAeroBay_RideCompleteLetterTitle>订单完成</MaiyaAeroBay_RideCompleteLetterTitle>
+  <MaiyaAeroBay_RideFailLetterTitle>订单失败</MaiyaAeroBay_RideFailLetterTitle>
+
   <MaiyaAeroBay_RideQuestName>{0}: {1} → {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} → {2}，状态: {3}</MaiyaAeroBay_RideQuestDescription>
   <MaiyaAeroBay_RideQuestEnded>已结束</MaiyaAeroBay_RideQuestEnded>
