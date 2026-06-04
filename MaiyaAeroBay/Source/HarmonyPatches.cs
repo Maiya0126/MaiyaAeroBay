@@ -631,6 +631,7 @@ namespace MaiyaAeroBay
                         {
                             order.state = RideOrderState.PickedUp;
                             manager.UpdatePickupMarkerCompleted(order);
+                            var comp = manager.FindShuttleCompByOrder(order);
                             string detail = order.orderType == RideOrderType.TransportPerson
                                 ? "MaiyaAeroBay_RidePickedUpPerson".Translate(order.passengerName, order.dropoffLabel)
                                 : "MaiyaAeroBay_RidePickedUpCargo".Translate(order.cargoDef?.label ?? "cargo", order.dropoffLabel);
@@ -639,17 +640,24 @@ namespace MaiyaAeroBay
                 }
                 else if (order.state == RideOrderState.PickedUp && settlement.Tile == order.dropoffTile)
                 {
-                    var shuttle = manager.FindShuttleByID(order.assignedShuttleID);
-                    if (shuttle != null)
-                    {
-                        var comp = shuttle.TryGetComp<CompShuttleRideHailing>();
-                        if (comp != null)
+                    yield return new FloatMenuOption(
+                        "MaiyaAeroBay_RideDropoffAction".Translate(order.GetOrderTypeLabel(), order.dropoffLabel),
+                        () =>
                         {
-                            yield return new FloatMenuOption(
-                                "MaiyaAeroBay_RideDropoffAction".Translate(order.GetOrderTypeLabel(), order.dropoffLabel),
-                                () => { comp.CompleteOrder(order, manager); });
-                        }
-                    }
+                            var comp = manager.FindShuttleCompByOrder(order);
+                            if (comp != null)
+                            {
+                                comp.CompleteOrderFromWorld(order, manager);
+                            }
+                            else
+                            {
+                                order.state = RideOrderState.Completed;
+                                manager.EndQuestForOrder(order, QuestEndOutcome.Success);
+                                manager.RemoveOrder(order);
+                                Messages.Message("MaiyaAeroBay_RideCompletedSimple".Translate(order.rewardSilver),
+                                    MessageTypeDefOf.PositiveEvent);
+                            }
+                        });
                 }
             }
         }

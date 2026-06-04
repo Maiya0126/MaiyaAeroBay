@@ -208,6 +208,69 @@ namespace MaiyaAeroBay
             return activeOrders.Where(o => o.state == RideOrderState.Accepted || o.state == RideOrderState.PickedUp).ToList();
         }
 
+        public RideOrder RecoverShuttleID(string currentThingID)
+        {
+            foreach (var order in activeOrders)
+            {
+                if ((order.state == RideOrderState.Accepted || order.state == RideOrderState.PickedUp)
+                    && order.assignedShuttleID != currentThingID)
+                {
+                    var comp = FindShuttleCompAnywhere(currentThingID);
+                    if (comp != null)
+                    {
+                        order.assignedShuttleID = currentThingID;
+                        return order;
+                    }
+                    var oldComp = FindShuttleCompAnywhere(order.assignedShuttleID);
+                    if (oldComp == null)
+                    {
+                        order.assignedShuttleID = currentThingID;
+                        return order;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public CompShuttleRideHailing FindShuttleCompByOrder(RideOrder order)
+        {
+            return FindShuttleCompAnywhere(order.assignedShuttleID);
+        }
+
+        public CompShuttleRideHailing FindShuttleCompAnywhere(string thingID)
+        {
+            foreach (var map in Find.Maps)
+            {
+                foreach (var thing in map.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
+                {
+                    if (thing.ThingID == thingID)
+                        return thing.TryGetComp<CompShuttleRideHailing>();
+                }
+            }
+            foreach (var caravan in Find.WorldObjects.Caravans)
+            {
+                foreach (var thing in caravan.AllThings)
+                {
+                    if (thing.ThingID == thingID && thing is ThingWithComps twc)
+                        return twc.TryGetComp<CompShuttleRideHailing>();
+                }
+            }
+            return null;
+        }
+
+        public void EndQuestForOrder(RideOrder order, QuestEndOutcome outcome)
+        {
+            if (order.questID >= 0)
+            {
+                var quest = Find.QuestManager?.QuestsListForReading?.FirstOrDefault(q => q.id == order.questID);
+                if (quest != null && quest.State == QuestState.Ongoing)
+                {
+                    try { quest.End(outcome, sendLetter: false, playSound: false); } catch { }
+                }
+                order.questID = -1;
+            }
+        }
+
         public void MoveToActive(RideOrder order)
         {
             pendingOrders.Remove(order);
@@ -250,7 +313,6 @@ namespace MaiyaAeroBay
                 part.completeDeadlineTick = order.completeDeadlineTick;
                 quest.AddPart(part);
 
-                quest.initiallyAccepted = true;
                 quest.appearanceTick = Find.TickManager.TicksGame;
                 quest.acceptanceTick = Find.TickManager.TicksGame;
 
@@ -294,20 +356,7 @@ namespace MaiyaAeroBay
             RemoveMarker(order.dropoffMarkerID);
             order.pickupMarkerID = -1;
             order.dropoffMarkerID = -1;
-
-            if (order.questID >= 0)
-            {
-                var quest = Find.QuestManager?.QuestsListForReading?.FirstOrDefault(q => q.id == order.questID);
-                if (quest != null && quest.State == QuestState.Ongoing)
-                {
-                    try
-                    {
-                        quest.End(QuestEndOutcome.Fail, sendLetter: false, playSound: false);
-                    }
-                    catch { }
-                }
-                order.questID = -1;
-            }
+            EndQuestForOrder(order, QuestEndOutcome.Fail);
         }
 
         private void RemoveMarker(int markerID)

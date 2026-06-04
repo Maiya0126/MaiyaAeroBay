@@ -121,8 +121,12 @@ namespace MaiyaAeroBay
 
             if (currentTile < 0) return;
 
-            var order = ActiveOrder;
-            if (order == null) return;
+            var order = manager.GetActiveOrderByShuttle(parent.ThingID);
+            if (order == null)
+            {
+                order = manager.RecoverShuttleID(parent.ThingID);
+                if (order == null) return;
+            }
 
             if (order.state == RideOrderState.Accepted && currentTile == order.pickupTile)
             {
@@ -137,6 +141,36 @@ namespace MaiyaAeroBay
             {
                 CompleteOrder(order, manager);
             }
+        }
+
+        public void CompleteOrderFromWorld(RideOrder order, WorldComponent_RideHailingManager manager)
+        {
+            order.state = RideOrderState.Completed;
+            s_ordersCompleted++;
+            s_totalIncome += order.rewardSilver;
+            StarRating += order.starReward;
+            s_lastOrderTick = Find.TickManager.TicksGame;
+
+            Map map = parent?.Map ?? Find.AnyPlayerHomeMap;
+            if (order.rewardSilver > 0 && map != null)
+            {
+                var silver = ThingMaker.MakeThing(ThingDefOf.Silver);
+                silver.stackCount = order.rewardSilver;
+                IntVec3 pos = parent?.Position ?? CellFinder.RandomEdgeCell(map);
+                GenPlace.TryPlaceThing(silver, pos, map, ThingPlaceMode.Near);
+            }
+
+            if (order.faction != null)
+            {
+                order.faction.TryAffectGoodwillWith(Faction.OfPlayer, 3, canSendMessage: true, canSendHostilityLetter: false);
+            }
+
+            manager.EndQuestForOrder(order, QuestEndOutcome.Success);
+            manager.RemoveOrder(order);
+
+            Messages.Message("MaiyaAeroBay_RideCompleted".Translate(
+                order.rewardSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                MessageTypeDefOf.PositiveEvent);
         }
 
         public void CompleteOrder(RideOrder order, WorldComponent_RideHailingManager manager)
@@ -159,16 +193,7 @@ namespace MaiyaAeroBay
                 order.faction.TryAffectGoodwillWith(Faction.OfPlayer, 3, canSendMessage: true, canSendHostilityLetter: false);
             }
 
-            if (order.questID >= 0)
-            {
-                var quest = Find.QuestManager?.QuestsListForReading?.FirstOrDefault(q => q.id == order.questID);
-                if (quest != null && quest.State != QuestState.EndedFailed && quest.State != QuestState.EndedSuccess && quest.State != QuestState.EndedInvalid)
-                {
-                    try { quest.End(QuestEndOutcome.Success, sendLetter: false, playSound: false); } catch { }
-                }
-                order.questID = -1;
-            }
-
+            manager.EndQuestForOrder(order, QuestEndOutcome.Success);
             manager.RemoveOrder(order);
 
             Messages.Message("MaiyaAeroBay_RideCompleted".Translate(

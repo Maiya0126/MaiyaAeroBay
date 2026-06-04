@@ -372,6 +372,7 @@
 
   <MaiyaAeroBay_RidePickupAction>嘀嘀{0}: 在{1}接客/装货</MaiyaAeroBay_RidePickupAction>
   <MaiyaAeroBay_RideDropoffAction>嘀嘀{0}: 在{1}交客/卸货</MaiyaAeroBay_RideDropoffAction>
+  <MaiyaAeroBay_RideCompletedSimple>订单完成！+{0}银</MaiyaAeroBay_RideCompletedSimple>
 
   <MaiyaAeroBay_RideQuestName>{0}: {1} → {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} → {2}，状态: {3}</MaiyaAeroBay_RideQuestDescription>

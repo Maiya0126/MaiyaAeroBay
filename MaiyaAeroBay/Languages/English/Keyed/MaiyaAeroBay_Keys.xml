@@ -373,6 +373,7 @@
 
   <MaiyaAeroBay_RidePickupAction>R-ber {0}: Pick up at {1}</MaiyaAeroBay_RidePickupAction>
   <MaiyaAeroBay_RideDropoffAction>R-ber {0}: Deliver at {1}</MaiyaAeroBay_RideDropoffAction>
+  <MaiyaAeroBay_RideCompletedSimple>Order complete! +{0}s</MaiyaAeroBay_RideCompletedSimple>
 
   <MaiyaAeroBay_RideQuestName>{0}: {1} -> {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} -> {2}, Status: {3}</MaiyaAeroBay_RideQuestDescription>
