@@ -472,6 +472,16 @@ namespace MaiyaAeroBay
             {
                 var entries = Find.ColonistBar.Entries;
                 if (entries == null || entries.Count == 0) return;
+
+                if (Prefs.DevMode)
+                {
+                    var pocketEntries = entries.Where(x => x.map != null && x.map.IsPocketMap && x.map.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace").ToList();
+                    if (pocketEntries.Count > 0)
+                    {
+                        Log.Message($"[MaiyaAeroBay] DrawGroupFrame group={group}, pocketMapEntries={pocketEntries.Count}, pocketMapGroup={pocketEntries[0].group}, level={LTOColonyGroupsCompat.GetInteriorLevel(pocketEntries[0].map)}");
+                    }
+                }
+
                 var interiorInGroup = entries.FirstOrDefault(x => x.group == group && x.map != null && x.map.IsPocketMap && LTOColonyGroupsCompat.GetInteriorLevel(x.map) > 0);
                 if (interiorInGroup.map == null) return;
                 Map map = interiorInGroup.map;
