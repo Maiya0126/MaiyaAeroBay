@@ -585,4 +585,73 @@ namespace MaiyaAeroBay
             }
         }
     }
+
+    [StaticConstructorOnStartup]
+    public static class RideHailingSettlementPatches
+    {
+        static RideHailingSettlementPatches()
+        {
+            var harmony = MaiyaAeroBayMod.harmony;
+            var settlementType = typeof(Settlement);
+            var getFloatMenuMethod = settlementType.GetMethod("GetFloatMenuOptions",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                null, new[] { typeof(Caravan) }, null);
+            if (getFloatMenuMethod != null)
+            {
+                var postfix = typeof(RideHailingSettlementPatches).GetMethod("SettlementFloatMenuPostfix",
+                    BindingFlags.Static | BindingFlags.NonPublic);
+                harmony.Patch(getFloatMenuMethod, postfix: new HarmonyMethod(postfix));
+            }
+        }
+
+        private static void SettlementFloatMenuPostfix(Caravan caravan, ref IEnumerable<FloatMenuOption> __result, Settlement __instance)
+        {
+            if (!MaiyaAeroBayMod.settings.rideHailingEnabled) return;
+            var opts = RideHailingSettlementInteractions.GetMenuOptions(__instance);
+            if (opts != null)
+                __result = __result.Concat(opts);
+        }
+    }
+
+    internal static class RideHailingSettlementInteractions
+    {
+        public static IEnumerable<FloatMenuOption> GetMenuOptions(Settlement settlement)
+        {
+            var manager = Find.World?.GetComponent<WorldComponent_RideHailingManager>();
+            if (manager == null) yield break;
+
+            var allActive = manager.GetAllActiveOrders();
+            foreach (var order in allActive)
+            {
+                if (order.state == RideOrderState.Accepted && settlement.Tile == order.pickupTile)
+                {
+                    yield return new FloatMenuOption(
+                        "MaiyaAeroBay_RidePickupAction".Translate(order.GetOrderTypeLabel(), order.pickupLabel),
+                        () =>
+                        {
+                            order.state = RideOrderState.PickedUp;
+                            manager.UpdatePickupMarkerCompleted(order);
+                            string detail = order.orderType == RideOrderType.TransportPerson
+                                ? "MaiyaAeroBay_RidePickedUpPerson".Translate(order.passengerName, order.dropoffLabel)
+                                : "MaiyaAeroBay_RidePickedUpCargo".Translate(order.cargoDef?.label ?? "cargo", order.dropoffLabel);
+                            Messages.Message("MaiyaAeroBay_RidePickedUp".Translate(detail), MessageTypeDefOf.PositiveEvent);
+                        });
+                }
+                else if (order.state == RideOrderState.PickedUp && settlement.Tile == order.dropoffTile)
+                {
+                    var shuttle = manager.FindShuttleByID(order.assignedShuttleID);
+                    if (shuttle != null)
+                    {
+                        var comp = shuttle.TryGetComp<CompShuttleRideHailing>();
+                        if (comp != null)
+                        {
+                            yield return new FloatMenuOption(
+                                "MaiyaAeroBay_RideDropoffAction".Translate(order.GetOrderTypeLabel(), order.dropoffLabel),
+                                () => { comp.CompleteOrder(order, manager); });
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

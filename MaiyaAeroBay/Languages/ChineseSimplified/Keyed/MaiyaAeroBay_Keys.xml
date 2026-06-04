@@ -370,6 +370,9 @@
   <MaiyaAeroBay_RidePickupInspect>{0} - 取货点: {1} → {2}</MaiyaAeroBay_RidePickupInspect>
   <MaiyaAeroBay_RideDropoffInspect>{0} - 交货点: {1} ← {2}</MaiyaAeroBay_RideDropoffInspect>
 
+  <MaiyaAeroBay_RidePickupAction>嘀嘀{0}: 在{1}接客/装货</MaiyaAeroBay_RidePickupAction>
+  <MaiyaAeroBay_RideDropoffAction>嘀嘀{0}: 在{1}交客/卸货</MaiyaAeroBay_RideDropoffAction>
+
   <MaiyaAeroBay_RideQuestName>{0}: {1} → {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} → {2}，状态: {3}</MaiyaAeroBay_RideQuestDescription>
   <MaiyaAeroBay_RideQuestEnded>已结束</MaiyaAeroBay_RideQuestEnded>

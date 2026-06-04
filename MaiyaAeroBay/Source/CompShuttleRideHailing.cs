@@ -97,6 +97,20 @@ namespace MaiyaAeroBay
         {
             base.PostSpawnSetup(respawningAfterLoad);
             if (!installed) return;
+            CheckArrival();
+        }
+
+        public override void CompTick()
+        {
+            base.CompTick();
+            if (!installed) return;
+            if (Find.TickManager.TicksGame % 60 != 0) return;
+            CheckArrival();
+        }
+
+        private void CheckArrival()
+        {
+            if (!MaiyaAeroBayMod.settings.rideHailingEnabled) return;
 
             var manager = GetManager();
             if (manager == null) return;
@@ -113,8 +127,7 @@ namespace MaiyaAeroBay
             if (order.state == RideOrderState.Accepted && currentTile == order.pickupTile)
             {
                 order.state = RideOrderState.PickedUp;
-                var mgr = GetManager();
-                mgr?.UpdatePickupMarkerCompleted(order);
+                manager.UpdatePickupMarkerCompleted(order);
                 string detail = order.orderType == RideOrderType.TransportPerson
                     ? "MaiyaAeroBay_RidePickedUpPerson".Translate(order.passengerName, order.dropoffLabel)
                     : "MaiyaAeroBay_RidePickedUpCargo".Translate(order.cargoDef?.label ?? "cargo", order.dropoffLabel);

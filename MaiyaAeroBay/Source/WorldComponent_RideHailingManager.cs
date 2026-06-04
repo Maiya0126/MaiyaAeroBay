@@ -203,6 +203,11 @@ namespace MaiyaAeroBay
             return pendingOrders.FirstOrDefault(o => o.orderID == orderID);
         }
 
+        public List<RideOrder> GetAllActiveOrders()
+        {
+            return activeOrders.Where(o => o.state == RideOrderState.Accepted || o.state == RideOrderState.PickedUp).ToList();
+        }
+
         public void MoveToActive(RideOrder order)
         {
             pendingOrders.Remove(order);
@@ -250,7 +255,6 @@ namespace MaiyaAeroBay
                 quest.acceptanceTick = Find.TickManager.TicksGame;
 
                 Find.QuestManager.Add(quest);
-                quest.Initiate();
 
                 order.questID = quest.id;
             }
@@ -331,7 +335,7 @@ namespace MaiyaAeroBay
             return result;
         }
 
-        private ThingWithComps FindShuttleByID(string thingID)
+        public ThingWithComps FindShuttleByID(string thingID)
         {
             foreach (var map in Find.Maps)
             {
