@@ -201,10 +201,16 @@ namespace MaiyaAeroBay
                     }
                 }
 
+                if (level <= 0 && Prefs.DevMode)
+                {
+                    Log.Warning($"[MaiyaAeroBay] GetInteriorLevel=0 for map {map?.Index}, soureMap={pocketMapParent?.sourceMap?.Index}, mapComp={map.GetComponent<InteriorMapComponent>()?.ParentShuttle != null}");
+                }
+
                 return level;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.Error("[MaiyaAeroBay] GetInteriorLevel exception: " + ex.Message);
                 return 0;
             }
         }
@@ -485,7 +491,10 @@ namespace MaiyaAeroBay
                 borderColor.a = Mathf.Min(alpha + 0.2f, 1f);
                 Widgets.DrawBox(frameRect, 2, SolidColorMaterials.NewSolidColorTexture(borderColor));
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Log.Error("[MaiyaAeroBay] ColonistBarGroupFramePatch error: " + ex.Message);
+            }
         }
 
         private static Rect GroupFrameRect(int group)
