@@ -411,63 +411,67 @@ namespace MaiyaAeroBay
     [HarmonyPatch]
     public static class ColonistBarGroupFramePatch
     {
+        private static Dictionary<int, int> groupLevelCache = new Dictionary<int, int>();
+
         [HarmonyPatch(typeof(ColonistBar), "ColonistBarOnGUI")]
-        [HarmonyPostfix]
-        public static void Postfix()
+        [HarmonyPrefix]
+        public static void PreOnGUI()
         {
-            try
-            {
-                if (Event.current.type != EventType.Repaint) return;
-                var entries = Find.ColonistBar.Entries;
-                if (entries == null || entries.Count == 0) return;
+            groupLevelCache.Clear();
+            var entries = Find.ColonistBar.Entries;
+            if (entries == null || entries.Count == 0) return;
 
-                var drawn = new HashSet<int>();
-                for (int i = 0; i < entries.Count; i++)
+            var done = new HashSet<int>();
+            for (int i = 0; i < entries.Count; i++)
+            {
+                var e = entries[i];
+                if (e.map == null || done.Contains(e.group)) continue;
+                done.Add(e.group);
+
+                int level = 0;
+                if (e.map.IsPocketMap && e.map.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace")
                 {
-                    var e = entries[i];
-                    if (e.map == null || drawn.Contains(e.group)) continue;
-                    drawn.Add(e.group);
-
-                    int level = 0;
-                    Map refMap = e.map;
-
-                    if (e.map.IsPocketMap && e.map.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace")
-                    {
-                        level = LTOColonyGroupsCompat.GetInteriorLevel(e.map);
-                        refMap = e.map;
-                    }
-                    else
-                    {
-                        var pmp = Find.World.pocketMaps.FirstOrDefault(p =>
-                            p.sourceMap == e.map && p.HasMap &&
-                            p.Map.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace");
-                        if (pmp != null)
-                        {
-                            level = LTOColonyGroupsCompat.GetInteriorLevel(pmp.Map);
-                            refMap = pmp.Map;
-                        }
-                    }
-
-                    if (level <= 0) continue;
-
-                    Color color = InteriorLevelColors.ForLevel(level);
-                    Rect frameRect = GroupFrameRect(e.group);
-                    if (frameRect.width <= 0 || frameRect.height <= 0) continue;
-                    float alpha = (refMap == Find.CurrentMap && !WorldRendererUtility.WorldSelected) ? 0.35f : 0.2f;
-
-                    Color tint = color;
-                    tint.a = alpha;
-                    Widgets.DrawRectFast(frameRect, tint);
-
-                    Color borderColor = color;
-                    borderColor.a = Mathf.Min(alpha + 0.2f, 1f);
-                    Widgets.DrawBox(frameRect, 2, SolidColorMaterials.NewSolidColorTexture(borderColor));
+                    level = LTOColonyGroupsCompat.GetInteriorLevel(e.map);
                 }
+                else
+                {
+                    var pmp = Find.World.pocketMaps.FirstOrDefault(p =>
+                        p.sourceMap == e.map && p.HasMap &&
+                        p.Map.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace");
+                    if (pmp != null)
+                        level = LTOColonyGroupsCompat.GetInteriorLevel(pmp.Map);
+                }
+
+                if (level > 0)
+                    groupLevelCache[e.group] = level;
             }
-            catch (Exception ex)
-            {
-                Log.Error("[MaiyaAeroBay] ColonistBarGroupFramePatch error: " + ex.Message);
-            }
+        }
+
+        [HarmonyPatch(typeof(ColonistBarColonistDrawer), "DrawGroupFrame")]
+        [HarmonyPrefix]
+        public static bool Prefix(int group)
+        {
+            int level;
+            if (!groupLevelCache.TryGetValue(group, out level) || level <= 0)
+                return true;
+
+            var entries = Find.ColonistBar.Entries;
+            var entry = entries.FirstOrDefault(x => x.group == group);
+            if (entry.map == null) return true;
+
+            Color color = InteriorLevelColors.ForLevel(level);
+            Rect frameRect = GroupFrameRect(group);
+            if (frameRect.width <= 0 || frameRect.height <= 0) return true;
+            float alpha = (entry.map == Find.CurrentMap && !WorldRendererUtility.WorldSelected) ? 0.35f : 0.2f;
+
+            Color tint = color;
+            tint.a = alpha;
+            Widgets.DrawRectFast(frameRect, tint);
+
+            Color borderColor = color;
+            borderColor.a = Mathf.Min(alpha + 0.2f, 1f);
+            Widgets.DrawBox(frameRect, 2, SolidColorMaterials.NewSolidColorTexture(borderColor));
+            return false;
         }
 
         private static Rect GroupFrameRect(int group)
