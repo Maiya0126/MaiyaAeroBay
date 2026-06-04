@@ -456,37 +456,42 @@ namespace MaiyaAeroBay
     [HarmonyPatch]
     public static class ColonistBarGroupFramePatch
     {
-        [HarmonyPatch(typeof(ColonistBarColonistDrawer), "DrawGroupFrame")]
+        [HarmonyPatch(typeof(ColonistBar), "ColonistBarOnGUI")]
         [HarmonyPostfix]
-        public static void Postfix(int group)
+        public static void Postfix()
         {
             try
             {
+                if (Event.current.type != EventType.Repaint) return;
                 var entries = Find.ColonistBar.Entries;
                 if (entries == null || entries.Count == 0) return;
+                var drawnGroups = new HashSet<int>();
 
-                var entry = entries.FirstOrDefault(x => x.group == group);
-                if (entry.map == null) return;
-                Map map = entry.map;
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    var e = entries[i];
+                    if (e.map == null || drawnGroups.Contains(e.group)) continue;
+                    drawnGroups.Add(e.group);
 
-                if (map.IsPocketMap)
-                {
-                    int level = LTOColonyGroupsCompat.GetInteriorLevel(map);
-                    if (level <= 0) return;
-                    DrawColorForGroup(group, map, level);
-                }
-                else
-                {
-                    foreach (PocketMapParent pmp in Find.World.pocketMaps)
+                    Map map = e.map;
+                    int level = 0;
+
+                    if (map.IsPocketMap)
                     {
-                        if (pmp.sourceMap != map || !pmp.HasMap) continue;
-                        int level = LTOColonyGroupsCompat.GetInteriorLevel(pmp.Map);
-                        if (level > 0)
+                        level = LTOColonyGroupsCompat.GetInteriorLevel(map);
+                    }
+                    else
+                    {
+                        foreach (PocketMapParent pmp in Find.World.pocketMaps)
                         {
-                            DrawColorForGroup(group, map, level);
-                            return;
+                            if (pmp.sourceMap != map || !pmp.HasMap) continue;
+                            level = LTOColonyGroupsCompat.GetInteriorLevel(pmp.Map);
+                            if (level > 0) break;
                         }
                     }
+
+                    if (level <= 0) continue;
+                    DrawColorForGroup(e.group, map, level);
                 }
             }
             catch (Exception ex)
