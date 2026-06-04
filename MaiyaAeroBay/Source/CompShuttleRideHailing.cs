@@ -182,11 +182,13 @@ namespace MaiyaAeroBay
             StarRating += order.starReward;
             s_lastOrderTick = Find.TickManager.TicksGame;
 
-            if (order.rewardSilver > 0)
+            Map dropMap = parent?.Map ?? Find.AnyPlayerHomeMap;
+            if (order.rewardSilver > 0 && dropMap != null)
             {
                 var silver = ThingMaker.MakeThing(ThingDefOf.Silver);
                 silver.stackCount = order.rewardSilver;
-                GenPlace.TryPlaceThing(silver, parent.Position, parent.Map, ThingPlaceMode.Near);
+                IntVec3 dropPos = (parent != null && parent.Map != null) ? parent.Position : CellFinder.RandomEdgeCell(dropMap);
+                GenPlace.TryPlaceThing(silver, dropPos, dropMap, ThingPlaceMode.Near);
             }
 
             if (order.faction != null)
@@ -200,8 +202,7 @@ namespace MaiyaAeroBay
             Find.LetterStack.ReceiveLetter(
                 "MaiyaAeroBay_RideCompleteLetterTitle".Translate(),
                 "MaiyaAeroBay_RideCompleted".Translate(order.rewardSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
-                LetterDefOf.PositiveEvent,
-                new LookTargets(parent));
+                LetterDefOf.PositiveEvent);
         }
 
         public void FailOrder(RideOrder order, WorldComponent_RideHailingManager manager, string reason)
@@ -224,8 +225,7 @@ namespace MaiyaAeroBay
             Find.LetterStack.ReceiveLetter(
                 "MaiyaAeroBay_RideFailLetterTitle".Translate(),
                 failText,
-                LetterDefOf.NegativeEvent,
-                parent != null ? new LookTargets(parent) : LookTargets.Invalid);
+                LetterDefOf.NegativeEvent);
         }
 
         public void CancelOrder(RideOrder order, WorldComponent_RideHailingManager manager)
