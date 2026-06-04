@@ -80,14 +80,32 @@ namespace MaiyaAeroBay
         {
             try
             {
-                Map targetMap = LTORelfector.GetMapForGroup(group);
+                Map targetMap = null;
+
+                Map vanillaMap = Find.ColonistBar.Entries.FirstOrDefault(x => x.group == group).map;
+                if (vanillaMap != null)
+                {
+                    targetMap = vanillaMap;
+                }
+                else
+                {
+                    targetMap = LTORelfector.GetMapForGroup(group);
+                }
+
                 if (targetMap == null || targetMap.Index < 0) return true;
 
                 int level = GetInteriorLevel(targetMap);
                 if (level <= 0) return true;
 
                 Color color = InteriorLevelColors.ForLevel(level);
+
                 Rect? groupRect = LTORelfector.GetGroupFrameRect(group);
+                if (!groupRect.HasValue)
+                {
+                    Rect vanillaRect = ComputeVanillaGroupFrameRect(group);
+                    if (vanillaRect.width > 0 && vanillaRect.height > 0)
+                        groupRect = vanillaRect;
+                }
                 if (!groupRect.HasValue) return true;
 
                 Rect position = groupRect.Value;
@@ -102,6 +120,27 @@ namespace MaiyaAeroBay
                 Log.Error("[MaiyaAeroBay] LTO Prefix error: " + ex.ToString());
                 return true;
             }
+        }
+
+        private static Rect ComputeVanillaGroupFrameRect(int group)
+        {
+            var entries = Find.ColonistBar.Entries;
+            var drawLocs = Find.ColonistBar.DrawLocs;
+            if (entries == null || drawLocs == null || entries.Count != drawLocs.Count)
+                return default(Rect);
+
+            float minX = 99999f, maxX = 0f, maxY = 0f;
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].group == group)
+                {
+                    minX = Mathf.Min(minX, drawLocs[i].x);
+                    maxX = Mathf.Max(maxX, drawLocs[i].x + Find.ColonistBar.Size.x);
+                    maxY = Mathf.Max(maxY, drawLocs[i].y + Find.ColonistBar.Size.y);
+                }
+            }
+            if (minX >= 99999f) return default(Rect);
+            return new Rect(minX, 0f, maxX - minX, maxY).ContractedBy(-12f * Find.ColonistBar.Scale);
         }
 
         internal static int GetInteriorLevel(Map map)
@@ -165,7 +204,7 @@ namespace MaiyaAeroBay
 
     internal static class LTORelfector
     {
-        private static bool initialized = false;
+        private static bool typeInfoResolved = false;
         private static bool available = false;
 
         private static Type tacticalColonistBarType;
@@ -173,14 +212,14 @@ namespace MaiyaAeroBay
         private static FieldInfo cachedEntriesField;
         private static FieldInfo entryMapField;
         private static FieldInfo entryGroupField;
+        private static FieldInfo tacsBarStaticField;
         private static MethodInfo drawLocsGetter;
         private static MethodInfo scaleGetter;
-        private static object tacsBarInstance;
 
-        private static void Init()
+        private static void ResolveTypeInfo()
         {
-            if (initialized) return;
-            initialized = true;
+            if (typeInfoResolved) return;
+            typeInfoResolved = true;
 
             try
             {
@@ -221,19 +260,19 @@ namespace MaiyaAeroBay
                     {
                         if (f.FieldType == tacticalColonistBarType || f.FieldType.IsSubclassOf(tacticalColonistBarType))
                         {
-                            tacsBarInstance = f.GetValue(null);
+                            tacsBarStaticField = f;
                             break;
                         }
                     }
                 }
 
-                if (tacsBarInstance == null)
+                if (tacsBarStaticField == null)
                 {
                     foreach (var f in tacticalColonistBarType.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
                     {
                         if (f.FieldType == tacticalColonistBarType)
                         {
-                            tacsBarInstance = f.GetValue(null);
+                            tacsBarStaticField = f;
                             break;
                         }
                     }
@@ -244,16 +283,24 @@ namespace MaiyaAeroBay
             catch { }
         }
 
+        private static object GetCurrentBarInstance()
+        {
+            ResolveTypeInfo();
+            if (!available || tacsBarStaticField == null) return null;
+            try
+            {
+                return tacsBarStaticField.GetValue(null);
+            }
+            catch { return null; }
+        }
+
         public static Map GetMapForGroup(int group)
         {
-            Init();
-            if (!available) return null;
+            var bar = GetCurrentBarInstance();
+            if (bar == null) return null;
 
             try
             {
-                var bar = tacsBarInstance;
-                if (bar == null) return null;
-
                 var entries = cachedEntriesField.GetValue(bar) as IList;
                 if (entries == null) return null;
 
@@ -271,94 +318,13 @@ namespace MaiyaAeroBay
             return null;
         }
 
-        public static List<object> GetEntries()
-        {
-            Init();
-            if (!available) return null;
-
-            try
-            {
-                var bar = tacsBarInstance;
-                if (bar == null) return null;
-
-                var entries = cachedEntriesField.GetValue(bar) as IList;
-                if (entries == null) return null;
-
-                return entries.Cast<object>().ToList();
-            }
-            catch { }
-
-            return null;
-        }
-
-        public static Vector2[] GetDrawLocs()
-        {
-            Init();
-            if (!available) return null;
-
-            try
-            {
-                var bar = tacsBarInstance;
-                if (bar == null) return null;
-
-                if (drawLocsGetter != null)
-                    return drawLocsGetter.Invoke(bar, null) as Vector2[];
-
-                var field = tacticalColonistBarType.GetField("drawLocs",
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                if (field != null)
-                    return field.GetValue(bar) as Vector2[];
-
-                var colonistBarDrawLocsProp = tacticalColonistBarType.GetProperty("ColonistBarDrawLocs",
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                if (colonistBarDrawLocsProp != null)
-                {
-                    var getter = colonistBarDrawLocsProp.GetGetMethod(true);
-                    return getter.Invoke(bar, null) as Vector2[];
-                }
-
-                var colonistBarDrawLocsField = tacticalColonistBarType.GetField("ColonistBarDrawLocs",
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                if (colonistBarDrawLocsField != null)
-                    return colonistBarDrawLocsField.GetValue(bar) as Vector2[];
-
-                var allFields = tacticalColonistBarType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                foreach (var f in allFields)
-                {
-                    if (f.FieldType == typeof(Vector2[]) || f.FieldType == typeof(List<Vector2>))
-                    {
-                        var val = f.GetValue(bar);
-                        if (val is Vector2[] arr) return arr;
-                        if (val is List<Vector2> list) return list.ToArray();
-                    }
-                }
-
-                var allProps = tacticalColonistBarType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                foreach (var p in allProps)
-                {
-                    if (p.PropertyType == typeof(Vector2[]) || p.PropertyType == typeof(List<Vector2>))
-                    {
-                        var val = p.GetValue(bar);
-                        if (val is Vector2[] arr) return arr;
-                        if (val is List<Vector2> list) return list.ToArray();
-                    }
-                }
-            }
-            catch { }
-
-            return null;
-        }
-
         public static Rect? GetGroupFrameRect(int group)
         {
-            Init();
-            if (!available) return null;
+            var bar = GetCurrentBarInstance();
+            if (bar == null) return null;
 
             try
             {
-                var bar = tacsBarInstance;
-                if (bar == null) return null;
-
                 var drawerField = tacticalColonistBarType.GetField("drawer",
                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                 if (drawerField == null) return null;
@@ -382,29 +348,19 @@ namespace MaiyaAeroBay
 
         public static float GetScale()
         {
-            Init();
-            if (!available) return 0f;
+            var bar = GetCurrentBarInstance();
+            if (bar == null || scaleGetter == null) return 0f;
 
             try
             {
-                var bar = tacsBarInstance;
-                if (bar != null && scaleGetter != null)
-                {
-                    return (float)scaleGetter.Invoke(scaleGetter.IsStatic ? null : bar, null);
-                }
+                return (float)scaleGetter.Invoke(scaleGetter.IsStatic ? null : bar, null);
             }
-            catch { }
-
-            return 0f;
+            catch { return 0f; }
         }
 
-        public static int GetEntryGroup(object entry)
+        public static bool IsAvailable
         {
-            try
-            {
-                return (int)entryGroupField.GetValue(entry);
-            }
-            catch { return -1; }
+            get { ResolveTypeInfo(); return available; }
         }
     }
 
@@ -420,12 +376,14 @@ namespace MaiyaAeroBay
             try
             {
                 groupLevelCache.Clear();
+                if (LTORelfector.IsAvailable) return;
+
                 var entries = Find.ColonistBar.Entries;
                 if (entries == null || entries.Count == 0) return;
 
-                int pocketMapCount = Find.World.pocketMaps.Count;
-                var maiyaPMPs = Find.World.pocketMaps.Where(p => p.HasMap && p.Map?.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace").ToList();
-                Log.Message($"[MaiyaAeroBay] PreOnGUI: entries={entries.Count}, pocketMaps={pocketMapCount}, maiyaPMPs={maiyaPMPs.Count}");
+                var maiyaPMPs = Find.World.pocketMaps
+                    .Where(p => p.HasMap && p.Map?.generatorDef?.defName == "MaiyaAeroBay_InteriorSpace")
+                    .ToList();
 
                 var done = new HashSet<int>();
                 for (int i = 0; i < entries.Count; i++)
@@ -452,15 +410,12 @@ namespace MaiyaAeroBay
                     }
 
                     if (level > 0)
-                    {
                         groupLevelCache[e.group] = level;
-                        Log.Message($"[MaiyaAeroBay] PreOnGUI: group={e.group} level={level} isPocket={e.map.IsPocketMap}");
-                    }
                 }
             }
             catch (Exception ex)
             {
-                Log.Error("[MaiyaAeroBay] PreOnGUI error: " + ex.Message + "\n" + ex.StackTrace);
+                Log.Error("[MaiyaAeroBay] PreOnGUI error: " + ex.Message);
             }
         }
 
@@ -477,7 +432,7 @@ namespace MaiyaAeroBay
             if (entry.map == null) return true;
 
             Color color = InteriorLevelColors.ForLevel(level);
-            Rect frameRect = GroupFrameRect(group);
+            Rect frameRect = ComputeVanillaGroupFrameRect(group);
             if (frameRect.width <= 0 || frameRect.height <= 0) return true;
             float alpha = (entry.map == Find.CurrentMap && !WorldRendererUtility.WorldSelected) ? 0.35f : 0.2f;
 
@@ -491,13 +446,14 @@ namespace MaiyaAeroBay
             return false;
         }
 
-        private static Rect GroupFrameRect(int group)
+        private static Rect ComputeVanillaGroupFrameRect(int group)
         {
             var entries = Find.ColonistBar.Entries;
             var drawLocs = Find.ColonistBar.DrawLocs;
-            float minX = 99999f;
-            float maxX = 0f;
-            float maxY = 0f;
+            if (entries == null || drawLocs == null || entries.Count != drawLocs.Count)
+                return default(Rect);
+
+            float minX = 99999f, maxX = 0f, maxY = 0f;
             for (int i = 0; i < entries.Count; i++)
             {
                 if (entries[i].group == group)
@@ -507,7 +463,8 @@ namespace MaiyaAeroBay
                     maxY = Mathf.Max(maxY, drawLocs[i].y + Find.ColonistBar.Size.y);
                 }
             }
-            return new Rect(minX, 0f, maxX - minX, maxY - 0f).ContractedBy(-12f * Find.ColonistBar.Scale);
+            if (minX >= 99999f) return default(Rect);
+            return new Rect(minX, 0f, maxX - minX, maxY).ContractedBy(-12f * Find.ColonistBar.Scale);
         }
     }
 
