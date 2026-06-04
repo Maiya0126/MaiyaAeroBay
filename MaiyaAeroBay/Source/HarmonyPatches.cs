@@ -113,44 +113,26 @@ namespace MaiyaAeroBay
                 if (map.generatorDef.defName != "MaiyaAeroBay_InteriorSpace") return 0;
 
                 var mapComp = map.GetComponent<InteriorMapComponent>();
-                if (mapComp != null && mapComp.CachedUpgradeLevel > 0)
-                    return mapComp.CachedUpgradeLevel;
-
-                int level = 0;
-                var pocketMapParent = map.Parent as PocketMapParent;
-                if (pocketMapParent != null)
+                if (mapComp != null)
                 {
-                    Map sourceMap = pocketMapParent.sourceMap;
-                    if (sourceMap != null && sourceMap.Index >= 0)
-                    {
-                        foreach (var thing in sourceMap.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
-                        {
-                            var interior = thing.TryGetComp<Comp_ShuttleInterior>();
-                            if (interior != null && interior.PocketMap == map)
-                            {
-                                level = interior.UpgradeLevel;
-                                break;
-                            }
-                        }
-                    }
+                    int cached = mapComp.CachedUpgradeLevel;
+                    if (cached > 0) return cached;
                 }
 
-                if (level <= 0)
+                int level = 0;
+                foreach (Map extMap in Find.Maps)
                 {
-                    foreach (Map extMap in Find.Maps)
+                    if (extMap == map) continue;
+                    foreach (var thing in extMap.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
                     {
-                        if (extMap == null) continue;
-                        foreach (var thing in extMap.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
+                        var interior = thing.TryGetComp<Comp_ShuttleInterior>();
+                        if (interior != null && interior.PocketMap == map)
                         {
-                            var interior = thing.TryGetComp<Comp_ShuttleInterior>();
-                            if (interior != null && interior.PocketMap == map)
-                            {
-                                level = interior.UpgradeLevel;
-                                break;
-                            }
+                            level = interior.UpgradeLevel;
+                            break;
                         }
-                        if (level > 0) break;
                     }
+                    if (level > 0) break;
                 }
 
                 if (level <= 0)
@@ -168,35 +150,8 @@ namespace MaiyaAeroBay
                     }
                 }
 
-                if (level <= 0)
-                {
-                    foreach (var tt in Find.WorldObjects.TravellingTransporters)
-                    {
-                        var childHolders = new List<IThingHolder>();
-                        tt.GetChildHolders(childHolders);
-                        foreach (IThingHolder holder in childHolders)
-                        {
-                            if (holder is IThingHolder inner && inner.GetDirectlyHeldThings() != null)
-                            {
-                                for (int i = 0; i < inner.GetDirectlyHeldThings().Count; i++)
-                                {
-                                    var t = inner.GetDirectlyHeldThings()[i];
-                                    if (t is Building_PassengerShuttle)
-                                    {
-                                        var interior = t.TryGetComp<Comp_ShuttleInterior>();
-                                        if (interior != null && interior.PocketMap == map)
-                                        {
-                                            level = interior.UpgradeLevel;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            if (level > 0) break;
-                        }
-                        if (level > 0) break;
-                    }
-                }
+                if (level > 0 && mapComp != null)
+                    mapComp.UpdateCachedLevel(level);
 
                 return level;
             }
@@ -456,64 +411,43 @@ namespace MaiyaAeroBay
     [HarmonyPatch]
     public static class ColonistBarGroupFramePatch
     {
-        [HarmonyPatch(typeof(ColonistBar), "ColonistBarOnGUI")]
-        [HarmonyPostfix]
-        public static void Postfix()
+        [HarmonyPatch(typeof(ColonistBarColonistDrawer), "DrawGroupFrame")]
+        [HarmonyPrefix]
+        public static bool Prefix(int group)
         {
             try
             {
-                if (Event.current.type != EventType.Repaint) return;
                 var entries = Find.ColonistBar.Entries;
-                if (entries == null || entries.Count == 0) return;
-                var drawnGroups = new HashSet<int>();
+                if (entries == null || entries.Count == 0) return true;
+                var entry = entries.FirstOrDefault(x => x.group == group);
+                if (entry.map == null) return true;
+                Map map = entry.map;
 
-                for (int i = 0; i < entries.Count; i++)
-                {
-                    var e = entries[i];
-                    if (e.map == null || drawnGroups.Contains(e.group)) continue;
-                    drawnGroups.Add(e.group);
+                if (!map.IsPocketMap) return true;
 
-                    Map map = e.map;
-                    int level = 0;
+                int level = LTOColonyGroupsCompat.GetInteriorLevel(map);
+                if (level <= 0) return true;
 
-                    if (map.IsPocketMap)
-                    {
-                        level = LTOColonyGroupsCompat.GetInteriorLevel(map);
-                    }
-                    else
-                    {
-                        foreach (PocketMapParent pmp in Find.World.pocketMaps)
-                        {
-                            if (pmp.sourceMap != map || !pmp.HasMap) continue;
-                            level = LTOColonyGroupsCompat.GetInteriorLevel(pmp.Map);
-                            if (level > 0) break;
-                        }
-                    }
+                Color color = InteriorLevelColors.ForLevel(level);
+                Rect frameRect = GroupFrameRect(group);
+                if (frameRect.width <= 0 || frameRect.height <= 0) return true;
+                float alpha = (map == Find.CurrentMap && !WorldRendererUtility.WorldSelected) ? 0.35f : 0.2f;
 
-                    if (level <= 0) continue;
-                    DrawColorForGroup(e.group, map, level);
-                }
+                Color tint = color;
+                tint.a = alpha;
+                Widgets.DrawRectFast(frameRect, tint);
+
+                Color borderColor = color;
+                borderColor.a = Mathf.Min(alpha + 0.2f, 1f);
+                Widgets.DrawBox(frameRect, 2, SolidColorMaterials.NewSolidColorTexture(borderColor));
+
+                return false;
             }
             catch (Exception ex)
             {
                 Log.Error("[MaiyaAeroBay] ColonistBarGroupFramePatch error: " + ex.Message);
+                return true;
             }
-        }
-
-        private static void DrawColorForGroup(int group, Map map, int level)
-        {
-            Color color = InteriorLevelColors.ForLevel(level);
-            Rect frameRect = GroupFrameRect(group);
-            if (frameRect.width <= 0 || frameRect.height <= 0) return;
-            float alpha = (map == Find.CurrentMap && !WorldRendererUtility.WorldSelected) ? 0.35f : 0.2f;
-
-            Color tint = color;
-            tint.a = alpha;
-            Widgets.DrawRectFast(frameRect, tint);
-
-            Color borderColor = color;
-            borderColor.a = Mathf.Min(alpha + 0.2f, 1f);
-            Widgets.DrawBox(frameRect, 2, SolidColorMaterials.NewSolidColorTexture(borderColor));
         }
 
         private static Rect GroupFrameRect(int group)

@@ -67,6 +67,11 @@ namespace MaiyaAeroBay
                 cachedUpgradeLevel = shuttle.UpgradeLevel;
         }
 
+        public void UpdateCachedLevel(int level)
+        {
+            if (level > 0) cachedUpgradeLevel = level;
+        }
+
         private void RepairParentShuttle()
         {
             foreach (Map extMap in Find.Maps)

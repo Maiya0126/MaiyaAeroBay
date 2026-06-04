@@ -124,6 +124,12 @@ namespace MaiyaAeroBay
             {
                 pocketMapParent.sourceMap = parent.Map;
             }
+            if (upgradeLevel > 0 && PocketMapExists)
+            {
+                var mapComp = PocketMap?.GetComponent<InteriorMapComponent>();
+                if (mapComp != null && mapComp.CachedUpgradeLevel != upgradeLevel)
+                    mapComp.UpdateCachedLevel(upgradeLevel);
+            }
         }
 
         public override void PostExposeData()
