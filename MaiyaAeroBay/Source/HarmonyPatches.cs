@@ -496,6 +496,7 @@ namespace MaiyaAeroBay
             {
                 if (!__instance.HasMap) return true;
                 Map map = __instance.Map;
+
                 foreach (PocketMapParent pmp in Find.World.pocketMaps.ToList())
                 {
                     if (pmp.sourceMap == map && pmp.HasMap && pmp.Map.mapPawns.AnyPawnBlockingMapRemoval)
@@ -503,21 +504,40 @@ namespace MaiyaAeroBay
                         return false;
                     }
                 }
+
                 foreach (Thing thing in map.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
                 {
                     var interior = thing.TryGetComp<Comp_ShuttleInterior>();
-                    if (interior != null && interior.PocketMapExists && interior.pocketMapParent != null)
+                    if (interior == null || !interior.PocketMapExists) continue;
+                    var pmp = interior.pocketMapParent;
+                    if (pmp == null || !pmp.HasMap) continue;
+                    if (pmp.Map.mapPawns.AnyPawnBlockingMapRemoval)
                     {
-                        var pmp = interior.pocketMapParent;
-                        if (pmp.HasMap && pmp.Map.mapPawns.AnyPawnBlockingMapRemoval)
+                        if (pmp.sourceMap != map)
                         {
                             pmp.sourceMap = map;
+                        }
+                        return false;
+                    }
+                }
+
+                foreach (PocketMapParent pmp in Find.World.pocketMaps.ToList())
+                {
+                    if (pmp.sourceMap != map || !pmp.HasMap) continue;
+                    try
+                    {
+                        if (pmp.Map.mapPawns.AllPawns.Any(p => p.IsColonist || p.RaceProps?.Animal == true))
+                        {
                             return false;
                         }
                     }
+                    catch { }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Log.Error("[MaiyaAeroBay] ShuttlePocketMapPreventRemoval check failed: " + ex.Message);
+            }
             return true;
         }
     }
@@ -531,11 +551,28 @@ namespace MaiyaAeroBay
             try
             {
                 if (map == null) return;
+
+                var affectedPMPs = new List<PocketMapParent>();
                 foreach (PocketMapParent pmp in Find.World.pocketMaps.ToList())
                 {
-                    if (pmp.sourceMap != map || !pmp.HasMap) continue;
+                    if (!pmp.HasMap) continue;
+                    if (pmp.sourceMap == map)
+                    {
+                        affectedPMPs.Add(pmp);
+                        continue;
+                    }
+                    if (pmp.sourceMap != null && Find.Maps.Contains(pmp.sourceMap)) continue;
+                    if (pmp.Map != null && pmp.Map.mapPawns.AllPawns.Any(p => p.IsColonist))
+                    {
+                        affectedPMPs.Add(pmp);
+                    }
+                }
+
+                foreach (var pmp in affectedPMPs)
+                {
                     Map pocketMap = pmp.Map;
                     if (pocketMap == null) continue;
+
                     var shuttles = new List<Comp_ShuttleInterior>();
                     foreach (Thing thing in map.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
                     {
@@ -543,8 +580,9 @@ namespace MaiyaAeroBay
                         if (comp != null && comp.PocketMap == pocketMap)
                             shuttles.Add(comp);
                     }
+
                     Map fallbackMap = Find.AnyPlayerHomeMap;
-                    if (fallbackMap == null)
+                    if (fallbackMap == null || fallbackMap == map)
                     {
                         foreach (Map m in Find.Maps)
                         {
@@ -556,12 +594,14 @@ namespace MaiyaAeroBay
                         }
                     }
                     if (fallbackMap == null) continue;
+
                     List<Pawn> pawnsToEvac = new List<Pawn>();
                     foreach (Thing t in pocketMap.listerThings.AllThings)
                     {
                         if (t is Pawn p && (p.IsColonist || p.RaceProps.Animal))
                             pawnsToEvac.Add(p);
                     }
+
                     foreach (Pawn p in pawnsToEvac.ToList())
                     {
                         if (shuttles.Count > 0)
@@ -570,8 +610,10 @@ namespace MaiyaAeroBay
                         IntVec3 loc = CellFinder.RandomSpawnCellForPawnNear(fallbackMap.Center, fallbackMap, 10);
                         GenSpawn.Spawn(p, loc, fallbackMap, Rot4.Random);
                     }
+
                     if (pawnsToEvac.Count > 0)
                         Messages.Message("MaiyaAeroBay_PawnsEvacuated".Translate(pawnsToEvac.Count), MessageTypeDefOf.PositiveEvent);
+
                     pmp.sourceMap = fallbackMap;
                     foreach (var shuttle in shuttles)
                     {

@@ -117,6 +117,15 @@ namespace MaiyaAeroBay
             }
         }
 
+        public override void CompTick()
+        {
+            base.CompTick();
+            if (parent.Map != null && pocketMapParent != null && (pocketMapParent.sourceMap == null || pocketMapParent.sourceMap != parent.Map))
+            {
+                pocketMapParent.sourceMap = parent.Map;
+            }
+        }
+
         public override void PostExposeData()
         {
             base.PostExposeData();
