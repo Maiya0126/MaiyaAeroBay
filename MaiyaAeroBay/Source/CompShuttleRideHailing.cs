@@ -113,6 +113,8 @@ namespace MaiyaAeroBay
             if (order.state == RideOrderState.Accepted && currentTile == order.pickupTile)
             {
                 order.state = RideOrderState.PickedUp;
+                var mgr = GetManager();
+                mgr?.UpdatePickupMarkerCompleted(order);
                 string detail = order.orderType == RideOrderType.TransportPerson
                     ? "MaiyaAeroBay_RidePickedUpPerson".Translate(order.passengerName, order.dropoffLabel)
                     : "MaiyaAeroBay_RidePickedUpCargo".Translate(order.cargoDef?.label ?? "cargo", order.dropoffLabel);
@@ -142,6 +144,16 @@ namespace MaiyaAeroBay
             if (order.faction != null)
             {
                 order.faction.TryAffectGoodwillWith(Faction.OfPlayer, 3, canSendMessage: true, canSendHostilityLetter: false);
+            }
+
+            if (order.questID >= 0)
+            {
+                var quest = Find.QuestManager?.QuestsListForReading?.FirstOrDefault(q => q.id == order.questID);
+                if (quest != null && quest.State != QuestState.EndedFailed && quest.State != QuestState.EndedSuccess && quest.State != QuestState.EndedInvalid)
+                {
+                    try { quest.End(QuestEndOutcome.Success, sendLetter: false, playSound: false); } catch { }
+                }
+                order.questID = -1;
             }
 
             manager.RemoveOrder(order);
@@ -306,6 +318,13 @@ namespace MaiyaAeroBay
                     icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
                     action = () => DebugGenerateOrder(RideOrderType.TransportCargo, true)
                 };
+                yield return new Command_Action
+                {
+                    defaultLabel = "MaiyaAeroBay_DebugRideTimeout".Translate(),
+                    defaultDesc = "Debug: force current order to timeout",
+                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
+                    action = DebugForceTimeout
+                };
             }
         }
 
@@ -383,6 +402,19 @@ namespace MaiyaAeroBay
             {
                 Messages.Message("Debug: failed to generate order (not enough settlements?)", parent, MessageTypeDefOf.RejectInput);
             }
+        }
+
+        private void DebugForceTimeout()
+        {
+            var order = ActiveOrder;
+            if (order == null)
+            {
+                Messages.Message("Debug: no active order to timeout", parent, MessageTypeDefOf.RejectInput);
+                return;
+            }
+            var manager = GetManager();
+            if (manager == null) return;
+            FailOrder(order, manager, "MaiyaAeroBay_RideFailedTimeout".Translate());
         }
     }
 }

@@ -30,6 +30,20 @@ namespace MaiyaAeroBay
             if (activeOrders == null) activeOrders = new List<RideOrder>();
         }
 
+        public override void FinalizeInit(bool fromLoad)
+        {
+            base.FinalizeInit(fromLoad);
+            foreach (var order in activeOrders)
+            {
+                if ((order.state == RideOrderState.Accepted || order.state == RideOrderState.PickedUp)
+                    && order.questID < 0)
+                {
+                    CreateQuestForOrder(order);
+                    CreateMarkersForOrder(order);
+                }
+            }
+        }
+
         public override void WorldComponentTick()
         {
             base.WorldComponentTick();
@@ -48,8 +62,9 @@ namespace MaiyaAeroBay
             if (nextOrderCheckTick < 0 || tick >= nextOrderCheckTick)
             {
                 TryGenerateOrders();
-                int interval = Mathf.RoundToInt(60000f * 0.5f);
-                nextOrderCheckTick = tick + Rand.Range(interval / 2, interval);
+                float intervalDays = MaiyaAeroBayMod.settings.rideHailingOrderIntervalDays;
+                int interval = Mathf.RoundToInt(60000f * intervalDays);
+                nextOrderCheckTick = tick + Rand.Range(Mathf.Max(interval / 2, 100), Mathf.Max(interval, 200));
             }
         }
 
@@ -88,6 +103,7 @@ namespace MaiyaAeroBay
                             continue;
                         }
                     }
+                    CleanupOrderResources(order);
                     activeOrders.RemoveAt(i);
                 }
             }
@@ -174,8 +190,17 @@ namespace MaiyaAeroBay
 
         public RideOrder GetActiveOrderByShuttle(string shuttleID)
         {
+            if (shuttleID == null)
+                return activeOrders.FirstOrDefault(o => o.state == RideOrderState.Accepted || o.state == RideOrderState.PickedUp);
             return activeOrders.FirstOrDefault(o => o.assignedShuttleID == shuttleID
                 && (o.state == RideOrderState.Accepted || o.state == RideOrderState.PickedUp));
+        }
+
+        public RideOrder FindOrderByID(string orderID)
+        {
+            var order = activeOrders.FirstOrDefault(o => o.orderID == orderID);
+            if (order != null) return order;
+            return pendingOrders.FirstOrDefault(o => o.orderID == orderID);
         }
 
         public void MoveToActive(RideOrder order)
@@ -183,12 +208,112 @@ namespace MaiyaAeroBay
             pendingOrders.Remove(order);
             if (!activeOrders.Contains(order))
                 activeOrders.Add(order);
+            CreateQuestForOrder(order);
+            CreateMarkersForOrder(order);
         }
 
         public void RemoveOrder(RideOrder order)
         {
+            CleanupOrderResources(order);
             pendingOrders.Remove(order);
             activeOrders.Remove(order);
+        }
+
+        internal void UpdatePickupMarkerCompleted(RideOrder order)
+        {
+            RemoveMarker(order.pickupMarkerID);
+            order.pickupMarkerID = -1;
+        }
+
+        private void CreateQuestForOrder(RideOrder order)
+        {
+            try
+            {
+                var quest = Quest.MakeRaw();
+                quest.name = "MaiyaAeroBay_RideQuestName".Translate(order.GetOrderTypeLabel(), order.pickupLabel, order.dropoffLabel);
+                quest.description = "MaiyaAeroBay_RideQuestDescription".Translate(
+                    order.GetOrderTypeLabel(), order.pickupLabel, order.dropoffLabel,
+                    order.rewardSilver.ToString());
+
+                var part = new QuestPart_RideHailingOrder();
+                part.orderID = order.orderID;
+                part.pickupTile = order.pickupTile;
+                part.dropoffTile = order.dropoffTile;
+                part.pickupLabel = order.pickupLabel;
+                part.dropoffLabel = order.dropoffLabel;
+                part.orderTypeLabel = order.GetOrderTypeLabel();
+                part.completeDeadlineTick = order.completeDeadlineTick;
+                quest.AddPart(part);
+
+                quest.initiallyAccepted = true;
+                quest.appearanceTick = Find.TickManager.TicksGame;
+                quest.acceptanceTick = Find.TickManager.TicksGame;
+
+                Find.QuestManager.Add(quest);
+                quest.Initiate();
+
+                order.questID = quest.id;
+            }
+            catch (System.Exception ex)
+            {
+                Log.Warning("[MaiyaAeroBay] Failed to create quest for ride order: " + ex.Message);
+            }
+        }
+
+        private void CreateMarkersForOrder(RideOrder order)
+        {
+            try
+            {
+                var pickupMarker = (RideOrderMarker)WorldObjectMaker.MakeWorldObject(
+                    DefDatabase<WorldObjectDef>.GetNamed("MaiyaAeroBay_RideOrderMarker"));
+                pickupMarker.Initialize(order.orderID, true, order.pickupLabel, order.dropoffLabel, order.GetOrderTypeLabel());
+                pickupMarker.Tile = order.pickupTile;
+                Find.WorldObjects.Add(pickupMarker);
+                order.pickupMarkerID = pickupMarker.ID;
+
+                var dropoffMarker = (RideOrderMarker)WorldObjectMaker.MakeWorldObject(
+                    DefDatabase<WorldObjectDef>.GetNamed("MaiyaAeroBay_RideOrderMarker"));
+                dropoffMarker.Initialize(order.orderID, false, order.dropoffLabel, order.pickupLabel, order.GetOrderTypeLabel());
+                dropoffMarker.Tile = order.dropoffTile;
+                Find.WorldObjects.Add(dropoffMarker);
+                order.dropoffMarkerID = dropoffMarker.ID;
+            }
+            catch (System.Exception ex)
+            {
+                Log.Warning("[MaiyaAeroBay] Failed to create markers for ride order: " + ex.Message);
+            }
+        }
+
+        private void CleanupOrderResources(RideOrder order)
+        {
+            RemoveMarker(order.pickupMarkerID);
+            RemoveMarker(order.dropoffMarkerID);
+            order.pickupMarkerID = -1;
+            order.dropoffMarkerID = -1;
+
+            if (order.questID >= 0)
+            {
+                var quest = Find.QuestManager?.QuestsListForReading?.FirstOrDefault(q => q.id == order.questID);
+                if (quest != null && quest.State == QuestState.Ongoing)
+                {
+                    try
+                    {
+                        quest.End(QuestEndOutcome.Fail, sendLetter: false, playSound: false);
+                    }
+                    catch { }
+                }
+                order.questID = -1;
+            }
+        }
+
+        private void RemoveMarker(int markerID)
+        {
+            if (markerID < 0) return;
+            var obj = Find.WorldObjects.AllWorldObjects.FirstOrDefault(w => w.ID == markerID);
+            if (obj != null && !obj.Destroyed)
+            {
+                Find.WorldObjects.Remove(obj);
+            }
         }
 
         private List<ThingWithComps> GetAllRideHailingShuttles()

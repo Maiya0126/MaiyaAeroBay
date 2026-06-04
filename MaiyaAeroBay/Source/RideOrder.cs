@@ -32,6 +32,10 @@ namespace MaiyaAeroBay
 
         public string assignedShuttleID = "";
 
+        public int questID = -1;
+        public int pickupMarkerID = -1;
+        public int dropoffMarkerID = -1;
+
         public RideOrder() { }
 
         public RideOrder(
@@ -151,6 +155,9 @@ namespace MaiyaAeroBay
             Scribe_Values.Look(ref acceptDeadlineTick, "acceptDeadlineTick", -1);
             Scribe_Values.Look(ref completeDeadlineTick, "completeDeadlineTick", -1);
             Scribe_Values.Look(ref assignedShuttleID, "assignedShuttleID", "");
+            Scribe_Values.Look(ref questID, "questID", -1);
+            Scribe_Values.Look(ref pickupMarkerID, "pickupMarkerID", -1);
+            Scribe_Values.Look(ref dropoffMarkerID, "dropoffMarkerID", -1);
         }
     }
 }

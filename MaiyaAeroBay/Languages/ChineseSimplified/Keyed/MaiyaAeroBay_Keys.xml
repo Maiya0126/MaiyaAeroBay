@@ -360,4 +360,17 @@
   <MaiyaAeroBay_DebugRideLongPerson>[调试] 远程运人</MaiyaAeroBay_DebugRideLongPerson>
   <MaiyaAeroBay_DebugRideShortCargo>[调试] 短途货运</MaiyaAeroBay_DebugRideShortCargo>
   <MaiyaAeroBay_DebugRideLongCargo>[调试] 远程货运</MaiyaAeroBay_DebugRideLongCargo>
+  <MaiyaAeroBay_DebugRideTimeout>[调试] 超时惩罚</MaiyaAeroBay_DebugRideTimeout>
+
+  <MaiyaAeroBay_RideHailingOrderInterval>派单间隔</MaiyaAeroBay_RideHailingOrderInterval>
+  <MaiyaAeroBay_Days>天</MaiyaAeroBay_Days>
+
+  <MaiyaAeroBay_RidePickupMarker>取货: {0}</MaiyaAeroBay_RidePickupMarker>
+  <MaiyaAeroBay_RideDropoffMarker>交货: {0}</MaiyaAeroBay_RideDropoffMarker>
+  <MaiyaAeroBay_RidePickupInspect>{0} - 取货点: {1} → {2}</MaiyaAeroBay_RidePickupInspect>
+  <MaiyaAeroBay_RideDropoffInspect>{0} - 交货点: {1} ← {2}</MaiyaAeroBay_RideDropoffInspect>
+
+  <MaiyaAeroBay_RideQuestName>{0}: {1} → {2}</MaiyaAeroBay_RideQuestName>
+  <MaiyaAeroBay_RideQuestDescription>{0}: {1} → {2}，状态: {3}</MaiyaAeroBay_RideQuestDescription>
+  <MaiyaAeroBay_RideQuestEnded>已结束</MaiyaAeroBay_RideQuestEnded>
 </LanguageData>

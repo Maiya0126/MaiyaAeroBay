@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <WorldObjectDef>
+    <defName>MaiyaAeroBay_RideOrderMarker</defName>
+    <label>ride order point</label>
+    <worldObjectClass>MaiyaAeroBay.RideOrderMarker</worldObjectClass>
+    <texture>UI/Commands/car</texture>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconTexture>UI/Commands/car</expandingIconTexture>
+    <expandingIconPriority>90</expandingIconPriority>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <drawAltitudeOffset>0.02</drawAltitudeOffset>
+  </WorldObjectDef>
+</Defs>

@@ -78,6 +78,8 @@
     <Compile Include="Source\Dialog_RideOrders.cs" />
     <Compile Include="Source\Dialog_RideHailingWelcome.cs" />
     <Compile Include="Source\Gizmo_RideHailingStatus.cs" />
+    <Compile Include="Source\RideOrderMarker.cs" />
+    <Compile Include="Source\QuestPart_RideHailingOrder.cs" />
     <Compile Include="Source\CompTargetable_SingleShuttle.cs" />
     <Compile Include="Source\CompTargetEffect_InstallAeroBayKit.cs" />
     <Compile Include="Source\JobDriver_InstallAeroBayKit.cs" />
@@ -116,6 +118,7 @@
     <Content Include="Defs\JobDefs\Jobs.xml" />
     <Content Include="Defs\RecipeDefs\Recipes.xml" />
     <Content Include="Defs\RecipeDefs\Recipes_Kits.xml" />
+    <Content Include="Defs\WorldObjectDefs\WorldObjects_RideHailing.xml" />
     <Content Include="Defs\ResearchProjectDefs\ResearchProjects.xml" />
     <Content Include="Languages\ChineseSimplified\Keyed\MaiyaAeroBay_Keys.xml" />
     <Content Include="Languages\English\Keyed\MaiyaAeroBay_Keys.xml" />

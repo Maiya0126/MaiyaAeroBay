@@ -361,4 +361,17 @@
   <MaiyaAeroBay_DebugRideLongPerson>[Debug] Long Person</MaiyaAeroBay_DebugRideLongPerson>
   <MaiyaAeroBay_DebugRideShortCargo>[Debug] Short Cargo</MaiyaAeroBay_DebugRideShortCargo>
   <MaiyaAeroBay_DebugRideLongCargo>[Debug] Long Cargo</MaiyaAeroBay_DebugRideLongCargo>
+  <MaiyaAeroBay_DebugRideTimeout>[Debug] Force Timeout</MaiyaAeroBay_DebugRideTimeout>
+
+  <MaiyaAeroBay_RideHailingOrderInterval>Order interval</MaiyaAeroBay_RideHailingOrderInterval>
+  <MaiyaAeroBay_Days>days</MaiyaAeroBay_Days>
+
+  <MaiyaAeroBay_RidePickupMarker>Pickup: {0}</MaiyaAeroBay_RidePickupMarker>
+  <MaiyaAeroBay_RideDropoffMarker>Dropoff: {0}</MaiyaAeroBay_RideDropoffMarker>
+  <MaiyaAeroBay_RidePickupInspect>{0} - Pickup: {1} to {2}</MaiyaAeroBay_RidePickupInspect>
+  <MaiyaAeroBay_RideDropoffInspect>{0} - Dropoff: {1} from {2}</MaiyaAeroBay_RideDropoffInspect>
+
+  <MaiyaAeroBay_RideQuestName>{0}: {1} -> {2}</MaiyaAeroBay_RideQuestName>
+  <MaiyaAeroBay_RideQuestDescription>{0}: {1} -> {2}, Status: {3}</MaiyaAeroBay_RideQuestDescription>
+  <MaiyaAeroBay_RideQuestEnded>Ended</MaiyaAeroBay_RideQuestEnded>
 </LanguageData>

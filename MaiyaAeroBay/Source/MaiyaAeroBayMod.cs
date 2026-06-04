@@ -48,6 +48,8 @@ namespace MaiyaAeroBay
             listingStandard.Gap();
             listingStandard.Label("MaiyaAeroBay_RideHailingSettings".Translate());
             listingStandard.CheckboxLabeled("MaiyaAeroBay_RideHailingEnabled".Translate(), ref settings.rideHailingEnabled);
+            listingStandard.Label("MaiyaAeroBay_RideHailingOrderInterval".Translate() + ": " + settings.rideHailingOrderIntervalDays.ToString("F1") + " " + "MaiyaAeroBay_Days".Translate());
+            settings.rideHailingOrderIntervalDays = listingStandard.Slider(settings.rideHailingOrderIntervalDays, 0.25f, 5f);
             listingStandard.Gap();
             listingStandard.Label("MaiyaAeroBay_WallPowerPerCell".Translate() + ": " + settings.wallPowerPerCell.ToString("F0") + "W");
             settings.wallPowerPerCell = listingStandard.Slider(settings.wallPowerPerCell, 0f, 200f);
