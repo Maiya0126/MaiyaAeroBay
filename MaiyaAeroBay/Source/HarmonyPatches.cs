@@ -112,6 +112,10 @@ namespace MaiyaAeroBay
                 if (map.generatorDef == null) return 0;
                 if (map.generatorDef.defName != "MaiyaAeroBay_InteriorSpace") return 0;
 
+                var mapComp = map.GetComponent<InteriorMapComponent>();
+                if (mapComp != null && mapComp.CachedUpgradeLevel > 0)
+                    return mapComp.CachedUpgradeLevel;
+
                 int level = 0;
                 var pocketMapParent = map.Parent as PocketMapParent;
                 if (pocketMapParent != null)
@@ -129,13 +133,6 @@ namespace MaiyaAeroBay
                             }
                         }
                     }
-                }
-
-                if (level <= 0)
-                {
-                    var mapComp = map.GetComponent<InteriorMapComponent>();
-                    if (mapComp?.ParentShuttle != null)
-                        level = mapComp.ParentShuttle.UpgradeLevel;
                 }
 
                 if (level <= 0)
@@ -199,11 +196,6 @@ namespace MaiyaAeroBay
                         }
                         if (level > 0) break;
                     }
-                }
-
-                if (level <= 0 && Prefs.DevMode)
-                {
-                    Log.Warning($"[MaiyaAeroBay] GetInteriorLevel=0 for map {map?.Index}, soureMap={pocketMapParent?.sourceMap?.Index}, mapComp={map.GetComponent<InteriorMapComponent>()?.ParentShuttle != null}");
                 }
 
                 return level;

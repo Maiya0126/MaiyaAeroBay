@@ -9,6 +9,7 @@ namespace MaiyaAeroBay
     {
         private Thing parentShuttleThing;
         private bool repairAttempted;
+        private int cachedUpgradeLevel;
 
         public Comp_ShuttleInterior ParentShuttle
         {
@@ -30,6 +31,21 @@ namespace MaiyaAeroBay
             }
         }
 
+        public int CachedUpgradeLevel
+        {
+            get
+            {
+                if (cachedUpgradeLevel > 0) return cachedUpgradeLevel;
+                var shuttle = ParentShuttle;
+                if (shuttle != null)
+                {
+                    cachedUpgradeLevel = shuttle.UpgradeLevel;
+                    return cachedUpgradeLevel;
+                }
+                return 0;
+            }
+        }
+
         public InteriorMapComponent(Map map) : base(map)
         {
         }
@@ -38,6 +54,7 @@ namespace MaiyaAeroBay
         {
             base.ExposeData();
             Scribe_References.Look(ref parentShuttleThing, "parentShuttleThing");
+            Scribe_Values.Look(ref cachedUpgradeLevel, "cachedUpgradeLevel", 0);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
                 repairAttempted = false;
         }
@@ -46,6 +63,8 @@ namespace MaiyaAeroBay
         {
             parentShuttleThing = shuttle?.parent;
             repairAttempted = false;
+            if (shuttle != null)
+                cachedUpgradeLevel = shuttle.UpgradeLevel;
         }
 
         private void RepairParentShuttle()
@@ -59,6 +78,7 @@ namespace MaiyaAeroBay
                     if (interior != null && interior.PocketMap == map)
                     {
                         parentShuttleThing = thing;
+                        cachedUpgradeLevel = interior.UpgradeLevel;
                         return;
                     }
                 }
@@ -71,6 +91,7 @@ namespace MaiyaAeroBay
                 if (interior != null && interior.PocketMap == map)
                 {
                     parentShuttleThing = shuttle;
+                    cachedUpgradeLevel = interior.UpgradeLevel;
                     return;
                 }
             }
@@ -91,6 +112,7 @@ namespace MaiyaAeroBay
                                 if (interior != null && interior.PocketMap == map)
                                 {
                                     parentShuttleThing = t;
+                                    cachedUpgradeLevel = interior.UpgradeLevel;
                                     return;
                                 }
                             }
