@@ -269,7 +269,7 @@ namespace MaiyaAeroBay
             if (isGoodTip)
             {
                 int tipSilver = Mathf.CeilToInt(order.rewardSilver * 0.5f);
-                StarRating += order.starReward * 0.5f;
+                StarRating += order.starReward * 0.3f;
                 s_totalIncome += tipSilver;
 
                 if (tipSilver > 0 && map != null)
@@ -427,7 +427,7 @@ namespace MaiyaAeroBay
             if (isGoodTip)
             {
                 int tipSilver = Mathf.CeilToInt(order.rewardSilver * 0.5f);
-                StarRating += order.starReward * 0.5f;
+                StarRating += order.starReward * 0.3f;
                 s_totalIncome += tipSilver;
 
                 if (tipSilver > 0 && dropMap != null)
@@ -473,7 +473,7 @@ namespace MaiyaAeroBay
         {
             order.state = RideOrderState.Failed;
             s_ordersFailed++;
-            StarRating -= order.starPenalty;
+            StarRating -= order.starPenalty * Rand.Range(0.8f, 1.2f);
 
             string failText = order.penaltySilver > 0
                 ? "MaiyaAeroBay_RideFailedPenalty".Translate(reason, order.penaltySilver)
@@ -495,7 +495,7 @@ namespace MaiyaAeroBay
         public void CancelOrder(RideOrder order, WorldComponent_RideHailingManager manager)
         {
             float penalty = order.dispatchMode == RideDispatchMode.Mandatory ? order.starPenalty : order.starPenalty * 0.5f;
-            StarRating -= penalty;
+            StarRating -= penalty * Rand.Range(0.8f, 1.2f);
 
             if (order.penaltySilver > 0 && order.dispatchMode == RideDispatchMode.Mandatory)
             {
