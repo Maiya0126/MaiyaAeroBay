@@ -16,6 +16,14 @@ namespace MaiyaAeroBay
 
         public bool PromptShown => promptShown;
 
+        public List<RideOrder> ActiveOrders => activeOrders;
+        public List<RideOrder> PendingOrders => pendingOrders;
+
+        public static WorldComponent_RideHailingManager Instance
+        {
+            get { return Find.World?.GetComponent<WorldComponent_RideHailingManager>(); }
+        }
+
         public WorldComponent_RideHailingManager(World world) : base(world) { }
 
         public override void ExposeData()
