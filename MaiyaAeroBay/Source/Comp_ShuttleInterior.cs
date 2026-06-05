@@ -120,9 +120,19 @@ namespace MaiyaAeroBay
         public override void CompTick()
         {
             base.CompTick();
-            if (parent.Map != null && pocketMapParent != null && (pocketMapParent.sourceMap == null || pocketMapParent.sourceMap != parent.Map))
+            if (pocketMapParent != null)
             {
-                pocketMapParent.sourceMap = parent.Map;
+                if (parent.Map != null)
+                {
+                    if (pocketMapParent.sourceMap != parent.Map)
+                        pocketMapParent.sourceMap = parent.Map;
+                }
+                else if (pocketMapParent.sourceMap != null && !Find.Maps.Contains(pocketMapParent.sourceMap))
+                {
+                    Map fallback = Find.AnyPlayerHomeMap;
+                    if (fallback != null)
+                        pocketMapParent.sourceMap = fallback;
+                }
             }
             if (upgradeLevel > 0 && PocketMapExists)
             {

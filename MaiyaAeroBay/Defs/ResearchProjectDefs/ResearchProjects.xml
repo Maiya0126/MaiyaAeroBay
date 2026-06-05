@@ -6,7 +6,7 @@
     <defName>MaiyaAeroBay_CivilianAviation</defName>
     <label>民用航空</label>
     <description>解锁建造民用穿梭机的能力。不需要稀有的穿梭机引擎，用化合燃料驱动。</description>
-    <baseCost>1000</baseCost>
+    <baseCost>600</baseCost>
     <prerequisites>
       <li>Electricity</li>
     </prerequisites>

@@ -56,6 +56,7 @@ namespace MaiyaAeroBay
 
             CheckExpiredOrders();
             CheckWorldArrival();
+            MaintainPocketMapSourceMaps();
 
             if (!MaiyaAeroBayMod.settings.rideHailingEnabled) return;
 
@@ -66,6 +67,54 @@ namespace MaiyaAeroBay
                 float intervalDays = MaiyaAeroBayMod.settings.rideHailingOrderIntervalDays;
                 int interval = Mathf.RoundToInt(60000f * intervalDays);
                 nextOrderCheckTick = tick + Rand.Range(Mathf.Max(interval / 2, 100), Mathf.Max(interval, 200));
+            }
+        }
+
+        private void MaintainPocketMapSourceMaps()
+        {
+            if (Find.TickManager.TicksGame % 60 != 0) return;
+
+            foreach (PocketMapParent pmp in Find.World.pocketMaps)
+            {
+                if (!pmp.HasMap || pmp.Map?.generatorDef?.defName != "MaiyaAeroBay_InteriorSpace") continue;
+                if (pmp.sourceMap != null && Find.Maps.Contains(pmp.sourceMap)) continue;
+
+                Map fallback = null;
+                foreach (Map m in Find.Maps)
+                {
+                    if (m == pmp.Map) continue;
+                    foreach (Thing thing in m.listerThings.ThingsInGroup(ThingRequestGroup.PassengerShuttle))
+                    {
+                        var interior = thing.TryGetComp<Comp_ShuttleInterior>();
+                        if (interior != null && interior.PocketMap == pmp.Map)
+                        {
+                            fallback = m;
+                            break;
+                        }
+                    }
+                    if (fallback != null) break;
+                }
+
+                if (fallback == null)
+                {
+                    foreach (Caravan caravan in Find.WorldObjects.Caravans)
+                    {
+                        var shuttle = caravan.Shuttle;
+                        if (shuttle == null) continue;
+                        var interior = shuttle.TryGetComp<Comp_ShuttleInterior>();
+                        if (interior != null && interior.PocketMap == pmp.Map)
+                        {
+                            fallback = Find.AnyPlayerHomeMap;
+                            break;
+                        }
+                    }
+                }
+
+                if (fallback == null)
+                    fallback = Find.AnyPlayerHomeMap;
+
+                if (fallback != null)
+                    pmp.sourceMap = fallback;
             }
         }
 
