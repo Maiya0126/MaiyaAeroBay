@@ -404,6 +404,7 @@
   <MaiyaAeroBay_RideGiftDesc>The R-ber platform has sent you a complimentary ride-hailing kit! Install it on your shuttle to start accepting transport orders and earn silver.\n\nR-ber - Your ride, your way!</MaiyaAeroBay_RideGiftDesc>
 
   <MaiyaAeroBay_RideQuestName>{0}: {1} -> {2}</MaiyaAeroBay_RideQuestName>
-  <MaiyaAeroBay_RideQuestDescription>{0}: {1} -> {2}, Status: {3}</MaiyaAeroBay_RideQuestDescription>
+  <MaiyaAeroBay_RideQuestDescription>{0}: {1} -> {2}\nReward: {3}s | {4}\nTime: {5} | {6}</MaiyaAeroBay_RideQuestDescription>
   <MaiyaAeroBay_RideQuestEnded>Ended</MaiyaAeroBay_RideQuestEnded>
+  <MaiyaAeroBay_TimeOverdue>Overdue!</MaiyaAeroBay_TimeOverdue>
 </LanguageData>

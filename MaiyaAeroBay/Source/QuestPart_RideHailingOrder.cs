@@ -13,6 +13,8 @@ namespace MaiyaAeroBay
         public string pickupLabel = "";
         public string dropoffLabel = "";
         public string orderTypeLabel = "";
+        public int rewardSilver = 0;
+        public string cargoInfo = "";
         public int completeDeadlineTick = -1;
 
         public override IEnumerable<GlobalTargetInfo> QuestLookTargets
@@ -33,8 +35,19 @@ namespace MaiyaAeroBay
             get
             {
                 string stateStr = FindRideOrderState();
+                string timeLeft = "";
+                if (completeDeadlineTick > 0)
+                {
+                    int ticks = completeDeadlineTick - Find.TickManager.TicksGame;
+                    if (ticks > 0)
+                        timeLeft = ticks.ToStringTicksToPeriod();
+                    else
+                        timeLeft = "MaiyaAeroBay_TimeOverdue".Translate();
+                }
+
                 return "MaiyaAeroBay_RideQuestDescription".Translate(
-                    orderTypeLabel, pickupLabel, dropoffLabel, stateStr);
+                    orderTypeLabel, pickupLabel, dropoffLabel, rewardSilver,
+                    cargoInfo, timeLeft, stateStr);
             }
         }
 
@@ -65,6 +78,8 @@ namespace MaiyaAeroBay
             Scribe_Values.Look(ref pickupLabel, "pickupLabel", "");
             Scribe_Values.Look(ref dropoffLabel, "dropoffLabel", "");
             Scribe_Values.Look(ref orderTypeLabel, "orderTypeLabel", "");
+            Scribe_Values.Look(ref rewardSilver, "rewardSilver", 0);
+            Scribe_Values.Look(ref cargoInfo, "cargoInfo", "");
             Scribe_Values.Look(ref completeDeadlineTick, "completeDeadlineTick", -1);
         }
     }

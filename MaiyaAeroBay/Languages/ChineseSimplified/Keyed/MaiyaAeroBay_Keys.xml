@@ -351,8 +351,8 @@
   <MaiyaAeroBay_PassengerB>商人</MaiyaAeroBay_PassengerB>
   <MaiyaAeroBay_PassengerC>探险家</MaiyaAeroBay_PassengerC>
 
-  <MaiyaAeroBay_RideStatePickup>前往接客</MaiyaAeroBay_RideStatePickup>
-  <MaiyaAeroBay_RideStateDeliver>前往送达</MaiyaAeroBay_RideStateDeliver>
+  <MaiyaAeroBay_RideStatePickup>前往取货点</MaiyaAeroBay_RideStatePickup>
+  <MaiyaAeroBay_RideStateDeliver>前往交货点</MaiyaAeroBay_RideStateDeliver>
   <MaiyaAeroBay_RideStatusWaiting>等待订单</MaiyaAeroBay_RideStatusWaiting>
   <MaiyaAeroBay_RideStatusOffline>已下线</MaiyaAeroBay_RideStatusOffline>
 
@@ -403,6 +403,7 @@
   <MaiyaAeroBay_RideGiftDesc>嘀嘀平台寄来了一个免费嘀嘀套件！安装到穿梭机上即可开始接单赚银币。\n\n嘀嘀 — 您的出行，您做主！</MaiyaAeroBay_RideGiftDesc>
 
   <MaiyaAeroBay_RideQuestName>{0}: {1} → {2}</MaiyaAeroBay_RideQuestName>
-  <MaiyaAeroBay_RideQuestDescription>{0}: {1} → {2}，状态: {3}</MaiyaAeroBay_RideQuestDescription>
+  <MaiyaAeroBay_RideQuestDescription>{0}: {1} → {2}\n奖励: {3}银 | {4}\n剩余: {5} | {6}</MaiyaAeroBay_RideQuestDescription>
   <MaiyaAeroBay_RideQuestEnded>已结束</MaiyaAeroBay_RideQuestEnded>
+  <MaiyaAeroBay_TimeOverdue>已超时！</MaiyaAeroBay_TimeOverdue>
 </LanguageData>

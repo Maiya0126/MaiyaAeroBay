@@ -422,6 +422,12 @@ namespace MaiyaAeroBay
                 part.pickupLabel = order.pickupLabel;
                 part.dropoffLabel = order.dropoffLabel;
                 part.orderTypeLabel = order.GetOrderTypeLabel();
+                part.rewardSilver = order.rewardSilver;
+                part.cargoInfo = order.orderType == RideOrderType.TransportCargo
+                    ? (order.cargoCount > 0 && order.cargoDef != null
+                        ? order.cargoCount + "x" + order.cargoDef.label
+                        : "")
+                    : order.passengerName;
                 part.completeDeadlineTick = order.completeDeadlineTick;
                 quest.AddPart(part);
 

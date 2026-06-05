@@ -19,6 +19,17 @@ namespace MaiyaAeroBay
                     if (comp != null && comp.installed) return comp;
                 }
             }
+            foreach (var caravan in Find.WorldObjects.Caravans)
+            {
+                foreach (var thing in caravan.AllThings)
+                {
+                    if (thing is ThingWithComps twc)
+                    {
+                        var comp = twc.TryGetComp<CompShuttleRideHailing>();
+                        if (comp != null && comp.installed) return comp;
+                    }
+                }
+            }
             return null;
         }
 
