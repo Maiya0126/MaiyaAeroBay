@@ -362,6 +362,8 @@
   <MaiyaAeroBay_DebugRideShortCargo>[Debug] Short Cargo</MaiyaAeroBay_DebugRideShortCargo>
   <MaiyaAeroBay_DebugRideLongCargo>[Debug] Long Cargo</MaiyaAeroBay_DebugRideLongCargo>
   <MaiyaAeroBay_DebugRideTimeout>[Debug] Force Timeout</MaiyaAeroBay_DebugRideTimeout>
+  <MaiyaAeroBay_DebugRideFareDodged>[Debug] Force Fare Dodged</MaiyaAeroBay_DebugRideFareDodged>
+  <MaiyaAeroBay_DebugRideBadReview>[Debug] Force Bad Review</MaiyaAeroBay_DebugRideBadReview>
 
   <MaiyaAeroBay_RideHailingOrderInterval>Order interval</MaiyaAeroBay_RideHailingOrderInterval>
   <MaiyaAeroBay_Days>days</MaiyaAeroBay_Days>
@@ -379,6 +381,11 @@
   <MaiyaAeroBay_RideLetterText>Order accepted: {0}\nReward: {1}s | {2}</MaiyaAeroBay_RideLetterText>
   <MaiyaAeroBay_RideCompleteLetterTitle>Order Complete</MaiyaAeroBay_RideCompleteLetterTitle>
   <MaiyaAeroBay_RideFailLetterTitle>Order Failed</MaiyaAeroBay_RideFailLetterTitle>
+
+  <MaiyaAeroBay_RideFareDodgedTitle>Fare Dodged!</MaiyaAeroBay_RideFareDodgedTitle>
+  <MaiyaAeroBay_RideFareDodged>The passenger dodged the fare! You did not receive {0}s payment. Star rating still improved: {1}star</MaiyaAeroBay_RideFareDodged>
+  <MaiyaAeroBay_RideBadReviewTitle>Malicious Bad Review!</MaiyaAeroBay_RideBadReviewTitle>
+  <MaiyaAeroBay_RideBadReview>The customer left a malicious bad review! Penalty: -{0}s, rating dropped to {1}star ({2})</MaiyaAeroBay_RideBadReview>
 
   <MaiyaAeroBay_RideQuestName>{0}: {1} -> {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} -> {2}, Status: {3}</MaiyaAeroBay_RideQuestDescription>

@@ -30,6 +30,8 @@ namespace MaiyaAeroBay
         private int s_totalIncome = 0;
         private bool s_isAcceptingRides = false;
         private int s_lastOrderTick = -1;
+        private bool debugForceFareDodged = false;
+        private bool debugForceBadReview = false;
 
         public float StarRating
         {
@@ -145,6 +147,90 @@ namespace MaiyaAeroBay
 
         public void CompleteOrderFromWorld(RideOrder order, WorldComponent_RideHailingManager manager)
         {
+            bool isFareDodged = false;
+            bool isBadReview = false;
+
+            if (debugForceFareDodged)
+            {
+                isFareDodged = true;
+                debugForceFareDodged = false;
+            }
+            else if (debugForceBadReview)
+            {
+                isBadReview = true;
+                debugForceBadReview = false;
+            }
+            else
+            {
+                float starRatingFactor = Mathf.Max(0.3f, 1f - (s_starRating - 1f) * 0.1f);
+
+                if (Rand.Value < 0.08f * starRatingFactor)
+                {
+                    isFareDodged = true;
+                }
+
+                if (!isFareDodged)
+                {
+                    float badReviewChance = 0.05f * starRatingFactor;
+                    if (order.completeDeadlineTick > 0 && Find.TickManager.TicksGame > order.completeDeadlineTick - 60000)
+                        badReviewChance *= 2f;
+                    if (Rand.Value < badReviewChance)
+                    {
+                        isBadReview = true;
+                    }
+                }
+            }
+
+            if (isBadReview)
+            {
+                order.state = RideOrderState.Completed;
+                s_ordersCompleted++;
+                s_lastOrderTick = Find.TickManager.TicksGame;
+
+                float penaltyStars = order.starReward * 2f;
+                StarRating -= penaltyStars;
+
+                int penaltySilver = Mathf.CeilToInt(order.rewardSilver * 0.5f);
+                if (penaltySilver > 0)
+                    TryDeductSilver(penaltySilver);
+
+                if (order.faction != null)
+                {
+                    order.faction.TryAffectGoodwillWith(Faction.OfPlayer, -3, canSendMessage: true, canSendHostilityLetter: false);
+                }
+
+                manager.EndQuestForOrder(order, QuestEndOutcome.Fail);
+                manager.RemoveOrder(order);
+
+                Find.LetterStack.ReceiveLetter(
+                    "MaiyaAeroBay_RideBadReviewTitle".Translate(),
+                    "MaiyaAeroBay_RideBadReview".Translate(penaltySilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                    LetterDefOf.NegativeEvent);
+                return;
+            }
+
+            if (isFareDodged)
+            {
+                order.state = RideOrderState.Completed;
+                s_ordersCompleted++;
+                StarRating += order.starReward;
+                s_lastOrderTick = Find.TickManager.TicksGame;
+
+                if (order.faction != null)
+                {
+                    order.faction.TryAffectGoodwillWith(Faction.OfPlayer, 1, canSendMessage: false, canSendHostilityLetter: false);
+                }
+
+                manager.EndQuestForOrder(order, QuestEndOutcome.Success);
+                manager.RemoveOrder(order);
+
+                Find.LetterStack.ReceiveLetter(
+                    "MaiyaAeroBay_RideFareDodgedTitle".Translate(),
+                    "MaiyaAeroBay_RideFareDodged".Translate(order.rewardSilver, s_starRating.ToString("F1")),
+                    LetterDefOf.NegativeEvent);
+                return;
+            }
+
             order.state = RideOrderState.Completed;
             s_ordersCompleted++;
             s_totalIncome += order.rewardSilver;
@@ -176,6 +262,90 @@ namespace MaiyaAeroBay
 
         public void CompleteOrder(RideOrder order, WorldComponent_RideHailingManager manager)
         {
+            bool isFareDodged = false;
+            bool isBadReview = false;
+
+            if (debugForceFareDodged)
+            {
+                isFareDodged = true;
+                debugForceFareDodged = false;
+            }
+            else if (debugForceBadReview)
+            {
+                isBadReview = true;
+                debugForceBadReview = false;
+            }
+            else
+            {
+                float starRatingFactor = Mathf.Max(0.3f, 1f - (s_starRating - 1f) * 0.1f);
+
+                if (Rand.Value < 0.08f * starRatingFactor)
+                {
+                    isFareDodged = true;
+                }
+
+                if (!isFareDodged)
+                {
+                    float badReviewChance = 0.05f * starRatingFactor;
+                    if (order.completeDeadlineTick > 0 && Find.TickManager.TicksGame > order.completeDeadlineTick - 60000)
+                        badReviewChance *= 2f;
+                    if (Rand.Value < badReviewChance)
+                    {
+                        isBadReview = true;
+                    }
+                }
+            }
+
+            if (isBadReview)
+            {
+                order.state = RideOrderState.Completed;
+                s_ordersCompleted++;
+                s_lastOrderTick = Find.TickManager.TicksGame;
+
+                float penaltyStars = order.starReward * 2f;
+                StarRating -= penaltyStars;
+
+                int penaltySilver = Mathf.CeilToInt(order.rewardSilver * 0.5f);
+                if (penaltySilver > 0)
+                    TryDeductSilver(penaltySilver);
+
+                if (order.faction != null)
+                {
+                    order.faction.TryAffectGoodwillWith(Faction.OfPlayer, -3, canSendMessage: true, canSendHostilityLetter: false);
+                }
+
+                manager.EndQuestForOrder(order, QuestEndOutcome.Fail);
+                manager.RemoveOrder(order);
+
+                Find.LetterStack.ReceiveLetter(
+                    "MaiyaAeroBay_RideBadReviewTitle".Translate(),
+                    "MaiyaAeroBay_RideBadReview".Translate(penaltySilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                    LetterDefOf.NegativeEvent);
+                return;
+            }
+
+            if (isFareDodged)
+            {
+                order.state = RideOrderState.Completed;
+                s_ordersCompleted++;
+                StarRating += order.starReward;
+                s_lastOrderTick = Find.TickManager.TicksGame;
+
+                if (order.faction != null)
+                {
+                    order.faction.TryAffectGoodwillWith(Faction.OfPlayer, 1, canSendMessage: false, canSendHostilityLetter: false);
+                }
+
+                manager.EndQuestForOrder(order, QuestEndOutcome.Success);
+                manager.RemoveOrder(order);
+
+                Find.LetterStack.ReceiveLetter(
+                    "MaiyaAeroBay_RideFareDodgedTitle".Translate(),
+                    "MaiyaAeroBay_RideFareDodged".Translate(order.rewardSilver, s_starRating.ToString("F1")),
+                    LetterDefOf.NegativeEvent);
+                return;
+            }
+
             order.state = RideOrderState.Completed;
             s_ordersCompleted++;
             s_totalIncome += order.rewardSilver;
@@ -371,6 +541,20 @@ namespace MaiyaAeroBay
                     icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
                     action = DebugForceTimeout
                 };
+                yield return new Command_Action
+                {
+                    defaultLabel = "MaiyaAeroBay_DebugRideFareDodged".Translate(),
+                    defaultDesc = "Debug: force fare dodged on next complete",
+                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
+                    action = DebugForceFareDodged
+                };
+                yield return new Command_Action
+                {
+                    defaultLabel = "MaiyaAeroBay_DebugRideBadReview".Translate(),
+                    defaultDesc = "Debug: force bad review on next complete",
+                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
+                    action = DebugForceBadReview
+                };
             }
         }
 
@@ -461,6 +645,40 @@ namespace MaiyaAeroBay
             var manager = GetManager();
             if (manager == null) return;
             FailOrder(order, manager, "MaiyaAeroBay_RideFailedTimeout".Translate());
+        }
+
+        private void DebugForceFareDodged()
+        {
+            var order = ActiveOrder;
+            if (order == null)
+            {
+                Messages.Message("Debug: no active order (accept an order first)", parent, MessageTypeDefOf.RejectInput);
+                return;
+            }
+            if (order.state != RideOrderState.PickedUp)
+            {
+                Messages.Message("Debug: order must be in PickedUp state (go to dropoff first)", parent, MessageTypeDefOf.RejectInput);
+                return;
+            }
+            debugForceFareDodged = true;
+            Messages.Message("Debug: fare dodged will trigger on next complete", parent, MessageTypeDefOf.PositiveEvent);
+        }
+
+        private void DebugForceBadReview()
+        {
+            var order = ActiveOrder;
+            if (order == null)
+            {
+                Messages.Message("Debug: no active order (accept an order first)", parent, MessageTypeDefOf.RejectInput);
+                return;
+            }
+            if (order.state != RideOrderState.PickedUp)
+            {
+                Messages.Message("Debug: order must be in PickedUp state (go to dropoff first)", parent, MessageTypeDefOf.RejectInput);
+                return;
+            }
+            debugForceBadReview = true;
+            Messages.Message("Debug: bad review will trigger on next complete", parent, MessageTypeDefOf.PositiveEvent);
         }
     }
 }

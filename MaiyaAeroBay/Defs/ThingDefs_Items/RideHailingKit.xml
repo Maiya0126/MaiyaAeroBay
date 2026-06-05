@@ -39,8 +39,7 @@
     <description>Install a ride-hailing system on your shuttle and unlock R-ber mode! Earn silver by carrying passengers or cargo between friendly settlements. Complete orders to build up your star rating and unlock higher-paying missions.\n\nEach shuttle can only have one R-ber kit installed. Cannot be replaced.</description>
     <graphicData>
       <texPath>Things/Item/Resource/ComponentIndustrial</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <color>(255,180,50)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>120</MarketValue>

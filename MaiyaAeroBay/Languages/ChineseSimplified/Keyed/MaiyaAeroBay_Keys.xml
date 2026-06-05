@@ -361,6 +361,8 @@
   <MaiyaAeroBay_DebugRideShortCargo>[调试] 短途货运</MaiyaAeroBay_DebugRideShortCargo>
   <MaiyaAeroBay_DebugRideLongCargo>[调试] 远程货运</MaiyaAeroBay_DebugRideLongCargo>
   <MaiyaAeroBay_DebugRideTimeout>[调试] 超时惩罚</MaiyaAeroBay_DebugRideTimeout>
+  <MaiyaAeroBay_DebugRideFareDodged>[调试] 模拟飞单</MaiyaAeroBay_DebugRideFareDodged>
+  <MaiyaAeroBay_DebugRideBadReview>[调试] 模拟恶意差评</MaiyaAeroBay_DebugRideBadReview>
 
   <MaiyaAeroBay_RideHailingOrderInterval>派单间隔</MaiyaAeroBay_RideHailingOrderInterval>
   <MaiyaAeroBay_Days>天</MaiyaAeroBay_Days>
@@ -378,6 +380,11 @@
   <MaiyaAeroBay_RideLetterText>已接单: {0}\n奖励: {1}银 | {2}</MaiyaAeroBay_RideLetterText>
   <MaiyaAeroBay_RideCompleteLetterTitle>订单完成</MaiyaAeroBay_RideCompleteLetterTitle>
   <MaiyaAeroBay_RideFailLetterTitle>订单失败</MaiyaAeroBay_RideFailLetterTitle>
+
+  <MaiyaAeroBay_RideFareDodgedTitle>乘客飞单！</MaiyaAeroBay_RideFareDodgedTitle>
+  <MaiyaAeroBay_RideFareDodged>乘客飞单了！{0}银币未到账。信誉星级仍有所提升: {1}星</MaiyaAeroBay_RideFareDodged>
+  <MaiyaAeroBay_RideBadReviewTitle>恶意差评！</MaiyaAeroBay_RideBadReviewTitle>
+  <MaiyaAeroBay_RideBadReview>顾客恶意差评！扣除{0}银币，信誉降至{1}星 ({2})</MaiyaAeroBay_RideBadReview>
 
   <MaiyaAeroBay_RideQuestName>{0}: {1} → {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} → {2}，状态: {3}</MaiyaAeroBay_RideQuestDescription>
