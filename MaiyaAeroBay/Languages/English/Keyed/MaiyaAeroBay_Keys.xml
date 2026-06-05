@@ -400,6 +400,9 @@
   <MaiyaAeroBay_ReturnRewardTitle>Thank You Reward!</MaiyaAeroBay_ReturnRewardTitle>
   <MaiyaAeroBay_ReturnRewardDesc>The customer sent a thank-you reward for returning their belongings! +{0}s, rating: {1}star</MaiyaAeroBay_ReturnRewardDesc>
 
+  <MaiyaAeroBay_RideGiftTitle>R-ber Welcome Gift!</MaiyaAeroBay_RideGiftTitle>
+  <MaiyaAeroBay_RideGiftDesc>The R-ber platform has sent you a complimentary ride-hailing kit! Install it on your shuttle to start accepting transport orders and earn silver.\n\nR-ber - Your ride, your way!</MaiyaAeroBay_RideGiftDesc>
+
   <MaiyaAeroBay_RideQuestName>{0}: {1} -> {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} -> {2}, Status: {3}</MaiyaAeroBay_RideQuestDescription>
   <MaiyaAeroBay_RideQuestEnded>Ended</MaiyaAeroBay_RideQuestEnded>

@@ -660,6 +660,36 @@ namespace MaiyaAeroBay
         }
     }
 
+    [HarmonyPatch(typeof(ResearchManager), "FinishProject")]
+    public static class ResearchFinished_RideHailingGiftPatch
+    {
+        private static bool giftGiven = false;
+
+        [HarmonyPostfix]
+        public static void Postfix(ResearchProjectDef proj)
+        {
+            if (giftGiven) return;
+            if (proj.defName != "MaiyaAeroBay_CivilianAviation") return;
+            giftGiven = true;
+
+            Map map = Find.AnyPlayerHomeMap;
+            if (map == null) return;
+
+            var kitDef = ThingDef.Named("MaiyaAeroBay_RideHailingKit");
+            if (kitDef == null) return;
+
+            var kit = ThingMaker.MakeThing(kitDef);
+            IntVec3 pos = CellFinder.RandomSpawnCellForPawnNear(map.Center, map, 10);
+            GenPlace.TryPlaceThing(kit, pos, map, ThingPlaceMode.Near);
+
+            Find.LetterStack.ReceiveLetter(
+                "MaiyaAeroBay_RideGiftTitle".Translate(),
+                "MaiyaAeroBay_RideGiftDesc".Translate(),
+                LetterDefOf.PositiveEvent,
+                new LookTargets(kit));
+        }
+    }
+
     internal static class RideHailingSettlementInteractions
     {
         public static IEnumerable<FloatMenuOption> GetMenuOptions(Settlement settlement)

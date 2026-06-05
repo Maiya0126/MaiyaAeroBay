@@ -399,6 +399,9 @@
   <MaiyaAeroBay_ReturnRewardTitle>感谢奖励！</MaiyaAeroBay_ReturnRewardTitle>
   <MaiyaAeroBay_ReturnRewardDesc>顾客寄来感谢费，感谢归还物品！+{0}银，信誉升至{1}星</MaiyaAeroBay_ReturnRewardDesc>
 
+  <MaiyaAeroBay_RideGiftTitle>嘀嘀平台欢迎礼！</MaiyaAeroBay_RideGiftTitle>
+  <MaiyaAeroBay_RideGiftDesc>嘀嘀平台寄来了一个免费嘀嘀套件！安装到穿梭机上即可开始接单赚银币。\n\n嘀嘀 — 您的出行，您做主！</MaiyaAeroBay_RideGiftDesc>
+
   <MaiyaAeroBay_RideQuestName>{0}: {1} → {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} → {2}，状态: {3}</MaiyaAeroBay_RideQuestDescription>
   <MaiyaAeroBay_RideQuestEnded>已结束</MaiyaAeroBay_RideQuestEnded>
