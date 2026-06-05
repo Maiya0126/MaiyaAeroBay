@@ -389,6 +389,17 @@
   <MaiyaAeroBay_RideGoodTipTitle>Great Review + Tip!</MaiyaAeroBay_RideGoodTipTitle>
   <MaiyaAeroBay_RideGoodTip>Order complete! +{0}s | The customer left a glowing review with a {1}s tip! Rating: {2}star ({3})</MaiyaAeroBay_RideGoodTip>
 
+  <MaiyaAeroBay_LeftBehindTitle>Item Left Behind!</MaiyaAeroBay_LeftBehindTitle>
+  <MaiyaAeroBay_LeftBehindDesc>The customer from {0} left something behind in your shuttle: {1}\n\nWhat do you want to do?</MaiyaAeroBay_LeftBehindDesc>
+  <MaiyaAeroBay_LeftBehindKeep>Keep it</MaiyaAeroBay_LeftBehindKeep>
+  <MaiyaAeroBay_LeftBehindReturn>Return it</MaiyaAeroBay_LeftBehindReturn>
+  <MaiyaAeroBay_LeftBehindKept>You kept the {0}. The customer may file a complaint...</MaiyaAeroBay_LeftBehindKept>
+  <MaiyaAeroBay_LeftBehindReturned>You returned the {0} to its owner.</MaiyaAeroBay_LeftBehindReturned>
+  <MaiyaAeroBay_ComplaintTitle>Customer Complaint!</MaiyaAeroBay_ComplaintTitle>
+  <MaiyaAeroBay_ComplaintDesc>A customer filed a complaint about their missing belongings! Penalty: -{0}s, rating dropped to {1}star ({2})</MaiyaAeroBay_ComplaintDesc>
+  <MaiyaAeroBay_ReturnRewardTitle>Thank You Reward!</MaiyaAeroBay_ReturnRewardTitle>
+  <MaiyaAeroBay_ReturnRewardDesc>The customer sent a thank-you reward for returning their belongings! +{0}s, rating: {1}star</MaiyaAeroBay_ReturnRewardDesc>
+
   <MaiyaAeroBay_RideQuestName>{0}: {1} -> {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} -> {2}, Status: {3}</MaiyaAeroBay_RideQuestDescription>
   <MaiyaAeroBay_RideQuestEnded>Ended</MaiyaAeroBay_RideQuestEnded>

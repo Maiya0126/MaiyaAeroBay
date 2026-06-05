@@ -388,6 +388,17 @@
   <MaiyaAeroBay_RideGoodTipTitle>好评打赏！</MaiyaAeroBay_RideGoodTipTitle>
   <MaiyaAeroBay_RideGoodTip>订单完成！+{0}银 | 顾客好评打赏{1}银币！信誉升至{2}星 ({3})</MaiyaAeroBay_RideGoodTip>
 
+  <MaiyaAeroBay_LeftBehindTitle>乘客遗落物品！</MaiyaAeroBay_LeftBehindTitle>
+  <MaiyaAeroBay_LeftBehindDesc>{0}的乘客在车上落了东西：{1}\n\n你要怎么做？</MaiyaAeroBay_LeftBehindDesc>
+  <MaiyaAeroBay_LeftBehindKeep>留下</MaiyaAeroBay_LeftBehindKeep>
+  <MaiyaAeroBay_LeftBehindReturn>归还</MaiyaAeroBay_LeftBehindReturn>
+  <MaiyaAeroBay_LeftBehindKept>你留下了{0}。顾客可能会投诉...</MaiyaAeroBay_LeftBehindKept>
+  <MaiyaAeroBay_LeftBehindReturned>你将{0}归还给了失主。</MaiyaAeroBay_LeftBehindReturned>
+  <MaiyaAeroBay_ComplaintTitle>顾客投诉！</MaiyaAeroBay_ComplaintTitle>
+  <MaiyaAeroBay_ComplaintDesc>顾客投诉物品遗失！扣除{0}银币，信誉降至{1}星 ({2})</MaiyaAeroBay_ComplaintDesc>
+  <MaiyaAeroBay_ReturnRewardTitle>感谢奖励！</MaiyaAeroBay_ReturnRewardTitle>
+  <MaiyaAeroBay_ReturnRewardDesc>顾客寄来感谢费，感谢归还物品！+{0}银，信誉升至{1}星</MaiyaAeroBay_ReturnRewardDesc>
+
   <MaiyaAeroBay_RideQuestName>{0}: {1} → {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} → {2}，状态: {3}</MaiyaAeroBay_RideQuestDescription>
   <MaiyaAeroBay_RideQuestEnded>已结束</MaiyaAeroBay_RideQuestEnded>

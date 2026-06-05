@@ -91,6 +91,8 @@
     <Compile Include="Source\HarmonyPatches.cs" />
     <Compile Include="Source\InteriorMapComponent.cs" />
     <Compile Include="Source\JobDriver_EnterShuttleInterior.cs" />
+    <Compile Include="Source\Dialog_LeftBehindItem.cs" />
+    <Compile Include="Source\DebugActions_RideHailing.cs" />
     <Compile Include="Source\MaiyaAeroBayMod.cs" />
     <Compile Include="Source\MaiyaAeroBayModSettings.cs" />
     <Compile Include="Source\ShuttleInteriorPortal.cs" />
