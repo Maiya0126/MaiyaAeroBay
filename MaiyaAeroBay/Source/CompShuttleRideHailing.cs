@@ -503,59 +503,6 @@ namespace MaiyaAeroBay
             }
 
             yield return new Gizmo_RideHailingStatus { rideHailing = this };
-
-            if (Prefs.DevMode)
-            {
-                yield return new Command_Action
-                {
-                    defaultLabel = "MaiyaAeroBay_DebugRideShortPerson".Translate(),
-                    defaultDesc = "Debug: generate short-range person order",
-                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
-                    action = () => DebugGenerateOrder(RideOrderType.TransportPerson, false)
-                };
-                yield return new Command_Action
-                {
-                    defaultLabel = "MaiyaAeroBay_DebugRideLongPerson".Translate(),
-                    defaultDesc = "Debug: generate long-range person order",
-                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
-                    action = () => DebugGenerateOrder(RideOrderType.TransportPerson, true)
-                };
-                yield return new Command_Action
-                {
-                    defaultLabel = "MaiyaAeroBay_DebugRideShortCargo".Translate(),
-                    defaultDesc = "Debug: generate short-range cargo order",
-                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
-                    action = () => DebugGenerateOrder(RideOrderType.TransportCargo, false)
-                };
-                yield return new Command_Action
-                {
-                    defaultLabel = "MaiyaAeroBay_DebugRideLongCargo".Translate(),
-                    defaultDesc = "Debug: generate long-range cargo order",
-                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
-                    action = () => DebugGenerateOrder(RideOrderType.TransportCargo, true)
-                };
-                yield return new Command_Action
-                {
-                    defaultLabel = "MaiyaAeroBay_DebugRideTimeout".Translate(),
-                    defaultDesc = "Debug: force current order to timeout",
-                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
-                    action = DebugForceTimeout
-                };
-                yield return new Command_Action
-                {
-                    defaultLabel = "MaiyaAeroBay_DebugRideFareDodged".Translate(),
-                    defaultDesc = "Debug: force fare dodged on next complete",
-                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
-                    action = DebugForceFareDodged
-                };
-                yield return new Command_Action
-                {
-                    defaultLabel = "MaiyaAeroBay_DebugRideBadReview".Translate(),
-                    defaultDesc = "Debug: force bad review on next complete",
-                    icon = RideHailingIcon ?? ContentFinder<Texture2D>.Get("UI/Commands/car", false),
-                    action = DebugForceBadReview
-                };
-            }
         }
 
         public override string CompInspectStringExtra()
@@ -619,66 +566,14 @@ namespace MaiyaAeroBay
             installed = true;
         }
 
-        private void DebugGenerateOrder(RideOrderType type, bool longRange)
+        internal void SetDebugForceFareDodged()
         {
-            var manager = GetManager();
-            if (manager == null) return;
-            var order = manager.DebugGenerateOrder(this, type, longRange);
-            if (order != null)
-            {
-                Messages.Message("Debug: order generated - " + order.pickupLabel + " → " + order.dropoffLabel, parent, MessageTypeDefOf.PositiveEvent);
-            }
-            else
-            {
-                Messages.Message("Debug: failed to generate order (not enough settlements?)", parent, MessageTypeDefOf.RejectInput);
-            }
-        }
-
-        private void DebugForceTimeout()
-        {
-            var order = ActiveOrder;
-            if (order == null)
-            {
-                Messages.Message("Debug: no active order to timeout", parent, MessageTypeDefOf.RejectInput);
-                return;
-            }
-            var manager = GetManager();
-            if (manager == null) return;
-            FailOrder(order, manager, "MaiyaAeroBay_RideFailedTimeout".Translate());
-        }
-
-        private void DebugForceFareDodged()
-        {
-            var order = ActiveOrder;
-            if (order == null)
-            {
-                Messages.Message("Debug: no active order (accept an order first)", parent, MessageTypeDefOf.RejectInput);
-                return;
-            }
-            if (order.state != RideOrderState.PickedUp)
-            {
-                Messages.Message("Debug: order must be in PickedUp state (go to dropoff first)", parent, MessageTypeDefOf.RejectInput);
-                return;
-            }
             debugForceFareDodged = true;
-            Messages.Message("Debug: fare dodged will trigger on next complete", parent, MessageTypeDefOf.PositiveEvent);
         }
 
-        private void DebugForceBadReview()
+        internal void SetDebugForceBadReview()
         {
-            var order = ActiveOrder;
-            if (order == null)
-            {
-                Messages.Message("Debug: no active order (accept an order first)", parent, MessageTypeDefOf.RejectInput);
-                return;
-            }
-            if (order.state != RideOrderState.PickedUp)
-            {
-                Messages.Message("Debug: order must be in PickedUp state (go to dropoff first)", parent, MessageTypeDefOf.RejectInput);
-                return;
-            }
             debugForceBadReview = true;
-            Messages.Message("Debug: bad review will trigger on next complete", parent, MessageTypeDefOf.PositiveEvent);
         }
     }
 }
