@@ -385,6 +385,8 @@
   <MaiyaAeroBay_RideFareDodged>乘客飞单了！{0}银币未到账。信誉星级仍有所提升: {1}星</MaiyaAeroBay_RideFareDodged>
   <MaiyaAeroBay_RideBadReviewTitle>恶意差评！</MaiyaAeroBay_RideBadReviewTitle>
   <MaiyaAeroBay_RideBadReview>顾客恶意差评！扣除{0}银币，信誉降至{1}星 ({2})</MaiyaAeroBay_RideBadReview>
+  <MaiyaAeroBay_RideGoodTipTitle>好评打赏！</MaiyaAeroBay_RideGoodTipTitle>
+  <MaiyaAeroBay_RideGoodTip>订单完成！+{0}银 | 顾客好评打赏{1}银币！信誉升至{2}星 ({3})</MaiyaAeroBay_RideGoodTip>
 
   <MaiyaAeroBay_RideQuestName>{0}: {1} → {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} → {2}，状态: {3}</MaiyaAeroBay_RideQuestDescription>

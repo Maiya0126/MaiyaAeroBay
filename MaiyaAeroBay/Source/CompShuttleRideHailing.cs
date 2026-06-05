@@ -32,6 +32,7 @@ namespace MaiyaAeroBay
         private int s_lastOrderTick = -1;
         private bool debugForceFareDodged = false;
         private bool debugForceBadReview = false;
+        private bool debugForceGoodTip = false;
 
         public float StarRating
         {
@@ -246,6 +247,47 @@ namespace MaiyaAeroBay
                 GenPlace.TryPlaceThing(silver, pos, map, ThingPlaceMode.Near);
             }
 
+            bool isGoodTip = false;
+            if (debugForceGoodTip)
+            {
+                isGoodTip = true;
+                debugForceGoodTip = false;
+            }
+            else
+            {
+                float tipChance = 0.10f + (s_starRating - 1f) * 0.03f;
+                isGoodTip = Rand.Value < tipChance;
+            }
+
+            if (isGoodTip)
+            {
+                int tipSilver = Mathf.CeilToInt(order.rewardSilver * 0.5f);
+                StarRating += order.starReward * 0.5f;
+                s_totalIncome += tipSilver;
+
+                if (tipSilver > 0 && map != null)
+                {
+                    var tip = ThingMaker.MakeThing(ThingDefOf.Silver);
+                    tip.stackCount = tipSilver;
+                    IntVec3 pos = parent?.Position ?? CellFinder.RandomEdgeCell(map);
+                    GenPlace.TryPlaceThing(tip, pos, map, ThingPlaceMode.Near);
+                }
+
+                if (order.faction != null)
+                {
+                    order.faction.TryAffectGoodwillWith(Faction.OfPlayer, 5, canSendMessage: true, canSendHostilityLetter: false);
+                }
+
+                manager.EndQuestForOrder(order, QuestEndOutcome.Success);
+                manager.RemoveOrder(order);
+
+                Find.LetterStack.ReceiveLetter(
+                    "MaiyaAeroBay_RideCompleteLetterTitle".Translate(),
+                    "MaiyaAeroBay_RideGoodTip".Translate(order.rewardSilver, tipSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                    LetterDefOf.PositiveEvent);
+                return;
+            }
+
             if (order.faction != null)
             {
                 order.faction.TryAffectGoodwillWith(Faction.OfPlayer, 3, canSendMessage: true, canSendHostilityLetter: false);
@@ -359,6 +401,47 @@ namespace MaiyaAeroBay
                 silver.stackCount = order.rewardSilver;
                 IntVec3 dropPos = (parent != null && parent.Map != null) ? parent.Position : CellFinder.RandomEdgeCell(dropMap);
                 GenPlace.TryPlaceThing(silver, dropPos, dropMap, ThingPlaceMode.Near);
+            }
+
+            bool isGoodTip = false;
+            if (debugForceGoodTip)
+            {
+                isGoodTip = true;
+                debugForceGoodTip = false;
+            }
+            else
+            {
+                float tipChance = 0.10f + (s_starRating - 1f) * 0.03f;
+                isGoodTip = Rand.Value < tipChance;
+            }
+
+            if (isGoodTip)
+            {
+                int tipSilver = Mathf.CeilToInt(order.rewardSilver * 0.5f);
+                StarRating += order.starReward * 0.5f;
+                s_totalIncome += tipSilver;
+
+                if (tipSilver > 0 && dropMap != null)
+                {
+                    var tip = ThingMaker.MakeThing(ThingDefOf.Silver);
+                    tip.stackCount = tipSilver;
+                    IntVec3 dropPos = (parent != null && parent.Map != null) ? parent.Position : CellFinder.RandomEdgeCell(dropMap);
+                    GenPlace.TryPlaceThing(tip, dropPos, dropMap, ThingPlaceMode.Near);
+                }
+
+                if (order.faction != null)
+                {
+                    order.faction.TryAffectGoodwillWith(Faction.OfPlayer, 5, canSendMessage: true, canSendHostilityLetter: false);
+                }
+
+                manager.EndQuestForOrder(order, QuestEndOutcome.Success);
+                manager.RemoveOrder(order);
+
+                Find.LetterStack.ReceiveLetter(
+                    "MaiyaAeroBay_RideCompleteLetterTitle".Translate(),
+                    "MaiyaAeroBay_RideGoodTip".Translate(order.rewardSilver, tipSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                    LetterDefOf.PositiveEvent);
+                return;
             }
 
             if (order.faction != null)
@@ -574,6 +657,11 @@ namespace MaiyaAeroBay
         internal void SetDebugForceBadReview()
         {
             debugForceBadReview = true;
+        }
+
+        internal void SetDebugForceGoodTip()
+        {
+            debugForceGoodTip = true;
         }
     }
 }

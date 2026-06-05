@@ -386,6 +386,8 @@
   <MaiyaAeroBay_RideFareDodged>The passenger dodged the fare! You did not receive {0}s payment. Star rating still improved: {1}star</MaiyaAeroBay_RideFareDodged>
   <MaiyaAeroBay_RideBadReviewTitle>Malicious Bad Review!</MaiyaAeroBay_RideBadReviewTitle>
   <MaiyaAeroBay_RideBadReview>The customer left a malicious bad review! Penalty: -{0}s, rating dropped to {1}star ({2})</MaiyaAeroBay_RideBadReview>
+  <MaiyaAeroBay_RideGoodTipTitle>Great Review + Tip!</MaiyaAeroBay_RideGoodTipTitle>
+  <MaiyaAeroBay_RideGoodTip>Order complete! +{0}s | The customer left a glowing review with a {1}s tip! Rating: {2}star ({3})</MaiyaAeroBay_RideGoodTip>
 
   <MaiyaAeroBay_RideQuestName>{0}: {1} -> {2}</MaiyaAeroBay_RideQuestName>
   <MaiyaAeroBay_RideQuestDescription>{0}: {1} -> {2}, Status: {3}</MaiyaAeroBay_RideQuestDescription>

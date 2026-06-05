@@ -112,5 +112,16 @@ namespace MaiyaAeroBay
             comp.SetDebugForceBadReview();
             Log.Message("[MaiyaAeroBay] Debug: bad review will trigger on next complete");
         }
+
+        [DebugAction("MaiyaAeroBay", "R-ber: Force good tip", false, false, false, false, false, 0, false, allowedGameStates = AllowedGameStates.Playing)]
+        private static void DebugForceGoodTip()
+        {
+            var comp = GetFirstRideHailing();
+            if (comp == null) { Log.Message("[MaiyaAeroBay] Debug: no shuttle with R-ber installed"); return; }
+            var order = comp.ActiveOrder;
+            if (order == null) { Log.Message("[MaiyaAeroBay] Debug: no active order (accept an order first)"); return; }
+            comp.SetDebugForceGoodTip();
+            Log.Message("[MaiyaAeroBay] Debug: good tip will trigger on next complete");
+        }
     }
 }
