@@ -40,6 +40,8 @@ namespace MaiyaAeroBay
         private float pendingComplaintPenaltyStars = 0f;
         private string pendingComplaintFactionName = "";
 
+        private int pendingFuelDeliveryTick = -1;
+
         public float StarRating
         {
             get => s_starRating;
@@ -116,6 +118,7 @@ namespace MaiyaAeroBay
             if (Find.TickManager.TicksGame % 60 != 0) return;
             CheckArrival();
             CheckPendingComplaint();
+            CheckFuelDelivery();
         }
 
         private void CheckArrival()
@@ -168,7 +171,7 @@ namespace MaiyaAeroBay
                 isBadReview = true;
                 debugForceBadReview = false;
             }
-            else
+            else if (!debugForceGoodTip)
             {
                 float starRatingFactor = Mathf.Max(0.3f, 1f - (s_starRating - 1f) * 0.1f);
 
@@ -212,8 +215,9 @@ namespace MaiyaAeroBay
 
                 Find.LetterStack.ReceiveLetter(
                     "MaiyaAeroBay_RideBadReviewTitle".Translate(),
-                    "MaiyaAeroBay_RideBadReview".Translate(penaltySilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                    "MaiyaAeroBay_RideBadReview".Translate(penaltySilver, penaltyStars.ToString("F1"), order.faction?.Name ?? ""),
                     LetterDefOf.NegativeEvent);
+                RimTuberCompat.OnBadReview(penaltySilver, s_starRating);
                 return;
             }
 
@@ -234,8 +238,9 @@ namespace MaiyaAeroBay
 
                 Find.LetterStack.ReceiveLetter(
                     "MaiyaAeroBay_RideFareDodgedTitle".Translate(),
-                    "MaiyaAeroBay_RideFareDodged".Translate(order.rewardSilver, s_starRating.ToString("F1")),
+                    "MaiyaAeroBay_RideFareDodged".Translate(order.rewardSilver, order.starReward.ToString("F1")),
                     LetterDefOf.NegativeEvent);
+                RimTuberCompat.OnFareDodged(order.rewardSilver, s_starRating);
                 return;
             }
 
@@ -250,8 +255,10 @@ namespace MaiyaAeroBay
             {
                 var silver = ThingMaker.MakeThing(ThingDefOf.Silver);
                 silver.stackCount = order.rewardSilver;
-                IntVec3 pos = parent?.Position ?? CellFinder.RandomEdgeCell(map);
-                GenPlace.TryPlaceThing(silver, pos, map, ThingPlaceMode.Near);
+                IntVec3 silverPos = (parent != null && parent.Map != null) ? parent.Position : CellFinder.RandomEdgeCell(map);
+                if (!silverPos.IsValid) silverPos = CellFinder.RandomEdgeCell(map);
+                if (!GenPlace.TryPlaceThing(silver, silverPos, map, ThingPlaceMode.Near))
+                    GenPlace.TryPlaceThing(silver, CellFinder.RandomEdgeCell(map), map, ThingPlaceMode.Near);
             }
 
             bool isGoodTip = false;
@@ -276,8 +283,10 @@ namespace MaiyaAeroBay
                 {
                     var tip = ThingMaker.MakeThing(ThingDefOf.Silver);
                     tip.stackCount = tipSilver;
-                    IntVec3 pos = parent?.Position ?? CellFinder.RandomEdgeCell(map);
-                    GenPlace.TryPlaceThing(tip, pos, map, ThingPlaceMode.Near);
+                    IntVec3 tipPos = (parent != null && parent.Map != null) ? parent.Position : CellFinder.RandomEdgeCell(map);
+                    if (!tipPos.IsValid) tipPos = CellFinder.RandomEdgeCell(map);
+                    if (!GenPlace.TryPlaceThing(tip, tipPos, map, ThingPlaceMode.Near))
+                        GenPlace.TryPlaceThing(tip, CellFinder.RandomEdgeCell(map), map, ThingPlaceMode.Near);
                 }
 
                 if (order.faction != null)
@@ -290,8 +299,9 @@ namespace MaiyaAeroBay
 
                 Find.LetterStack.ReceiveLetter(
                     "MaiyaAeroBay_RideCompleteLetterTitle".Translate(),
-                    "MaiyaAeroBay_RideGoodTip".Translate(order.rewardSilver, tipSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                    "MaiyaAeroBay_RideGoodTip".Translate(order.rewardSilver, tipSilver, (order.starReward + order.starReward * 0.3f).ToString("F1"), order.faction?.Name ?? ""),
                     LetterDefOf.PositiveEvent);
+                RimTuberCompat.OnGoodTip(tipSilver, s_starRating);
                 return;
             }
 
@@ -305,14 +315,16 @@ namespace MaiyaAeroBay
 
             Find.LetterStack.ReceiveLetter(
                 "MaiyaAeroBay_RideCompleteLetterTitle".Translate(),
-                "MaiyaAeroBay_RideCompleted".Translate(order.rewardSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                "MaiyaAeroBay_RideCompleted".Translate(order.rewardSilver, order.starReward.ToString("F1"), order.faction?.Name ?? ""),
                 LetterDefOf.PositiveEvent);
+            RimTuberCompat.OnOrderCompleted(order.rewardSilver, s_starRating);
 
             TryTriggerLeftBehind(order);
         }
 
         public void CompleteOrder(RideOrder order, WorldComponent_RideHailingManager manager)
         {
+            Log.Message("[MaiyaAeroBay] CompleteOrder called. Shuttle on map: " + (parent?.Map != null) + ", rewardSilver: " + order.rewardSilver);
             bool isFareDodged = false;
             bool isBadReview = false;
 
@@ -326,7 +338,7 @@ namespace MaiyaAeroBay
                 isBadReview = true;
                 debugForceBadReview = false;
             }
-            else
+            else if (!debugForceGoodTip)
             {
                 float starRatingFactor = Mathf.Max(0.3f, 1f - (s_starRating - 1f) * 0.1f);
 
@@ -370,8 +382,9 @@ namespace MaiyaAeroBay
 
                 Find.LetterStack.ReceiveLetter(
                     "MaiyaAeroBay_RideBadReviewTitle".Translate(),
-                    "MaiyaAeroBay_RideBadReview".Translate(penaltySilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                    "MaiyaAeroBay_RideBadReview".Translate(penaltySilver, penaltyStars.ToString("F1"), order.faction?.Name ?? ""),
                     LetterDefOf.NegativeEvent);
+                RimTuberCompat.OnBadReview(penaltySilver, s_starRating);
                 return;
             }
 
@@ -392,8 +405,9 @@ namespace MaiyaAeroBay
 
                 Find.LetterStack.ReceiveLetter(
                     "MaiyaAeroBay_RideFareDodgedTitle".Translate(),
-                    "MaiyaAeroBay_RideFareDodged".Translate(order.rewardSilver, s_starRating.ToString("F1")),
+                    "MaiyaAeroBay_RideFareDodged".Translate(order.rewardSilver, order.starReward.ToString("F1")),
                     LetterDefOf.NegativeEvent);
+                RimTuberCompat.OnFareDodged(order.rewardSilver, s_starRating);
                 return;
             }
 
@@ -409,7 +423,18 @@ namespace MaiyaAeroBay
                 var silver = ThingMaker.MakeThing(ThingDefOf.Silver);
                 silver.stackCount = order.rewardSilver;
                 IntVec3 dropPos = (parent != null && parent.Map != null) ? parent.Position : CellFinder.RandomEdgeCell(dropMap);
-                GenPlace.TryPlaceThing(silver, dropPos, dropMap, ThingPlaceMode.Near);
+                if (!dropPos.IsValid)
+                {
+                    Log.Warning("[MaiyaAeroBay] Invalid dropPos for silver reward, using random edge cell");
+                    dropPos = CellFinder.RandomEdgeCell(dropMap);
+                }
+                bool placed = GenPlace.TryPlaceThing(silver, dropPos, dropMap, ThingPlaceMode.Near);
+                if (!placed)
+                {
+                    Log.Warning("[MaiyaAeroBay] Failed to place silver reward at " + dropPos + ", trying random edge cell");
+                    dropPos = CellFinder.RandomEdgeCell(dropMap);
+                    GenPlace.TryPlaceThing(silver, dropPos, dropMap, ThingPlaceMode.Near);
+                }
             }
 
             bool isGoodTip = false;
@@ -434,8 +459,10 @@ namespace MaiyaAeroBay
                 {
                     var tip = ThingMaker.MakeThing(ThingDefOf.Silver);
                     tip.stackCount = tipSilver;
-                    IntVec3 dropPos = (parent != null && parent.Map != null) ? parent.Position : CellFinder.RandomEdgeCell(dropMap);
-                    GenPlace.TryPlaceThing(tip, dropPos, dropMap, ThingPlaceMode.Near);
+                    IntVec3 tipPos = (parent != null && parent.Map != null) ? parent.Position : CellFinder.RandomEdgeCell(dropMap);
+                    if (!tipPos.IsValid) tipPos = CellFinder.RandomEdgeCell(dropMap);
+                    if (!GenPlace.TryPlaceThing(tip, tipPos, dropMap, ThingPlaceMode.Near))
+                        GenPlace.TryPlaceThing(tip, CellFinder.RandomEdgeCell(dropMap), dropMap, ThingPlaceMode.Near);
                 }
 
                 if (order.faction != null)
@@ -448,8 +475,9 @@ namespace MaiyaAeroBay
 
                 Find.LetterStack.ReceiveLetter(
                     "MaiyaAeroBay_RideCompleteLetterTitle".Translate(),
-                    "MaiyaAeroBay_RideGoodTip".Translate(order.rewardSilver, tipSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                    "MaiyaAeroBay_RideGoodTip".Translate(order.rewardSilver, tipSilver, (order.starReward + order.starReward * 0.3f).ToString("F1"), order.faction?.Name ?? ""),
                     LetterDefOf.PositiveEvent);
+                RimTuberCompat.OnGoodTip(tipSilver, s_starRating);
                 return;
             }
 
@@ -463,8 +491,9 @@ namespace MaiyaAeroBay
 
             Find.LetterStack.ReceiveLetter(
                 "MaiyaAeroBay_RideCompleteLetterTitle".Translate(),
-                "MaiyaAeroBay_RideCompleted".Translate(order.rewardSilver, s_starRating.ToString("F1"), order.faction?.Name ?? ""),
+                "MaiyaAeroBay_RideCompleted".Translate(order.rewardSilver, order.starReward.ToString("F1"), order.faction?.Name ?? ""),
                 LetterDefOf.PositiveEvent);
+            RimTuberCompat.OnOrderCompleted(order.rewardSilver, s_starRating);
 
             TryTriggerLeftBehind(order);
         }
@@ -511,20 +540,105 @@ namespace MaiyaAeroBay
             manager.RemoveOrder(order);
         }
 
+        private int CountAvailableSilver()
+        {
+            int total = 0;
+            if (parent?.Map != null)
+            {
+                foreach (var t in parent.Map.listerThings.ThingsOfDef(ThingDefOf.Silver))
+                {
+                    if (t.Faction == Faction.OfPlayer || t.Faction == null)
+                        total += t.stackCount;
+                }
+            }
+            else
+            {
+                var caravan = GetParentCaravan();
+                if (caravan != null)
+                {
+                    foreach (var t in caravan.AllThings)
+                    {
+                        if (t.def == ThingDefOf.Silver)
+                            total += t.stackCount;
+                    }
+                }
+                else
+                {
+                    foreach (var map in Find.Maps)
+                    {
+                        foreach (var t in map.listerThings.ThingsOfDef(ThingDefOf.Silver))
+                        {
+                            if (t.Faction == Faction.OfPlayer || t.Faction == null)
+                                total += t.stackCount;
+                        }
+                    }
+                }
+            }
+            return total;
+        }
+
         private void TryDeductSilver(int amount)
         {
-            var silverThings = parent.Map?.listerThings.ThingsOfDef(ThingDefOf.Silver)
-                .Where(t => t.Faction == Faction.OfPlayer)
-                .ToList();
-            if (silverThings == null) return;
             int remaining = amount;
-            foreach (var thing in silverThings)
+            if (parent?.Map != null)
             {
-                if (remaining <= 0) break;
-                int take = Mathf.Min(thing.stackCount, remaining);
-                thing.SplitOff(take).Destroy();
-                remaining -= take;
+                var silverThings = parent.Map.listerThings.ThingsOfDef(ThingDefOf.Silver)
+                    .Where(t => t.Faction == Faction.OfPlayer || t.Faction == null)
+                    .ToList();
+                foreach (var thing in silverThings)
+                {
+                    if (remaining <= 0) break;
+                    int take = Mathf.Min(thing.stackCount, remaining);
+                    thing.SplitOff(take).Destroy();
+                    remaining -= take;
+                }
             }
+            else
+            {
+                var caravan = GetParentCaravan();
+                if (caravan != null)
+                {
+                    foreach (var thing in caravan.AllThings.ToList())
+                    {
+                        if (remaining <= 0) break;
+                        if (thing.def != ThingDefOf.Silver) continue;
+                        int take = Mathf.Min(thing.stackCount, remaining);
+                        thing.SplitOff(take).Destroy();
+                        remaining -= take;
+                    }
+                }
+                else
+                {
+                    foreach (var map in Find.Maps)
+                    {
+                        var silverThings = map.listerThings.ThingsOfDef(ThingDefOf.Silver)
+                            .Where(t => t.Faction == Faction.OfPlayer || t.Faction == null)
+                            .ToList();
+                        foreach (var thing in silverThings)
+                        {
+                            if (remaining <= 0) break;
+                            int take = Mathf.Min(thing.stackCount, remaining);
+                            thing.SplitOff(take).Destroy();
+                            remaining -= take;
+                        }
+                        if (remaining <= 0) break;
+                    }
+                }
+            }
+        }
+
+        private Caravan GetParentCaravan()
+        {
+            if (parent?.Map != null) return null;
+            foreach (var caravan in Find.WorldObjects.Caravans)
+            {
+                foreach (var thing in caravan.AllThings)
+                {
+                    if (thing == parent)
+                        return caravan;
+                }
+            }
+            return null;
         }
 
         public bool CanAcceptNewOrder()
@@ -552,11 +666,27 @@ namespace MaiyaAeroBay
                 : "MaiyaAeroBay_RideAcceptCargo".Translate(order.cargoCount, order.cargoDef?.label ?? "cargo", order.pickupLabel, order.dropoffLabel);
             Messages.Message("MaiyaAeroBay_RideAccepted".Translate(detail), parent, MessageTypeDefOf.PositiveEvent);
 
-            Find.LetterStack.ReceiveLetter(
-                "MaiyaAeroBay_RideLetterTitle".Translate(order.GetOrderTypeLabel()),
-                "MaiyaAeroBay_RideLetterText".Translate(detail, order.rewardSilver, order.GetDispatchModeLabel()),
-                LetterDefOf.PositiveEvent,
-                new LookTargets(parent));
+            Quest quest = order.questID >= 0
+                ? Find.QuestManager.QuestsListForReading.FirstOrDefault(q => q.id == order.questID)
+                : null;
+            if (quest != null)
+            {
+                Find.LetterStack.ReceiveLetter(
+                    "MaiyaAeroBay_RideLetterTitle".Translate(order.GetOrderTypeLabel()),
+                    "MaiyaAeroBay_RideLetterText".Translate(detail, order.rewardSilver, order.GetDispatchModeLabel()),
+                    LetterDefOf.PositiveEvent,
+                    new LookTargets(parent),
+                    null,
+                    quest);
+            }
+            else
+            {
+                Find.LetterStack.ReceiveLetter(
+                    "MaiyaAeroBay_RideLetterTitle".Translate(order.GetOrderTypeLabel()),
+                    "MaiyaAeroBay_RideLetterText".Translate(detail, order.rewardSilver, order.GetDispatchModeLabel()),
+                    LetterDefOf.PositiveEvent,
+                    new LookTargets(parent));
+            }
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -597,6 +727,61 @@ namespace MaiyaAeroBay
             }
 
             yield return new Gizmo_RideHailingStatus { rideHailing = this };
+
+            if (installed)
+            {
+                var refuelable = parent.TryGetComp<CompRefuelable>();
+                if (refuelable != null)
+                {
+                    foreach (var g in GetFuelDeliveryGizmos(refuelable))
+                        yield return g;
+                }
+            }
+        }
+
+        public IEnumerable<Gizmo> GetFuelDeliveryGizmos(CompRefuelable refuelable)
+        {
+            float chemfuelPrice = ThingDef.Named("Chemfuel").BaseMarketValue;
+            var icon = ContentFinder<Texture2D>.Get("UI/Commands/RefuelPassengerShuttle", false);
+
+            if (pendingFuelDeliveryTick > 0)
+            {
+                int ticksLeft = pendingFuelDeliveryTick - Find.TickManager.TicksGame;
+                yield return new Command_Action
+                {
+                    defaultLabel = "MaiyaAeroBay_FuelDeliveryPending".Translate(),
+                    defaultDesc = "MaiyaAeroBay_FuelDeliveryPendingDesc".Translate(ticksLeft.ToStringTicksToPeriod()),
+                    icon = icon,
+                    action = () => { }
+                };
+            }
+            else if (refuelable.Fuel >= refuelable.TargetFuelLevel)
+            {
+                yield return new Command_Action
+                {
+                    defaultLabel = "MaiyaAeroBay_FuelDeliveryLabel".Translate(),
+                    defaultDesc = "MaiyaAeroBay_FuelDeliveryDescFull".Translate(),
+                    icon = icon,
+                    action = () => { },
+                    Disabled = true,
+                    disabledReason = "MaiyaAeroBay_FuelDeliveryDescFull".Translate()
+                };
+            }
+            else
+            {
+                int fuelNeeded = refuelable.GetFuelCountToFullyRefuel();
+                int deliveryCost = Mathf.CeilToInt(fuelNeeded * chemfuelPrice * 1.5f);
+                int availableSilver = CountAvailableSilver();
+                yield return new Command_Action
+                {
+                    defaultLabel = "MaiyaAeroBay_FuelDeliveryLabel".Translate(),
+                    defaultDesc = "MaiyaAeroBay_FuelDeliveryDesc".Translate(deliveryCost, fuelNeeded) + "\n" + "MaiyaAeroBay_FuelDeliverySilverAvailable".Translate(availableSilver),
+                    icon = icon,
+                    action = () => OrderFuelDelivery(deliveryCost),
+                    Disabled = availableSilver < deliveryCost,
+                    disabledReason = "MaiyaAeroBay_FuelDeliveryNoSilver".Translate(deliveryCost, availableSilver)
+                };
+            }
         }
 
         public override string CompInspectStringExtra()
@@ -651,6 +836,37 @@ namespace MaiyaAeroBay
             Scribe_Values.Look(ref pendingComplaintPenaltySilver, "pendingComplaintPenaltySilver", 0);
             Scribe_Values.Look(ref pendingComplaintPenaltyStars, "pendingComplaintPenaltyStars", 0f);
             Scribe_Values.Look(ref pendingComplaintFactionName, "pendingComplaintFactionName", "");
+            Scribe_Values.Look(ref pendingFuelDeliveryTick, "pendingFuelDeliveryTick", -1);
+        }
+
+        private void OrderFuelDelivery(int cost)
+        {
+            int available = CountAvailableSilver();
+            if (available < cost)
+            {
+                Messages.Message("MaiyaAeroBay_FuelDeliveryNoSilver".Translate(cost, available), parent, MessageTypeDefOf.RejectInput);
+                return;
+            }
+
+            TryDeductSilver(cost);
+            pendingFuelDeliveryTick = Find.TickManager.TicksGame + 2500;
+            Messages.Message("MaiyaAeroBay_FuelDeliveryOrdered".Translate(), parent, MessageTypeDefOf.PositiveEvent);
+        }
+
+        private void CheckFuelDelivery()
+        {
+            if (pendingFuelDeliveryTick < 0) return;
+            if (Find.TickManager.TicksGame < pendingFuelDeliveryTick) return;
+
+            var refuelable = parent?.TryGetComp<CompRefuelable>();
+            if (refuelable != null)
+            {
+                float toAdd = refuelable.TargetFuelLevel - refuelable.Fuel;
+                if (toAdd > 0) refuelable.Refuel(toAdd);
+            }
+
+            pendingFuelDeliveryTick = -1;
+            Messages.Message("MaiyaAeroBay_FuelDeliveryArrived".Translate(), parent, MessageTypeDefOf.PositiveEvent);
         }
 
         internal void RebuildProps()
@@ -662,6 +878,7 @@ namespace MaiyaAeroBay
         internal void SavePropsToFields()
         {
             installed = true;
+            s_isAcceptingRides = true;
         }
 
         internal void SetDebugForceFareDodged()
@@ -681,7 +898,16 @@ namespace MaiyaAeroBay
 
         internal void SetDebugForceLeftBehind()
         {
-            debugForceLeftBehind = true;
+            var item = GenerateLeftBehindItem();
+            if (item != null)
+            {
+                var order = ActiveOrder;
+                Find.WindowStack.Add(new Dialog_LeftBehindItem(item, this, order?.faction?.Name ?? ""));
+            }
+            else
+            {
+                Messages.Message("[Debug] No valid left-behind item to generate", MessageTypeDefOf.RejectInput);
+            }
         }
 
         private void CheckPendingComplaint()
@@ -751,7 +977,8 @@ namespace MaiyaAeroBay
             Map map = parent?.Map ?? Find.AnyPlayerHomeMap;
             if (map != null)
             {
-                IntVec3 pos = parent?.Position ?? CellFinder.RandomEdgeCell(map);
+                IntVec3 pos = (parent != null && parent.Map != null) ? parent.Position : CellFinder.RandomEdgeCell(map);
+                if (!pos.IsValid) pos = CellFinder.RandomEdgeCell(map);
                 GenPlace.TryPlaceThing(item, pos, map, ThingPlaceMode.Near);
             }
 
@@ -764,6 +991,7 @@ namespace MaiyaAeroBay
             }
 
             Messages.Message("MaiyaAeroBay_LeftBehindKept".Translate(item.LabelCap), parent, MessageTypeDefOf.NeutralEvent);
+            RimTuberCompat.OnLeftBehind(item.LabelCap, true);
         }
 
         public void HandleLeftBehindReturn(Thing item)
@@ -778,7 +1006,8 @@ namespace MaiyaAeroBay
                 {
                     var silver = ThingMaker.MakeThing(ThingDefOf.Silver);
                     silver.stackCount = rewardSilver;
-                    IntVec3 pos = parent?.Position ?? CellFinder.RandomEdgeCell(map);
+                    IntVec3 pos = (parent != null && parent.Map != null) ? parent.Position : CellFinder.RandomEdgeCell(map);
+                    if (!pos.IsValid) pos = CellFinder.RandomEdgeCell(map);
                     GenPlace.TryPlaceThing(silver, pos, map, ThingPlaceMode.Near);
                 }
 
@@ -791,6 +1020,7 @@ namespace MaiyaAeroBay
             {
                 Messages.Message("MaiyaAeroBay_LeftBehindReturned".Translate(item.LabelCap), parent, MessageTypeDefOf.PositiveEvent);
             }
+            RimTuberCompat.OnLeftBehind(item.LabelCap, false);
         }
     }
 }

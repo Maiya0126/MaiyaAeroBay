@@ -354,6 +354,8 @@
 
   <MaiyaAeroBay_RideStatePickup>Please head to pickup point</MaiyaAeroBay_RideStatePickup>
   <MaiyaAeroBay_RideStateDeliver>Please head to delivery point</MaiyaAeroBay_RideStateDeliver>
+  <MaiyaAeroBay_RideStatePickupPassenger>Please head to the passenger's location</MaiyaAeroBay_RideStatePickupPassenger>
+  <MaiyaAeroBay_RideStateDeliverPassenger>Please deliver the passenger to destination</MaiyaAeroBay_RideStateDeliverPassenger>
   <MaiyaAeroBay_RideStatusWaiting>Waiting for orders</MaiyaAeroBay_RideStatusWaiting>
   <MaiyaAeroBay_RideStatusOffline>Offline</MaiyaAeroBay_RideStatusOffline>
 
@@ -404,7 +406,18 @@
   <MaiyaAeroBay_RideGiftDesc>The R-ber platform has sent you a complimentary ride-hailing kit! Install it on your shuttle to start accepting transport orders and earn silver.\n\nR-ber - Your ride, your way!</MaiyaAeroBay_RideGiftDesc>
 
   <MaiyaAeroBay_RideQuestName>{0}: {1} -> {2}</MaiyaAeroBay_RideQuestName>
-  <MaiyaAeroBay_RideQuestDescription>{0}: {1} -> {2}\n{4} | Reward: {3}s\nTime left: {5}\n{6}</MaiyaAeroBay_RideQuestDescription>
+  <MaiyaAeroBay_RideQuestReward>Reward: {0}s</MaiyaAeroBay_RideQuestReward>
+  <MaiyaAeroBay_RideQuestTimeLeft>Time left: {0}</MaiyaAeroBay_RideQuestTimeLeft>
   <MaiyaAeroBay_RideQuestEnded>Ended</MaiyaAeroBay_RideQuestEnded>
   <MaiyaAeroBay_TimeOverdue>Overdue!</MaiyaAeroBay_TimeOverdue>
+
+  <MaiyaAeroBay_FuelDeliveryLabel>Fuel Delivery</MaiyaAeroBay_FuelDeliveryLabel>
+  <MaiyaAeroBay_FuelDeliveryDesc>R-ber Fuel Delivery Service\n\nRefill: {1} chemfuel, cost {0}s\nETA: ~1 hour</MaiyaAeroBay_FuelDeliveryDesc>
+  <MaiyaAeroBay_FuelDeliveryDescFull>R-ber Fuel Delivery Service\n\nTank is full, no refuel needed</MaiyaAeroBay_FuelDeliveryDescFull>
+  <MaiyaAeroBay_FuelDeliveryNoSilver>Not enough silver! Need {0}s, have {1}s</MaiyaAeroBay_FuelDeliveryNoSilver>
+  <MaiyaAeroBay_FuelDeliveryOrdered>Fuel ordered! Arrives in ~1 hour</MaiyaAeroBay_FuelDeliveryOrdered>
+  <MaiyaAeroBay_FuelDeliveryPending>Fuel en route...</MaiyaAeroBay_FuelDeliveryPending>
+  <MaiyaAeroBay_FuelDeliveryPendingDesc>R-ber Fuel Delivery Service\n\nFuel arrives in {0}</MaiyaAeroBay_FuelDeliveryPendingDesc>
+  <MaiyaAeroBay_FuelDeliveryArrived>R-ber Fuel Delivery: Tank refilled!</MaiyaAeroBay_FuelDeliveryArrived>
+  <MaiyaAeroBay_FuelDeliverySilverAvailable>Available silver: {0}</MaiyaAeroBay_FuelDeliverySilverAvailable>
 </LanguageData>

@@ -93,6 +93,8 @@
     <Compile Include="Source\JobDriver_EnterShuttleInterior.cs" />
     <Compile Include="Source\Dialog_LeftBehindItem.cs" />
     <Compile Include="Source\DebugActions_RideHailing.cs" />
+    <Compile Include="Source\RimTuberCompat.cs" />
+    <Compile Include="Source\RimTalkCompat.cs" />
     <Compile Include="Source\MaiyaAeroBayMod.cs" />
     <Compile Include="Source\MaiyaAeroBayModSettings.cs" />
     <Compile Include="Source\ShuttleInteriorPortal.cs" />
@@ -134,10 +136,10 @@
 <PropertyGroup>
     <PostBuildEvent>set MOD_DIR=D:\Games\steamapps\common\Rimworld\Mods\MaiyaMod10 Maiya AeroBay
 copy /y "$(TargetPath)" "%MOD_DIR%\Assemblies\"
-if exist "$(ProjectDir)Defs" xcopy /y /i "$(ProjectDir)Defs" "%MOD_DIR%\Defs\"
-if exist "$(ProjectDir)About" xcopy /y /i "$(ProjectDir)About" "%MOD_DIR%\About\"
-if exist "$(ProjectDir)Languages" xcopy /y /i "$(ProjectDir)Languages" "%MOD_DIR%\Languages\"
-if exist "$(ProjectDir)Textures" xcopy /y /i "$(ProjectDir)Textures" "%MOD_DIR%\Textures\"
+if exist "$(ProjectDir)Defs" xcopy /y /s /i "$(ProjectDir)Defs" "%MOD_DIR%\Defs\"
+if exist "$(ProjectDir)About" xcopy /y /s /i "$(ProjectDir)About" "%MOD_DIR%\About\"
+if exist "$(ProjectDir)Languages" xcopy /y /s /i "$(ProjectDir)Languages" "%MOD_DIR%\Languages\"
+if exist "$(ProjectDir)Textures" xcopy /y /s /i "$(ProjectDir)Textures" "%MOD_DIR%\Textures\"
 echo [MaiyaAeroBay] Build and deploy complete!</PostBuildEvent>
   </PropertyGroup>
 </Project>

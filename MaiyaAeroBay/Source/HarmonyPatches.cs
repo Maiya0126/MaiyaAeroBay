@@ -739,4 +739,33 @@ namespace MaiyaAeroBay
             }
         }
     }
+
+    [HarmonyPatch(typeof(Caravan), "GetGizmos")]
+    public static class Caravan_FuelDeliveryGizmoPatch
+    {
+        static IEnumerable<Gizmo> Postfix(IEnumerable<Gizmo> __result, Caravan __instance)
+        {
+            foreach (var g in __result)
+                yield return g;
+
+            if (!MaiyaAeroBayMod.settings.rideHailingEnabled) yield break;
+
+            foreach (var thing in __instance.AllThings)
+            {
+                if (thing is ThingWithComps twc)
+                {
+                    var comp = twc.TryGetComp<CompShuttleRideHailing>();
+                    if (comp == null || !comp.installed) continue;
+
+                    var refuelable = twc.TryGetComp<CompRefuelable>();
+                    if (refuelable == null) continue;
+
+                    foreach (var gizmo in comp.GetFuelDeliveryGizmos(refuelable))
+                        yield return gizmo;
+
+                    yield break;
+                }
+            }
+        }
+    }
 }

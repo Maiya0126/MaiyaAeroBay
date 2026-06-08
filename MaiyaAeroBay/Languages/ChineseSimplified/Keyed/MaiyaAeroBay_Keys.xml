@@ -313,10 +313,10 @@
   <MaiyaAeroBay_RideHailingActiveOrder>当前订单: {0} {1}→{2} 奖励{3}银</MaiyaAeroBay_RideHailingActiveOrder>
   <MaiyaAeroBay_RideHailingIncome>收入: {0}银</MaiyaAeroBay_RideHailingIncome>
 
-  <MaiyaAeroBay_RideOrderTypePerson>运人</MaiyaAeroBay_RideOrderTypePerson>
+  <MaiyaAeroBay_RideOrderTypePerson>载客</MaiyaAeroBay_RideOrderTypePerson>
   <MaiyaAeroBay_RideOrderTypeCargo>运货</MaiyaAeroBay_RideOrderTypeCargo>
   <MaiyaAeroBay_RideDispatchMandatory>指定派单</MaiyaAeroBay_RideDispatchMandatory>
-  <MaiyaAeroBay_RideDispatchOptional>系统拍单</MaiyaAeroBay_RideDispatchOptional>
+  <MaiyaAeroBay_RideDispatchOptional>系统派单</MaiyaAeroBay_RideDispatchOptional>
   <MaiyaAeroBay_RideReward>奖励: {0}银</MaiyaAeroBay_RideReward>
   <MaiyaAeroBay_RideDeadline>剩余: {0}</MaiyaAeroBay_RideDeadline>
   <MaiyaAeroBay_RidePassengerName>乘客: {0}</MaiyaAeroBay_RidePassengerName>
@@ -335,14 +335,14 @@
   <MaiyaAeroBay_RideAcceptPerson>乘客 {0}: {1} → {2}</MaiyaAeroBay_RideAcceptPerson>
   <MaiyaAeroBay_RideAcceptCargo>{0}x{1}: {2} → {3}</MaiyaAeroBay_RideAcceptCargo>
   <MaiyaAeroBay_RideAccepted>已接单: {0}</MaiyaAeroBay_RideAccepted>
-  <MaiyaAeroBay_RideCompleted>订单完成！+{0}银 信誉{1}星 ({2})</MaiyaAeroBay_RideCompleted>
+  <MaiyaAeroBay_RideCompleted>订单完成！+{0}银 信誉+{1}星 ({2})</MaiyaAeroBay_RideCompleted>
   <MaiyaAeroBay_RideFailedPenalty>{0} -{1}银</MaiyaAeroBay_RideFailedPenalty>
   <MaiyaAeroBay_RideFailed>{0}</MaiyaAeroBay_RideFailed>
   <MaiyaAeroBay_RideFailedTimeout>订单超时未完成</MaiyaAeroBay_RideFailedTimeout>
 
   <MaiyaAeroBay_RideWelcomeTitle>嘀嘀 / R-ber</MaiyaAeroBay_RideWelcomeTitle>
   <MaiyaAeroBay_RideWelcomeDesc>为穿梭机安装"嘀嘀套件"即可开启网约运输模式！在友方据点间接送乘客或运送货物赚取银币。</MaiyaAeroBay_RideWelcomeDesc>
-  <MaiyaAeroBay_RideWelcomeFeatures>▸ 完成订单积累信誉星级，解锁更高报酬任务\n▸ 指定派单（近距）必须完成，系统拍单（远距）自由选择\n▸ 超时或取消仅轻度惩罚，不会影响殖民地运转</MaiyaAeroBay_RideWelcomeFeatures>
+  <MaiyaAeroBay_RideWelcomeFeatures>▸ 完成订单积累信誉星级，解锁更高报酬任务\n▸ 指定派单（近距）必须完成，系统派单（远距）自由选择\n▸ 超时或取消仅轻度惩罚，不会影响殖民地运转</MaiyaAeroBay_RideWelcomeFeatures>
   <MaiyaAeroBay_RideWelcomeNote>你也可以随时在模组设置中开关此功能。</MaiyaAeroBay_RideWelcomeNote>
   <MaiyaAeroBay_RideWelcomeEnable>开启嘀嘀</MaiyaAeroBay_RideWelcomeEnable>
   <MaiyaAeroBay_RideWelcomeDisable>暂不开启</MaiyaAeroBay_RideWelcomeDisable>
@@ -353,11 +353,13 @@
 
   <MaiyaAeroBay_RideStatePickup>请尽快前往取货点</MaiyaAeroBay_RideStatePickup>
   <MaiyaAeroBay_RideStateDeliver>请尽快前往交货点</MaiyaAeroBay_RideStateDeliver>
+  <MaiyaAeroBay_RideStatePickupPassenger>请尽快前往乘客起点</MaiyaAeroBay_RideStatePickupPassenger>
+  <MaiyaAeroBay_RideStateDeliverPassenger>请尽快将乘客送达目的地</MaiyaAeroBay_RideStateDeliverPassenger>
   <MaiyaAeroBay_RideStatusWaiting>等待订单</MaiyaAeroBay_RideStatusWaiting>
   <MaiyaAeroBay_RideStatusOffline>已下线</MaiyaAeroBay_RideStatusOffline>
 
-  <MaiyaAeroBay_DebugRideShortPerson>[调试] 短途运人</MaiyaAeroBay_DebugRideShortPerson>
-  <MaiyaAeroBay_DebugRideLongPerson>[调试] 远程运人</MaiyaAeroBay_DebugRideLongPerson>
+  <MaiyaAeroBay_DebugRideShortPerson>[调试] 短途载客</MaiyaAeroBay_DebugRideShortPerson>
+  <MaiyaAeroBay_DebugRideLongPerson>[调试] 远程载客</MaiyaAeroBay_DebugRideLongPerson>
   <MaiyaAeroBay_DebugRideShortCargo>[调试] 短途货运</MaiyaAeroBay_DebugRideShortCargo>
   <MaiyaAeroBay_DebugRideLongCargo>[调试] 远程货运</MaiyaAeroBay_DebugRideLongCargo>
   <MaiyaAeroBay_DebugRideTimeout>[调试] 超时惩罚</MaiyaAeroBay_DebugRideTimeout>
@@ -382,11 +384,11 @@
   <MaiyaAeroBay_RideFailLetterTitle>订单失败</MaiyaAeroBay_RideFailLetterTitle>
 
   <MaiyaAeroBay_RideFareDodgedTitle>乘客飞单！</MaiyaAeroBay_RideFareDodgedTitle>
-  <MaiyaAeroBay_RideFareDodged>乘客飞单了！{0}银币未到账。信誉星级仍有所提升: {1}星</MaiyaAeroBay_RideFareDodged>
+  <MaiyaAeroBay_RideFareDodged>乘客飞单了！{0}银币未到账。信誉+{1}星</MaiyaAeroBay_RideFareDodged>
   <MaiyaAeroBay_RideBadReviewTitle>恶意差评！</MaiyaAeroBay_RideBadReviewTitle>
-  <MaiyaAeroBay_RideBadReview>顾客恶意差评！扣除{0}银币，信誉降至{1}星 ({2})</MaiyaAeroBay_RideBadReview>
+  <MaiyaAeroBay_RideBadReview>恶意差评！-{0}银 信誉-{1}星 ({2})</MaiyaAeroBay_RideBadReview>
   <MaiyaAeroBay_RideGoodTipTitle>好评打赏！</MaiyaAeroBay_RideGoodTipTitle>
-  <MaiyaAeroBay_RideGoodTip>订单完成！+{0}银 | 顾客好评打赏{1}银币！信誉升至{2}星 ({3})</MaiyaAeroBay_RideGoodTip>
+  <MaiyaAeroBay_RideGoodTip>订单完成！+{0}银 | 顾客好评打赏+{1}银币！信誉+{2}星 ({3})</MaiyaAeroBay_RideGoodTip>
 
   <MaiyaAeroBay_LeftBehindTitle>乘客遗落物品！</MaiyaAeroBay_LeftBehindTitle>
   <MaiyaAeroBay_LeftBehindDesc>{0}的乘客在车上落了东西：{1}\n\n你要怎么做？</MaiyaAeroBay_LeftBehindDesc>
@@ -403,7 +405,18 @@
   <MaiyaAeroBay_RideGiftDesc>嘀嘀平台寄来了一个免费嘀嘀套件！安装到穿梭机上即可开始接单赚银币。\n\n嘀嘀 — 您的出行，您做主！</MaiyaAeroBay_RideGiftDesc>
 
   <MaiyaAeroBay_RideQuestName>{0}: {1} → {2}</MaiyaAeroBay_RideQuestName>
-  <MaiyaAeroBay_RideQuestDescription>{0}: {1} → {2}\n{4} | 奖励: {3}银\n剩余: {5}\n{6}</MaiyaAeroBay_RideQuestDescription>
+  <MaiyaAeroBay_RideQuestReward>奖励: {0}银</MaiyaAeroBay_RideQuestReward>
+  <MaiyaAeroBay_RideQuestTimeLeft>剩余: {0}</MaiyaAeroBay_RideQuestTimeLeft>
   <MaiyaAeroBay_RideQuestEnded>已结束</MaiyaAeroBay_RideQuestEnded>
   <MaiyaAeroBay_TimeOverdue>已超时！</MaiyaAeroBay_TimeOverdue>
+
+  <MaiyaAeroBay_FuelDeliveryLabel>送燃料服务</MaiyaAeroBay_FuelDeliveryLabel>
+  <MaiyaAeroBay_FuelDeliveryDesc>嘀嘀平台·送燃料上门服务\n\n本次补满需{1}单位化合燃料，费用{0}银\n约1小时送达</MaiyaAeroBay_FuelDeliveryDesc>
+  <MaiyaAeroBay_FuelDeliveryDescFull>嘀嘀平台·送燃料上门服务\n\n油箱已满，无需加注</MaiyaAeroBay_FuelDeliveryDescFull>
+  <MaiyaAeroBay_FuelDeliveryNoSilver>银币不足！需要{0}银，当前仅有{1}银</MaiyaAeroBay_FuelDeliveryNoSilver>
+  <MaiyaAeroBay_FuelDeliveryOrdered>燃料已下单，约1小时后送达！</MaiyaAeroBay_FuelDeliveryOrdered>
+  <MaiyaAeroBay_FuelDeliveryPending>燃料运送中...</MaiyaAeroBay_FuelDeliveryPending>
+  <MaiyaAeroBay_FuelDeliveryPendingDesc>嘀嘀平台·送燃料上门服务\n\n燃料预计{0}后送达</MaiyaAeroBay_FuelDeliveryPendingDesc>
+  <MaiyaAeroBay_FuelDeliveryArrived>嘀嘀平台送燃料服务：油箱已加满！</MaiyaAeroBay_FuelDeliveryArrived>
+  <MaiyaAeroBay_FuelDeliverySilverAvailable>可用银币：{0}</MaiyaAeroBay_FuelDeliverySilverAvailable>
 </LanguageData>

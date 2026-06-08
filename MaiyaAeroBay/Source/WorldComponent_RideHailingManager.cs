@@ -240,7 +240,7 @@ namespace MaiyaAeroBay
                 if (comp == null || !comp.CanAcceptNewOrder()) continue;
                 if (GetPendingOrdersForShuttle(shuttle.ThingID, comp.StarRating).Count >= 3) continue;
 
-                float chance = Mathf.Lerp(0.1f, 0.8f, (comp.StarRating - 0.5f) / 4.5f);
+                float chance = Mathf.Lerp(0.3f, 0.9f, (comp.StarRating - 0.5f) / 4.5f);
                 if (!Rand.Chance(chance)) continue;
 
                 var order = GenerateOrder(comp);
@@ -263,16 +263,30 @@ namespace MaiyaAeroBay
             if (playerMaps.Count == 0) return null;
 
             int homeTile = playerMaps[0].Tile;
-
-            Settlement pickup = settlements.RandomElement();
-            Settlement dropoff = settlements.Where(s => s != pickup).RandomElement();
-            if (dropoff == null) return null;
-
             float starRating = comp.StarRating;
-            int dist = Find.WorldGrid.TraversalDistanceBetween(pickup.Tile, dropoff.Tile);
-
             float maxRange = Mathf.Lerp(comp.Props.baseOrderRange * 0.5f, comp.Props.baseOrderRange * 2f, (starRating - 0.5f) / 4.5f);
-            if (dist > maxRange) return null;
+
+            Settlement pickup = null;
+            Settlement dropoff = null;
+            int dist = -1;
+
+            for (int attempt = 0; attempt < 8; attempt++)
+            {
+                Settlement tryPickup = settlements.RandomElement();
+                Settlement tryDropoff = settlements.Where(s => s != tryPickup).RandomElement();
+                if (tryDropoff == null) continue;
+
+                int tryDist = Find.WorldGrid.TraversalDistanceBetween(tryPickup.Tile, tryDropoff.Tile);
+                if (tryDist <= maxRange)
+                {
+                    pickup = tryPickup;
+                    dropoff = tryDropoff;
+                    dist = tryDist;
+                    break;
+                }
+            }
+
+            if (pickup == null || dropoff == null || dist < 0) return null;
 
             int homeToPickup = Find.WorldGrid.TraversalDistanceBetween(homeTile, pickup.Tile);
             bool isMandatory = homeToPickup <= comp.Props.baseOrderRange && Rand.Chance(0.3f);
@@ -419,9 +433,7 @@ namespace MaiyaAeroBay
             {
                 var quest = Quest.MakeRaw();
                 quest.name = "MaiyaAeroBay_RideQuestName".Translate(order.GetOrderTypeLabel(), order.pickupLabel, order.dropoffLabel);
-                quest.description = "MaiyaAeroBay_RideQuestDescription".Translate(
-                    order.GetOrderTypeLabel(), order.pickupLabel, order.dropoffLabel,
-                    order.rewardSilver.ToString());
+                quest.description = "";
 
                 var part = new QuestPart_RideHailingOrder();
                 part.orderID = order.orderID;
@@ -437,6 +449,7 @@ namespace MaiyaAeroBay
                         : "")
                     : order.passengerName;
                 part.completeDeadlineTick = order.completeDeadlineTick;
+                part.orderType = order.orderType;
                 quest.AddPart(part);
 
                 quest.appearanceTick = Find.TickManager.TicksGame;
@@ -507,6 +520,18 @@ namespace MaiyaAeroBay
                         result.Add(thing as ThingWithComps);
                 }
             }
+            foreach (var caravan in Find.WorldObjects.Caravans)
+            {
+                foreach (var thing in caravan.AllThings)
+                {
+                    if (thing is ThingWithComps twc)
+                    {
+                        var comp = twc.TryGetComp<CompShuttleRideHailing>();
+                        if (comp != null && comp.installed && !result.Any(s => s.ThingID == twc.ThingID))
+                            result.Add(twc);
+                    }
+                }
+            }
             return result;
         }
 
@@ -518,6 +543,14 @@ namespace MaiyaAeroBay
                 {
                     if (thing.ThingID == thingID)
                         return thing as ThingWithComps;
+                }
+            }
+            foreach (var caravan in Find.WorldObjects.Caravans)
+            {
+                foreach (var thing in caravan.AllThings)
+                {
+                    if (thing.ThingID == thingID && thing is ThingWithComps twc)
+                        return twc;
                 }
             }
             return null;
