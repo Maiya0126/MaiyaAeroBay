@@ -663,7 +663,7 @@ namespace MaiyaAeroBay
 
         private static int GetTravelTicks(int distance)
         {
-            return Mathf.CeilToInt(distance * 1500f);
+            return distance * 100;
         }
 
         private void CheckDeliveries()
