@@ -419,4 +419,23 @@
   <MaiyaAeroBay_FuelDeliveryPendingDesc>嘀嘀平台·送燃料上门服务\n\n燃料预计{0}后送达</MaiyaAeroBay_FuelDeliveryPendingDesc>
   <MaiyaAeroBay_FuelDeliveryArrived>嘀嘀平台送燃料服务：油箱已加满！</MaiyaAeroBay_FuelDeliveryArrived>
   <MaiyaAeroBay_FuelDeliverySilverAvailable>可用银币：{0}</MaiyaAeroBay_FuelDeliverySilverAvailable>
+
+  <MaiyaAeroBay_RequestDeliveryLabel>叫车送货 (Call Delivery)</MaiyaAeroBay_RequestDeliveryLabel>
+  <MaiyaAeroBay_RequestDeliveryDescCaravan>呼叫第三方穿梭机来运送物资回家。
+
+商队中有 {0} 件可运输物品</MaiyaAeroBay_RequestDeliveryDescCaravan>
+  <MaiyaAeroBay_RequestDeliveryDescMap>呼叫第三方穿梭机来运送物资回家。
+
+{0} 上有 {1} 件可运输物品</MaiyaAeroBay_RequestDeliveryDescMap>
+  <MaiyaAeroBay_RequestDeliveryTitle>叫车送货 - 选择要运回家的物品</MaiyaAeroBay_RequestDeliveryTitle>
+  <MaiyaAeroBay_RequestDeliverySubtitle>所在地：{0}，距离：{1} 格</MaiyaAeroBay_RequestDeliverySubtitle>
+  <MaiyaAeroBay_RequestDeliveryCost>总费用：{0}银（总重 {1}kg）</MaiyaAeroBay_RequestDeliveryCost>
+  <MaiyaAeroBay_RequestDeliverySilver>可用银币：{0}</MaiyaAeroBay_RequestDeliverySilver>
+  <MaiyaAeroBay_RequestDeliveryConfirm>确认叫车</MaiyaAeroBay_RequestDeliveryConfirm>
+  <MaiyaAeroBay_RequestDeliveryNoSelection>请先选择要运送的物品</MaiyaAeroBay_RequestDeliveryNoSelection>
+  <MaiyaAeroBay_RequestDeliverySelectAll>全选</MaiyaAeroBay_RequestDeliverySelectAll>
+  <MaiyaAeroBay_RequestDeliveryOrdered>叫车订单已下达！费用 {0}银，距离 {1} 格，目的地 #{2}</MaiyaAeroBay_RequestDeliveryOrdered>
+  <MaiyaAeroBay_RequestDeliveryNoSilver>银币不足！需要{0}银，当前{1}银</MaiyaAeroBay_RequestDeliveryNoSilver>
+  <MaiyaAeroBay_RequestDeliveryArrivedTitle>物资送达！</MaiyaAeroBay_RequestDeliveryArrivedTitle>
+  <MaiyaAeroBay_RequestDeliveryArrived>来自 {0} 的物资已运抵基地！</MaiyaAeroBay_RequestDeliveryArrived>
 </LanguageData>

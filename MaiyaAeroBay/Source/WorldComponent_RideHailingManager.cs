@@ -11,6 +11,7 @@ namespace MaiyaAeroBay
     {
         private List<RideOrder> pendingOrders = new List<RideOrder>();
         private List<RideOrder> activeOrders = new List<RideOrder>();
+        private List<ActiveDelivery> deliveries = new List<ActiveDelivery>();
         private bool promptShown = false;
         private int nextOrderCheckTick = -1;
 
@@ -65,6 +66,7 @@ namespace MaiyaAeroBay
             CheckExpiredOrders();
             CheckWorldArrival();
             MaintainPocketMapSourceMaps();
+            CheckDeliveries();
 
             if (!MaiyaAeroBayMod.settings.rideHailingEnabled) return;
 
@@ -606,5 +608,270 @@ namespace MaiyaAeroBay
             pendingOrders.Add(order);
             return order;
         }
+
+        public void StartPlayerDelivery(int sourceTile, int homeTile, int distance, Map sourceMap, List<Thing> items)
+        {
+            if (items == null || items.Count == 0) return;
+
+            Map homeMap = Find.Maps.FirstOrDefault(m => m.IsPlayerHome && m.Tile == homeTile) ?? Find.AnyPlayerHomeMap;
+            bool hasRoyalty = ModsConfig.RoyaltyActive && TransportShipDefOf.Ship_Shuttle != null;
+
+            var delivery = new ActiveDelivery
+            {
+                sourceTile = sourceTile,
+                homeTile = homeTile,
+                tileDistance = distance,
+                items = items,
+                homeMap = homeMap
+            };
+
+            if (hasRoyalty && sourceMap != null)
+            {
+                delivery.hasSourceMap = true;
+                delivery.sourceMapParent = sourceMap.Parent;
+                delivery.sourceArrivalCell = DropCellFinder.GetBestShuttleLandingSpot(sourceMap, Faction.OfPlayer);
+                delivery.phase = DeliveryPhase.SourceArriving;
+
+                var shipDef = TransportShipDefOf.Ship_Shuttle;
+                var ship = TransportShipMaker.MakeTransportShip(shipDef, items);
+                delivery.ship = ship;
+                delivery.items = items;
+
+                ship.ArriveAt(delivery.sourceArrivalCell, delivery.sourceMapParent);
+                ship.Start();
+
+                delivery.sourceArrivalTick = Find.TickManager.TicksGame + 300;
+            }
+            else if (hasRoyalty)
+            {
+                delivery.hasSourceMap = false;
+                delivery.phase = DeliveryPhase.Traveling;
+                delivery.travelCompleteTick = Find.TickManager.TicksGame + GetTravelTicks(distance);
+                delivery.ship = null;
+            }
+            else
+            {
+                delivery.hasSourceMap = false;
+                delivery.phase = DeliveryPhase.Traveling;
+                delivery.travelCompleteTick = Find.TickManager.TicksGame + GetTravelTicks(distance);
+                delivery.ship = null;
+            }
+
+            deliveries.Add(delivery);
+            Log.Message("[MaiyaAeroBay] Player delivery started: " + items.Count + " items from tile " + sourceTile + " to " + homeTile + " (" + distance + " tiles, royalty=" + hasRoyalty + ", map=" + (sourceMap != null) + ")");
+        }
+
+        private static int GetTravelTicks(int distance)
+        {
+            return Mathf.CeilToInt(distance * 1500f);
+        }
+
+        private void CheckDeliveries()
+        {
+            for (int i = deliveries.Count - 1; i >= 0; i--)
+            {
+                var d = deliveries[i];
+                AdvanceDeliveryPhase(d);
+                if (d.phase == DeliveryPhase.Done)
+                    deliveries.RemoveAt(i);
+            }
+        }
+
+        private void AdvanceDeliveryPhase(ActiveDelivery d)
+        {
+            int tick = Find.TickManager.TicksGame;
+            bool hasRoyalty = d.ship != null;
+            Map homeMap = d.homeMap;
+
+            switch (d.phase)
+            {
+                case DeliveryPhase.SourceArriving:
+                    if (tick >= d.sourceArrivalTick && d.ship != null && d.ship.ShipExistsAndIsSpawned)
+                    {
+                        d.ship.AddJob(ShipJobDefOf.WaitTime);
+                        d.phase = DeliveryPhase.SourceDelay;
+                        d.sourceDelayTick = tick + 1500;
+                    }
+                    else if (tick >= d.sourceArrivalTick && !d.ship.ShipExistsAndIsSpawned)
+                    {
+                        d.sourceArrivalTick = tick + 300;
+                    }
+                    break;
+
+                case DeliveryPhase.SourceDelay:
+                    if (tick >= d.sourceDelayTick)
+                    {
+                        if (d.ship != null && d.ship.ShipExistsAndIsSpawned)
+                        {
+                            SaveItemsFromShip(d);
+                        }
+                        if (d.ship != null)
+                        {
+                            try { d.ship.curJob?.End(); } catch { }
+                            d.ship.AddJob(ShipJobDefOf.FlyAway);
+                        }
+                        d.phase = DeliveryPhase.SourceFlying;
+                    }
+                    break;
+
+                case DeliveryPhase.SourceFlying:
+                    if (d.ship == null || !d.ship.ShipExistsAndIsSpawned)
+                    {
+                        d.ship?.Dispose();
+                        d.ship = null;
+                        d.phase = DeliveryPhase.Traveling;
+                        d.travelCompleteTick = tick + GetTravelTicks(d.tileDistance);
+                    }
+                    break;
+
+                case DeliveryPhase.Traveling:
+                    if (tick >= d.travelCompleteTick)
+                    {
+                        if (hasRoyalty && homeMap != null)
+                        {
+                            var shipDef = TransportShipDefOf.Ship_Shuttle;
+                            var newShip = TransportShipMaker.MakeTransportShip(shipDef, d.items);
+                            d.ship = newShip;
+
+                            var homeCell = DropCellFinder.GetBestShuttleLandingSpot(homeMap, Faction.OfPlayer);
+                            d.ship.ArriveAt(homeCell, homeMap.Parent);
+                            d.ship.Start();
+                            d.homeArrivalTick = tick + 300;
+                            d.phase = DeliveryPhase.HomeArriving;
+                        }
+                        else
+                        {
+                            DeliverToHome(d);
+                            d.phase = DeliveryPhase.Done;
+                        }
+                    }
+                    break;
+
+                case DeliveryPhase.HomeArriving:
+                    if (tick >= d.homeArrivalTick && d.ship != null && d.ship.ShipExistsAndIsSpawned)
+                    {
+                        UnloadShipAtHome(d);
+                        d.ship.AddJob(ShipJobDefOf.WaitTime);
+                        d.homeDelayTick = tick + 2500;
+                        d.phase = DeliveryPhase.HomeDelay;
+                    }
+                    else if (tick >= d.homeArrivalTick && !d.ship.ShipExistsAndIsSpawned)
+                    {
+                        d.homeArrivalTick = tick + 300;
+                    }
+                    break;
+
+                case DeliveryPhase.HomeDelay:
+                    if (tick >= d.homeDelayTick)
+                    {
+                        if (d.ship != null)
+                        {
+                            try { d.ship.curJob?.End(); } catch { }
+                            d.ship.AddJob(ShipJobDefOf.FlyAway);
+                        }
+                        d.phase = DeliveryPhase.HomeFlying;
+                    }
+                    break;
+
+                case DeliveryPhase.HomeFlying:
+                    if (d.ship == null || !d.ship.ShipExistsAndIsSpawned)
+                    {
+                        if (d.ship != null) d.ship.Dispose();
+                        d.phase = DeliveryPhase.Done;
+                    }
+                    break;
+            }
+        }
+
+        private void UnloadShipAtHome(ActiveDelivery d)
+        {
+            if (d.ship == null) return;
+            var transporter = d.ship.TransporterComp;
+            if (transporter == null) return;
+            var map = d.homeMap;
+            if (map == null) return;
+
+            var things = transporter.innerContainer;
+            for (int i = things.Count - 1; i >= 0; i--)
+            {
+                var thing = things[i];
+                things.Remove(thing);
+                var pos = CellFinder.RandomEdgeCell(map);
+                GenPlace.TryPlaceThing(thing, pos, map, ThingPlaceMode.Near);
+            }
+
+            SendDeliveryLetter(d);
+        }
+
+        private void DeliverToHome(ActiveDelivery d)
+        {
+            var map = d.homeMap;
+            if (map == null || d.items == null) return;
+
+            foreach (var item in d.items)
+            {
+                var pos = CellFinder.RandomEdgeCell(map);
+                GenPlace.TryPlaceThing(item, pos, map, ThingPlaceMode.Near);
+            }
+            d.items.Clear();
+
+            SendDeliveryLetter(d);
+        }
+
+        private void SaveItemsFromShip(ActiveDelivery d)
+        {
+            if (d.ship == null) return;
+            var transporter = d.ship.TransporterComp;
+            if (transporter == null) return;
+
+            d.items = new List<Thing>();
+            var container = transporter.innerContainer;
+            for (int i = container.Count - 1; i >= 0; i--)
+            {
+                var item = container[i];
+                container.Remove(item);
+                d.items.Add(item);
+            }
+        }
+
+        private void SendDeliveryLetter(ActiveDelivery d)
+        {
+            string sourceLoc = d.sourceMapParent?.Label ?? ("tile " + d.sourceTile);
+            Find.LetterStack.ReceiveLetter(
+                "MaiyaAeroBay_RequestDeliveryArrivedTitle".Translate(),
+                "MaiyaAeroBay_RequestDeliveryArrived".Translate(sourceLoc),
+                LetterDefOf.PositiveEvent);
+        }
+    }
+
+    public enum DeliveryPhase
+    {
+        SourceArriving,
+        SourceDelay,
+        SourceFlying,
+        Traveling,
+        HomeArriving,
+        HomeDelay,
+        HomeFlying,
+        Done
+    }
+
+    public class ActiveDelivery
+    {
+        public int sourceTile;
+        public int homeTile;
+        public int tileDistance;
+        public List<Thing> items = new List<Thing>();
+        public TransportShip ship;
+        public bool hasSourceMap;
+        public MapParent sourceMapParent;
+        public IntVec3 sourceArrivalCell;
+        public Map homeMap;
+        public DeliveryPhase phase = DeliveryPhase.Traveling;
+        public int sourceArrivalTick;
+        public int sourceDelayTick;
+        public int travelCompleteTick;
+        public int homeArrivalTick;
+        public int homeDelayTick;
     }
 }

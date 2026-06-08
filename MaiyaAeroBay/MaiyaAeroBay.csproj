@@ -92,6 +92,7 @@
     <Compile Include="Source\InteriorMapComponent.cs" />
     <Compile Include="Source\JobDriver_EnterShuttleInterior.cs" />
     <Compile Include="Source\Dialog_LeftBehindItem.cs" />
+    <Compile Include="Source\Dialog_RequestTransport.cs" />
     <Compile Include="Source\DebugActions_RideHailing.cs" />
     <Compile Include="Source\RimTuberCompat.cs" />
     <Compile Include="Source\RimTalkCompat.cs" />

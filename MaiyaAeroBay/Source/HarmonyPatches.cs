@@ -768,4 +768,56 @@ namespace MaiyaAeroBay
             }
         }
     }
+
+    [HarmonyPatch(typeof(Caravan), "GetGizmos")]
+    public static class Caravan_RequestDeliveryGizmo
+    {
+        static IEnumerable<Gizmo> Postfix(IEnumerable<Gizmo> __result, Caravan __instance)
+        {
+            foreach (var g in __result)
+                yield return g;
+
+            if (!MaiyaAeroBayMod.settings.rideHailingEnabled) yield break;
+
+            int totalItems = __instance.AllThings.Count(t => t.def.EverHaulable && !t.def.IsBlueprint && !t.def.IsFrame && t.def.category != ThingCategory.Filth && t.def.category != ThingCategory.Pawn && t.def != ThingDefOf.Silver);
+            if (totalItems <= 0) yield break;
+
+            yield return new Command_Action
+            {
+                defaultLabel = "MaiyaAeroBay_RequestDeliveryLabel".Translate(),
+                defaultDesc = "MaiyaAeroBay_RequestDeliveryDescCaravan".Translate(totalItems),
+                icon = ContentFinder<Texture2D>.Get("UI/Commands/CallShuttle", false),
+                action = () => Find.WindowStack.Add(new Dialog_RequestTransport(__instance))
+            };
+        }
+    }
+
+    [HarmonyPatch(typeof(Pawn), "GetGizmos")]
+    public static class Pawn_RequestDeliveryGizmo
+    {
+        static IEnumerable<Gizmo> Postfix(IEnumerable<Gizmo> __result, Pawn __instance)
+        {
+            foreach (var g in __result)
+                yield return g;
+
+            if (!MaiyaAeroBayMod.settings.rideHailingEnabled) yield break;
+            if (__instance.Map == null) yield break;
+            if (__instance.Map.IsPlayerHome) yield break;
+            if (!__instance.IsColonistPlayerControlled) yield break;
+
+            int totalItems = __instance.Map.listerThings.AllThings.Count(t =>
+                t.def.EverHaulable && !t.def.IsBlueprint && !t.def.IsFrame &&
+                t.def.category != ThingCategory.Filth && t.def.category != ThingCategory.Pawn &&
+                t.def != ThingDefOf.Silver && (t.Faction == null || t.Faction == Faction.OfPlayer));
+            if (totalItems <= 0) yield break;
+
+            yield return new Command_Action
+            {
+                defaultLabel = "MaiyaAeroBay_RequestDeliveryLabel".Translate(),
+                defaultDesc = "MaiyaAeroBay_RequestDeliveryDescMap".Translate(totalItems, __instance.Map.Parent.Label),
+                icon = ContentFinder<Texture2D>.Get("UI/Commands/CallShuttle", false),
+                action = () => Find.WindowStack.Add(new Dialog_RequestTransport(__instance.Map, __instance.Map.Tile))
+            };
+        }
+    }
 }
