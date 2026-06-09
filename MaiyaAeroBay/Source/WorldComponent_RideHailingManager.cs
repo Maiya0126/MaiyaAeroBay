@@ -610,10 +610,8 @@ namespace MaiyaAeroBay
         }
 
         public void StartPlayerDelivery(int sourceTile, int homeTile, int distance, Map sourceMap,
-            List<Thing> items)
+            List<Thing> items, List<Thing> pendingPawns, List<PendingCargoItem> pendingCargo)
         {
-            if (items == null || items.Count == 0) return;
-
             Map homeMap = Find.Maps.FirstOrDefault(m => m.IsPlayerHome && m.Tile == homeTile) ?? Find.AnyPlayerHomeMap;
             bool hasRoyalty = ModsConfig.RoyaltyActive && TransportShipDefOf.Ship_Shuttle != null;
 
@@ -622,13 +620,15 @@ namespace MaiyaAeroBay
                 sourceTile = sourceTile,
                 homeTile = homeTile,
                 tileDistance = distance,
-                items = items,
+                items = items ?? new List<Thing>(),
                 homeMap = homeMap
             };
 
             if (hasRoyalty && sourceMap != null)
             {
                 delivery.sourceMapRef = sourceMap;
+                delivery.pendingPawns = pendingPawns ?? new List<Thing>();
+                delivery.pendingCargo = pendingCargo ?? new List<PendingCargoItem>();
                 delivery.sourceArrivalCell = DropCellFinder.GetBestShuttleLandingSpot(sourceMap, Faction.OfPlayer);
 
                 var shipDef = TransportShipDefOf.Ship_Shuttle;
@@ -645,14 +645,13 @@ namespace MaiyaAeroBay
                 delivery.sourceArrivalTick = Find.TickManager.TicksGame + 500;
                 delivery.phase = DeliveryPhase.SourceArriving;
 
-                Log.Message("[MaiyaAeroBay] Delivery: shuttle arriving at source map, " + items.Count + " entries");
+                Log.Message("[MaiyaAeroBay] Delivery: shuttle arriving at source, " + (pendingPawns.Count + pendingCargo.Count) + " entries");
             }
             else
             {
                 delivery.phase = DeliveryPhase.Traveling;
                 delivery.travelCompleteTick = Find.TickManager.TicksGame + GetTravelTicks(distance);
-
-                Log.Message("[MaiyaAeroBay] Delivery: direct (no Royalty or no source map), " + items.Count + " entries, " + distance + " tiles");
+                Log.Message("[MaiyaAeroBay] Delivery: direct (no Royalty/no source map), " + items.Count + " entries");
             }
 
             deliveries.Add(delivery);
@@ -685,16 +684,11 @@ namespace MaiyaAeroBay
                 case DeliveryPhase.SourceArriving:
                     if (tick >= d.sourceArrivalTick && d.ship != null && d.ship.ShipExistsAndIsSpawned)
                     {
-                        if (d.items.Count > 0)
-                        {
-                            var transporter = d.ship.TransporterComp;
-                            transporter?.innerContainer.TryAddRangeOrTransfer(d.items, canMergeWithExistingStacks: false, destroyLeftover: true);
-                            d.items.Clear();
-                        }
+                        LoadItemsFromSourceMap(d);
                         d.ship.AddJob(ShipJobDefOf.WaitTime);
                         d.sourceDelayTick = tick + 2500;
                         d.phase = DeliveryPhase.SourceDelay;
-                        Log.Message("[MaiyaAeroBay] Delivery: shuttle landed at source, items loaded");
+                        Log.Message("[MaiyaAeroBay] Delivery: shuttle landed, loaded " + (d.items?.Count ?? 0) + " items");
                     }
                     else if (tick >= d.sourceArrivalTick && (d.ship == null || !d.ship.ShipExistsAndIsSpawned))
                     {
@@ -707,6 +701,7 @@ namespace MaiyaAeroBay
                     {
                         if (d.ship != null && d.ship.ShipExistsAndIsSpawned)
                         {
+                            SaveItemsFromShip(d);
                             try { d.ship.curJob?.End(); } catch { }
                             var shuttleThing = d.ship.shipThing;
                             if (shuttleThing != null && shuttleThing.Map != null)
@@ -722,21 +717,11 @@ namespace MaiyaAeroBay
                 case DeliveryPhase.SourceFlying:
                     if (d.ship == null || !d.ship.ShipExistsAndIsSpawned)
                     {
-                        if (d.ship != null && d.ship.TransporterComp != null)
-                        {
-                            d.items = new List<Thing>();
-                            var inner = d.ship.TransporterComp.innerContainer;
-                            for (int i = inner.Count - 1; i >= 0; i--)
-                            {
-                                d.items.Add(inner[i]);
-                                inner.RemoveAt(i);
-                            }
-                        }
                         d.ship?.Dispose();
                         d.ship = null;
                         d.phase = DeliveryPhase.Traveling;
                         d.travelCompleteTick = tick + GetTravelTicks(d.tileDistance);
-                        Log.Message("[MaiyaAeroBay] Delivery: shuttle departed source, in transit");
+                        Log.Message("[MaiyaAeroBay] Delivery: source shuttle departed, in transit (" + d.items.Count + " items)");
                     }
                     break;
 
@@ -822,6 +807,56 @@ namespace MaiyaAeroBay
             SendDeliveryLetter(d);
         }
 
+        private void LoadItemsFromSourceMap(ActiveDelivery d)
+        {
+            if (d.ship == null || d.sourceMapRef == null) return;
+            var transporter = d.ship.TransporterComp;
+            if (transporter == null) return;
+            var map = d.sourceMapRef;
+
+            foreach (var pawnThing in d.pendingPawns)
+            {
+                if (pawnThing is Pawn pawn && pawn.Spawned && pawn.Map == map)
+                {
+                    pawn.DeSpawn(DestroyMode.Vanish);
+                    transporter.innerContainer.TryAdd(pawn, canMergeWithExistingStacks: false);
+                }
+            }
+
+            foreach (var cargo in d.pendingCargo)
+            {
+                int needed = cargo.count;
+                foreach (var thing in map.listerThings.AllThings.ToList())
+                {
+                    if (needed <= 0) break;
+                    if (thing.def != cargo.def) continue;
+                    if (thing.Faction != null && thing.Faction != Faction.OfPlayer) continue;
+                    int take = Mathf.Min(thing.stackCount, needed);
+                    var split = thing.SplitOff(take);
+                    transporter.innerContainer.TryAdd(split, canMergeWithExistingStacks: false);
+                    needed -= take;
+                }
+            }
+
+            d.pendingPawns.Clear();
+            d.pendingCargo.Clear();
+        }
+
+        private void SaveItemsFromShip(ActiveDelivery d)
+        {
+            if (d.ship == null) return;
+            var transporter = d.ship.TransporterComp;
+            if (transporter == null || transporter.innerContainer == null) return;
+
+            d.items = new List<Thing>();
+            var inner = transporter.innerContainer;
+            for (int i = inner.Count - 1; i >= 0; i--)
+            {
+                d.items.Add(inner[i]);
+                inner.RemoveAt(i);
+            }
+        }
+
         private void DeliverToHome(ActiveDelivery d)
         {
             var map = d.homeMap;
@@ -862,9 +897,7 @@ namespace MaiyaAeroBay
     public enum DeliveryPhase
     {
         SourceArriving,
-        SourceLoading,
         SourceDelay,
-        SourceLeaving,
         SourceFlying,
         Traveling,
         HomeArriving,
@@ -879,6 +912,8 @@ namespace MaiyaAeroBay
         public int homeTile;
         public int tileDistance;
         public List<Thing> items = new List<Thing>();
+        public List<Thing> pendingPawns = new List<Thing>();
+        public List<PendingCargoItem> pendingCargo = new List<PendingCargoItem>();
         public TransportShip ship;
         public Map sourceMapRef;
         public IntVec3 sourceArrivalCell;
@@ -889,5 +924,11 @@ namespace MaiyaAeroBay
         public int travelCompleteTick;
         public int homeArrivalTick;
         public int homeDelayTick;
+    }
+
+    public class PendingCargoItem
+    {
+        public ThingDef def;
+        public int count;
     }
 }
