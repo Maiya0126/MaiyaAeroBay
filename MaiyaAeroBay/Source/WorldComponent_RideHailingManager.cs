@@ -700,17 +700,34 @@ namespace MaiyaAeroBay
                 case DeliveryPhase.SourceDelay:
                     if (tick >= d.sourceDelayTick)
                     {
+                        Log.Message("[MaiyaAeroBay] Delivery: SourceDelay triggered at tick " + tick);
                         if (d.ship != null && d.ship.ShipExistsAndIsSpawned)
                         {
+                            IntVec3 shuttlePos = d.ship.shipThing.Position;
+                            Map shuttleMap = d.ship.shipThing.Map;
+                            Log.Message("[MaiyaAeroBay] Delivery: shuttle pos=" + shuttlePos + ", map=" + (shuttleMap != null));
+
                             LoadItemsFromSourceMap(d);
+                            Log.Message("[MaiyaAeroBay] Delivery: LoadItemsFromSourceMap done, items count=" + (d.items?.Count ?? 0));
                             SaveItemsFromShip(d);
+                            Log.Message("[MaiyaAeroBay] Delivery: SaveItemsFromShip done, items count=" + (d.items?.Count ?? 0));
                             try { d.ship.curJob?.End(); } catch { }
-                            var shuttleThing = d.ship.shipThing;
-                            if (shuttleThing != null && shuttleThing.Map != null)
+
+                            if (shuttlePos.IsValid && shuttleMap != null)
                             {
-                                SkyfallerMaker.SpawnSkyfaller(d.ship.def.leavingSkyfaller, shuttleThing,
-                                    shuttleThing.Position, shuttleThing.Map);
+                                Log.Message("[MaiyaAeroBay] Delivery: spawning leaving Skyfaller at " + shuttlePos);
+                                CameraJumper.TryJump(shuttlePos, shuttleMap);
+                                SkyfallerMaker.SpawnSkyfaller(d.ship.def.leavingSkyfaller, d.ship.shipThing,
+                                    shuttlePos, shuttleMap);
                             }
+                            else
+                            {
+                                Log.Warning("[MaiyaAeroBay] Delivery: CANNOT spawn leaving Skyfaller! posIsValid=" + shuttlePos.IsValid + ", mapNull=" + (shuttleMap == null));
+                            }
+                        }
+                        else
+                        {
+                            Log.Warning("[MaiyaAeroBay] Delivery: SourceDelay but ship null or not spawned! shipNull=" + (d.ship == null) + ", shipExists=" + (d.ship?.ShipExistsAndIsSpawned ?? false));
                         }
                         d.phase = DeliveryPhase.SourceFlying;
                     }
