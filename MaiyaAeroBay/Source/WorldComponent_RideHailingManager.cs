@@ -685,12 +685,11 @@ namespace MaiyaAeroBay
                 case DeliveryPhase.SourceArriving:
                     if (tick >= d.sourceArrivalTick && d.ship != null && d.ship.ShipExistsAndIsSpawned)
                     {
-                        LoadItemsFromSourceMap(d);
                         d.ship.AddJobs(ShipJobDefOf.WaitTime, ShipJobDefOf.WaitForever);
                         d.ship.Start();
                         d.sourceDelayTick = tick + 2500;
                         d.phase = DeliveryPhase.SourceDelay;
-                        Log.Message("[MaiyaAeroBay] Delivery: shuttle landed, loaded items, waiting for show");
+                        Log.Message("[MaiyaAeroBay] Delivery: shuttle landed, waiting for departure");
                     }
                     else if (tick >= d.sourceArrivalTick && (d.ship == null || !d.ship.ShipExistsAndIsSpawned))
                     {
@@ -703,6 +702,7 @@ namespace MaiyaAeroBay
                     {
                         if (d.ship != null && d.ship.ShipExistsAndIsSpawned)
                         {
+                            LoadItemsFromSourceMap(d);
                             SaveItemsFromShip(d);
                             try { d.ship.curJob?.End(); } catch { }
                             var shuttleThing = d.ship.shipThing;
