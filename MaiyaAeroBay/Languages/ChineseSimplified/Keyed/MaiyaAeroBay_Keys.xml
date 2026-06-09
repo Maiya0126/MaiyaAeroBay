@@ -438,6 +438,12 @@
   <MaiyaAeroBay_RequestDeliverySectionPawns>人员</MaiyaAeroBay_RequestDeliverySectionPawns>
   <MaiyaAeroBay_RequestDeliverySectionCargo>物品</MaiyaAeroBay_RequestDeliverySectionCargo>
   <MaiyaAeroBay_RequestDeliveryNoSilver>银币不足！需要{0}银，当前{1}银</MaiyaAeroBay_RequestDeliveryNoSilver>
-  <MaiyaAeroBay_RequestDeliveryArrivedTitle>物资/人员送达！</MaiyaAeroBay_RequestDeliveryArrivedTitle>
-  <MaiyaAeroBay_RequestDeliveryArrived>来自 {0} 的物资和人员已运抵基地！</MaiyaAeroBay_RequestDeliveryArrived>
+  <MaiyaAeroBay_RequestDeliveryArrivedTitle>嘀嘀送达到了！</MaiyaAeroBay_RequestDeliveryArrivedTitle>
+  <MaiyaAeroBay_RequestDeliveryArrived>感谢您使用嘀嘀平台的服务！
+
+您的物资与人员已从 {0} 安全送达。
+
+本次订单共 {3} 件，行程距离 {2} 格，费用 {1} 银。
+
+感谢您的信任，欢迎再次使用嘀嘀平台服务！</MaiyaAeroBay_RequestDeliveryArrived>
 </LanguageData>

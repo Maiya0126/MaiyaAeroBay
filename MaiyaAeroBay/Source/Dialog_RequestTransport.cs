@@ -317,7 +317,7 @@ namespace MaiyaAeroBay
             }
 
             var manager = Find.World.GetComponent<WorldComponent_RideHailingManager>();
-            manager?.StartPlayerDelivery(sourceTile, homeTile, tileDistance, FromMap ? sourceMap : null,
+            manager?.StartPlayerDelivery(sourceTile, homeTile, tileDistance, cost, FromMap ? sourceMap : null,
                 collectedItems, pendingPawns, pendingCargo);
 
             Messages.Message("MaiyaAeroBay_RequestDeliveryOrdered".Translate(cost, tileDistance.ToString(), homeTile), MessageTypeDefOf.PositiveEvent);

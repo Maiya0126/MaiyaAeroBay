@@ -609,7 +609,7 @@ namespace MaiyaAeroBay
             return order;
         }
 
-        public void StartPlayerDelivery(int sourceTile, int homeTile, int distance, Map sourceMap,
+        public void StartPlayerDelivery(int sourceTile, int homeTile, int distance, int cost, Map sourceMap,
             List<Thing> items, List<Thing> pendingPawns, List<PendingCargoItem> pendingCargo)
         {
             Map homeMap = Find.Maps.FirstOrDefault(m => m.IsPlayerHome && m.Tile == homeTile) ?? Find.AnyPlayerHomeMap;
@@ -620,6 +620,7 @@ namespace MaiyaAeroBay
                 sourceTile = sourceTile,
                 homeTile = homeTile,
                 tileDistance = distance,
+                deliveredCost = cost,
                 items = items ?? new List<Thing>(),
                 homeMap = homeMap
             };
@@ -700,34 +701,17 @@ namespace MaiyaAeroBay
                 case DeliveryPhase.SourceDelay:
                     if (tick >= d.sourceDelayTick)
                     {
-                        Log.Message("[MaiyaAeroBay] Delivery: SourceDelay triggered at tick " + tick);
                         if (d.ship != null && d.ship.ShipExistsAndIsSpawned)
                         {
                             IntVec3 shuttlePos = d.ship.shipThing.Position;
                             Map shuttleMap = d.ship.shipThing.Map;
-                            Log.Message("[MaiyaAeroBay] Delivery: shuttle pos=" + shuttlePos + ", map=" + (shuttleMap != null));
 
-                            LoadItemsFromSourceMap(d);
-                            Log.Message("[MaiyaAeroBay] Delivery: LoadItemsFromSourceMap done, items count=" + (d.items?.Count ?? 0));
-                            SaveItemsFromShip(d);
-                            Log.Message("[MaiyaAeroBay] Delivery: SaveItemsFromShip done, items count=" + (d.items?.Count ?? 0));
-                            try { d.ship.curJob?.End(); } catch { }
+                            CameraJumper.TryJump(shuttlePos, shuttleMap);
+                            SkyfallerMaker.SpawnSkyfaller(d.ship.def.leavingSkyfaller, d.ship.shipThing,
+                                shuttlePos, shuttleMap);
 
-                            if (shuttlePos.IsValid && shuttleMap != null)
-                            {
-                                Log.Message("[MaiyaAeroBay] Delivery: spawning leaving Skyfaller at " + shuttlePos);
-                                CameraJumper.TryJump(shuttlePos, shuttleMap);
-                                SkyfallerMaker.SpawnSkyfaller(d.ship.def.leavingSkyfaller, d.ship.shipThing,
-                                    shuttlePos, shuttleMap);
-                            }
-                            else
-                            {
-                                Log.Warning("[MaiyaAeroBay] Delivery: CANNOT spawn leaving Skyfaller! posIsValid=" + shuttlePos.IsValid + ", mapNull=" + (shuttleMap == null));
-                            }
-                        }
-                        else
-                        {
-                            Log.Warning("[MaiyaAeroBay] Delivery: SourceDelay but ship null or not spawned! shipNull=" + (d.ship == null) + ", shipExists=" + (d.ship?.ShipExistsAndIsSpawned ?? false));
+                            LoadItemsDirect(d);
+                            Log.Message("[MaiyaAeroBay] Delivery: " + (d.items?.Count ?? 0) + " items loaded, shuttle departing");
                         }
                         d.phase = DeliveryPhase.SourceFlying;
                     }
@@ -828,6 +812,41 @@ namespace MaiyaAeroBay
             SendDeliveryLetter(d);
         }
 
+        private void LoadItemsDirect(ActiveDelivery d)
+        {
+            if (d.sourceMapRef == null) return;
+            var map = d.sourceMapRef;
+
+            d.items = new List<Thing>();
+
+            foreach (var pawnThing in d.pendingPawns)
+            {
+                if (pawnThing is Pawn pawn && pawn.Spawned && pawn.Map == map)
+                {
+                    pawn.DeSpawn(DestroyMode.Vanish);
+                    d.items.Add(pawn);
+                }
+            }
+
+            foreach (var cargo in d.pendingCargo)
+            {
+                int needed = cargo.count;
+                foreach (var thing in map.listerThings.AllThings.ToList())
+                {
+                    if (needed <= 0) break;
+                    if (thing.def != cargo.def) continue;
+                    if (thing.Faction != null && thing.Faction != Faction.OfPlayer) continue;
+                    int take = Mathf.Min(thing.stackCount, needed);
+                    var split = thing.SplitOff(take);
+                    d.items.Add(split);
+                    needed -= take;
+                }
+            }
+
+            d.pendingPawns.Clear();
+            d.pendingCargo.Clear();
+        }
+
         private void LoadItemsFromSourceMap(ActiveDelivery d)
         {
             if (d.ship == null || d.sourceMapRef == null) return;
@@ -907,10 +926,11 @@ namespace MaiyaAeroBay
 
         private void SendDeliveryLetter(ActiveDelivery d)
         {
+            int cost = d.deliveredCost > 0 ? d.deliveredCost : (d.tileDistance * 10);
             string sourceLoc = "tile " + d.sourceTile;
             Find.LetterStack.ReceiveLetter(
                 "MaiyaAeroBay_RequestDeliveryArrivedTitle".Translate(),
-                "MaiyaAeroBay_RequestDeliveryArrived".Translate(sourceLoc),
+                "MaiyaAeroBay_RequestDeliveryArrived".Translate(sourceLoc, cost, d.tileDistance, d.items?.Count ?? 0),
                 LetterDefOf.PositiveEvent);
         }
     }
@@ -932,6 +952,7 @@ namespace MaiyaAeroBay
         public int sourceTile;
         public int homeTile;
         public int tileDistance;
+        public int deliveredCost;
         public List<Thing> items = new List<Thing>();
         public List<Thing> pendingPawns = new List<Thing>();
         public List<PendingCargoItem> pendingCargo = new List<PendingCargoItem>();

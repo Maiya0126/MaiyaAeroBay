@@ -437,8 +437,14 @@
   <MaiyaAeroBay_RequestDeliverySelectAll>Select All</MaiyaAeroBay_RequestDeliverySelectAll>
   <MaiyaAeroBay_RequestDeliveryOrdered>Transport order placed! Cost {0}s, distance {1} tiles, dest #{2}</MaiyaAeroBay_RequestDeliveryOrdered>
   <MaiyaAeroBay_RequestDeliveryNoSilver>Not enough silver! Need {0}s, have {1}s</MaiyaAeroBay_RequestDeliveryNoSilver>
-  <MaiyaAeroBay_RequestDeliveryArrivedTitle>Transport Arrived!</MaiyaAeroBay_RequestDeliveryArrivedTitle>
-  <MaiyaAeroBay_RequestDeliveryArrived>Items and personnel from {0} have arrived!</MaiyaAeroBay_RequestDeliveryArrived>
+  <MaiyaAeroBay_RequestDeliveryArrivedTitle>R-ber Delivery Arrived!</MaiyaAeroBay_RequestDeliveryArrivedTitle>
+  <MaiyaAeroBay_RequestDeliveryArrived>Thank you for using R-ber Transport!
+
+Your items and personnel from {0} have arrived safely.
+
+Order details: {3} items, distance {2} tiles, cost {1}s.
+
+We appreciate your business — see you next time!</MaiyaAeroBay_RequestDeliveryArrived>
   <MaiyaAeroBay_RequestDeliverySectionPawns>Personnel</MaiyaAeroBay_RequestDeliverySectionPawns>
   <MaiyaAeroBay_RequestDeliverySectionCargo>Cargo</MaiyaAeroBay_RequestDeliverySectionCargo>
 </LanguageData>
