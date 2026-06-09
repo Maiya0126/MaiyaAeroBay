@@ -610,11 +610,12 @@ namespace MaiyaAeroBay
         }
 
         public void StartPlayerDelivery(int sourceTile, int homeTile, int distance, Map sourceMap,
-            List<Thing> items, List<Thing> pendingPawns, List<PendingCargoItem> pendingCargo)
+            List<Thing> items)
         {
+            if (items == null || items.Count == 0) return;
+
             Map homeMap = Find.Maps.FirstOrDefault(m => m.IsPlayerHome && m.Tile == homeTile) ?? Find.AnyPlayerHomeMap;
             bool hasRoyalty = ModsConfig.RoyaltyActive && TransportShipDefOf.Ship_Shuttle != null;
-            bool useDelayedLoad = hasRoyalty && sourceMap != null;
 
             var delivery = new ActiveDelivery
             {
@@ -622,47 +623,14 @@ namespace MaiyaAeroBay
                 homeTile = homeTile,
                 tileDistance = distance,
                 items = items,
-                pendingPawns = pendingPawns ?? new List<Thing>(),
-                pendingCargo = pendingCargo ?? new List<PendingCargoItem>(),
-                homeMap = homeMap,
-                sourceMapRef = sourceMap
+                homeMap = homeMap
             };
 
-            if (useDelayedLoad)
-            {
-                delivery.hasSourceMap = true;
-                delivery.delayedLoad = true;
-                delivery.sourceMapParent = sourceMap.Parent;
-                delivery.sourceArrivalCell = DropCellFinder.GetBestShuttleLandingSpot(sourceMap, Faction.OfPlayer);
-                delivery.phase = DeliveryPhase.SourceArriving;
-
-                var shipDef = TransportShipDefOf.Ship_Shuttle;
-                var ship = TransportShipMaker.MakeTransportShip(shipDef, null);
-                delivery.ship = ship;
-
-                ship.ArriveAt(delivery.sourceArrivalCell, delivery.sourceMapParent);
-                ship.Start();
-
-                delivery.sourceArrivalTick = Find.TickManager.TicksGame + 300;
-            }
-            else if (hasRoyalty)
-            {
-                delivery.hasSourceMap = false;
-                delivery.phase = DeliveryPhase.Traveling;
-                delivery.travelCompleteTick = Find.TickManager.TicksGame + GetTravelTicks(distance);
-                delivery.ship = null;
-            }
-            else
-            {
-                delivery.hasSourceMap = false;
-                delivery.phase = DeliveryPhase.Traveling;
-                delivery.travelCompleteTick = Find.TickManager.TicksGame + GetTravelTicks(distance);
-                delivery.ship = null;
-            }
+            delivery.phase = DeliveryPhase.Traveling;
+            delivery.travelCompleteTick = Find.TickManager.TicksGame + GetTravelTicks(distance);
 
             deliveries.Add(delivery);
-            int totalCount = (items?.Count ?? 0) + (pendingPawns?.Count ?? 0) + (pendingCargo?.Sum(p => p.count) ?? 0);
-            Log.Message("[MaiyaAeroBay] Player delivery started: " + totalCount + " entries from tile " + sourceTile + " to " + homeTile + " (" + distance + " tiles, delayed=" + useDelayedLoad + ")");
+            Log.Message("[MaiyaAeroBay] Player delivery: " + items.Count + " entries, tile " + sourceTile + "→" + homeTile + " (" + distance + " tiles, royalty=" + hasRoyalty + ")");
         }
 
         private static int GetTravelTicks(int distance)
@@ -684,55 +652,11 @@ namespace MaiyaAeroBay
         private void AdvanceDeliveryPhase(ActiveDelivery d)
         {
             int tick = Find.TickManager.TicksGame;
-            bool hasRoyalty = d.ship != null;
+            bool hasRoyalty = ModsConfig.RoyaltyActive && TransportShipDefOf.Ship_Shuttle != null;
             Map homeMap = d.homeMap;
 
             switch (d.phase)
             {
-                case DeliveryPhase.SourceArriving:
-                    if (tick >= d.sourceArrivalTick && d.ship != null && d.ship.ShipExistsAndIsSpawned)
-                    {
-                        d.ship.AddJob(ShipJobDefOf.WaitTime);
-                        d.phase = DeliveryPhase.SourceDelay;
-                        d.sourceDelayTick = tick + 1500;
-                    }
-                    else if (tick >= d.sourceArrivalTick && !d.ship.ShipExistsAndIsSpawned)
-                    {
-                        d.sourceArrivalTick = tick + 300;
-                    }
-                    break;
-
-                case DeliveryPhase.SourceDelay:
-                    if (tick >= d.sourceDelayTick)
-                    {
-                        if (d.ship != null && d.ship.ShipExistsAndIsSpawned)
-                        {
-                            if (d.delayedLoad && d.sourceMapRef != null)
-                                LoadItemsFromSourceMap(d);
-                            else
-                                SaveItemsFromShip(d);
-                        }
-                        if (d.ship != null)
-                        {
-                            try { d.ship.curJob?.End(); } catch { }
-                            d.ship.AddJob(ShipJobDefOf.FlyAway);
-                        }
-                        d.phase = DeliveryPhase.SourceFlying;
-                    }
-                    break;
-
-                case DeliveryPhase.SourceFlying:
-                    if (d.ship == null || !d.ship.ShipExistsAndIsSpawned)
-                    {
-                        if (d.ship != null && d.ship.TransporterComp != null && d.ship.TransporterComp.innerContainer.Count > 0)
-                            SaveItemsFromShip(d);
-                        d.ship?.Dispose();
-                        d.ship = null;
-                        d.phase = DeliveryPhase.Traveling;
-                        d.travelCompleteTick = tick + GetTravelTicks(d.tileDistance);
-                    }
-                    break;
-
                 case DeliveryPhase.Traveling:
                     if (tick >= d.travelCompleteTick)
                     {
@@ -747,11 +671,13 @@ namespace MaiyaAeroBay
                             d.ship.Start();
                             d.homeArrivalTick = tick + 300;
                             d.phase = DeliveryPhase.HomeArriving;
+                            Log.Message("[MaiyaAeroBay] Delivery: ship arriving at home, " + d.items.Count + " entries");
                         }
                         else
                         {
                             DeliverToHome(d);
                             d.phase = DeliveryPhase.Done;
+                            Log.Message("[MaiyaAeroBay] Delivery: placed at home directly (no Royalty)");
                         }
                     }
                     break;
@@ -763,8 +689,9 @@ namespace MaiyaAeroBay
                         d.ship.AddJob(ShipJobDefOf.WaitTime);
                         d.homeDelayTick = tick + 2500;
                         d.phase = DeliveryPhase.HomeDelay;
+                        Log.Message("[MaiyaAeroBay] Delivery: ship landed, items unloaded");
                     }
-                    else if (tick >= d.homeArrivalTick && !d.ship.ShipExistsAndIsSpawned)
+                    else if (tick >= d.homeArrivalTick && (d.ship == null || !d.ship.ShipExistsAndIsSpawned))
                     {
                         d.homeArrivalTick = tick + 300;
                     }
@@ -787,6 +714,7 @@ namespace MaiyaAeroBay
                     {
                         if (d.ship != null) d.ship.Dispose();
                         d.phase = DeliveryPhase.Done;
+                        Log.Message("[MaiyaAeroBay] Delivery: complete");
                     }
                     break;
             }
@@ -838,62 +766,9 @@ namespace MaiyaAeroBay
             }
         }
 
-        private void SaveItemsFromShip(ActiveDelivery d)
-        {
-            if (d.ship == null) return;
-            var transporter = d.ship.TransporterComp;
-            if (transporter == null) return;
-
-            d.items = new List<Thing>();
-            var container = transporter.innerContainer;
-            for (int i = container.Count - 1; i >= 0; i--)
-            {
-                var item = container[i];
-                container.Remove(item);
-                d.items.Add(item);
-            }
-        }
-
-        private void LoadItemsFromSourceMap(ActiveDelivery d)
-        {
-            if (d.ship == null || d.sourceMapRef == null) return;
-            var transporter = d.ship.TransporterComp;
-            if (transporter == null) return;
-
-            var map = d.sourceMapRef;
-
-            foreach (var pawnThing in d.pendingPawns)
-            {
-                if (pawnThing is Pawn pawn && pawn.Spawned && pawn.Map == map)
-                {
-                    pawn.DeSpawn(DestroyMode.Vanish);
-                    transporter.innerContainer.TryAdd(pawn, canMergeWithExistingStacks: false);
-                }
-            }
-
-            foreach (var cargo in d.pendingCargo)
-            {
-                int needed = cargo.count;
-                foreach (var thing in map.listerThings.AllThings.ToList())
-                {
-                    if (needed <= 0) break;
-                    if (thing.def != cargo.def) continue;
-                    if (thing.Faction != null && thing.Faction != Faction.OfPlayer) continue;
-                    int take = Mathf.Min(thing.stackCount, needed);
-                    var split = thing.SplitOff(take);
-                    transporter.innerContainer.TryAdd(split, canMergeWithExistingStacks: false);
-                    needed -= take;
-                }
-            }
-
-            d.pendingPawns.Clear();
-            d.pendingCargo.Clear();
-            d.delayedLoad = false;
-        }
-
         private void SendDeliveryLetter(ActiveDelivery d)
         {
-            string sourceLoc = d.sourceMapParent?.Label ?? ("tile " + d.sourceTile);
+            string sourceLoc = "tile " + d.sourceTile;
             Find.LetterStack.ReceiveLetter(
                 "MaiyaAeroBay_RequestDeliveryArrivedTitle".Translate(),
                 "MaiyaAeroBay_RequestDeliveryArrived".Translate(sourceLoc),
@@ -903,9 +778,6 @@ namespace MaiyaAeroBay
 
     public enum DeliveryPhase
     {
-        SourceArriving,
-        SourceDelay,
-        SourceFlying,
         Traveling,
         HomeArriving,
         HomeDelay,
@@ -920,25 +792,10 @@ namespace MaiyaAeroBay
         public int tileDistance;
         public List<Thing> items = new List<Thing>();
         public TransportShip ship;
-        public bool hasSourceMap;
-        public MapParent sourceMapParent;
-        public Map sourceMapRef;
-        public bool delayedLoad;
-        public List<Thing> pendingPawns = new List<Thing>();
-        public List<PendingCargoItem> pendingCargo = new List<PendingCargoItem>();
-        public IntVec3 sourceArrivalCell;
         public Map homeMap;
         public DeliveryPhase phase = DeliveryPhase.Traveling;
-        public int sourceArrivalTick;
-        public int sourceDelayTick;
         public int travelCompleteTick;
         public int homeArrivalTick;
         public int homeDelayTick;
-    }
-
-    public class PendingCargoItem
-    {
-        public ThingDef def;
-        public int count;
     }
 }

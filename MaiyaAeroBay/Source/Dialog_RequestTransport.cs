@@ -292,39 +292,15 @@ namespace MaiyaAeroBay
                 return;
             }
 
-            if (!pawnItems.Any(i => i.selected) && !cargoItems.Any(i => i.selected))
-            {
-                Messages.Message("MaiyaAeroBay_RequestDeliveryNoSelection".Translate(), MessageTypeDefOf.RejectInput, false);
-                return;
-            }
+            if (!pawnItems.Any(i => i.selected) && !cargoItems.Any(i => i.selected)) return;
+
+            var items = CollectSelectedItems();
+            if (items.Count == 0) return;
 
             DeductSilver(cost);
 
-            var pendingPawns = new List<Thing>();
-            foreach (var item in pawnItems)
-            {
-                if (item.selected && item.sourceThing != null)
-                    pendingPawns.Add(item.sourceThing);
-            }
-
-            var pendingCargo = new List<PendingCargoItem>();
-            foreach (var item in cargoItems)
-            {
-                if (item.selected)
-                    pendingCargo.Add(new PendingCargoItem { def = item.def, count = item.count });
-            }
-
-            if (pendingPawns.Count == 0 && pendingCargo.Count == 0) return;
-
-            var collectedItems = new List<Thing>();
-            if (!FromMap)
-            {
-                collectedItems = CollectSelectedItems();
-            }
-
             var manager = Find.World.GetComponent<WorldComponent_RideHailingManager>();
-            manager?.StartPlayerDelivery(sourceTile, homeTile, tileDistance, FromMap ? sourceMap : null,
-                collectedItems, pendingPawns, pendingCargo);
+            manager?.StartPlayerDelivery(sourceTile, homeTile, tileDistance, FromMap ? sourceMap : null, items);
 
             Messages.Message("MaiyaAeroBay_RequestDeliveryOrdered".Translate(cost, tileDistance.ToString(), homeTile), MessageTypeDefOf.PositiveEvent);
             Close();
