@@ -640,7 +640,6 @@ namespace MaiyaAeroBay
 
                 SkyfallerMaker.SpawnSkyfaller(shipDef.arrivingSkyfaller, ship.shipThing,
                     delivery.sourceArrivalCell, sourceMap);
-                ship.Start();
 
                 delivery.sourceArrivalTick = Find.TickManager.TicksGame + 500;
                 delivery.phase = DeliveryPhase.SourceArriving;
@@ -685,10 +684,11 @@ namespace MaiyaAeroBay
                     if (tick >= d.sourceArrivalTick && d.ship != null && d.ship.ShipExistsAndIsSpawned)
                     {
                         LoadItemsFromSourceMap(d);
-                        d.ship.AddJob(ShipJobDefOf.WaitTime);
+                        d.ship.AddJobs(ShipJobDefOf.WaitTime, ShipJobDefOf.WaitForever);
+                        d.ship.Start();
                         d.sourceDelayTick = tick + 2500;
                         d.phase = DeliveryPhase.SourceDelay;
-                        Log.Message("[MaiyaAeroBay] Delivery: shuttle landed, loaded " + (d.items?.Count ?? 0) + " items");
+                        Log.Message("[MaiyaAeroBay] Delivery: shuttle landed, loaded items, waiting for show");
                     }
                     else if (tick >= d.sourceArrivalTick && (d.ship == null || !d.ship.ShipExistsAndIsSpawned))
                     {
