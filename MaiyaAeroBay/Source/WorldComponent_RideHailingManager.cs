@@ -706,12 +706,13 @@ namespace MaiyaAeroBay
                             IntVec3 shuttlePos = d.ship.shipThing.Position;
                             Map shuttleMap = d.ship.shipThing.Map;
 
-                            CameraJumper.TryJump(shuttlePos, shuttleMap);
+                            LoadItemsDirect(d);
+
+                            d.ship.shipThing.DeSpawn(DestroyMode.Vanish);
+
                             SkyfallerMaker.SpawnSkyfaller(d.ship.def.leavingSkyfaller, d.ship.shipThing,
                                 shuttlePos, shuttleMap);
-
-                            LoadItemsDirect(d);
-                            Log.Message("[MaiyaAeroBay] Delivery: " + (d.items?.Count ?? 0) + " items loaded, shuttle departing");
+                            Log.Message("[MaiyaAeroBay] Delivery: leaving Skyfaller spawned, " + (d.items?.Count ?? 0) + " items loaded");
                         }
                         d.phase = DeliveryPhase.SourceFlying;
                     }
