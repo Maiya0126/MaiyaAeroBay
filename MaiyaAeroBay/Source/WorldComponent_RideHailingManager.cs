@@ -796,8 +796,7 @@ namespace MaiyaAeroBay
             {
                 var thing = things[i];
                 things.Remove(thing);
-                var pos = CellFinder.RandomEdgeCell(map);
-                GenPlace.TryPlaceThing(thing, pos, map, ThingPlaceMode.Near);
+                PlaceThingOnMap(thing, map);
             }
 
             SendDeliveryLetter(d);
@@ -808,14 +807,26 @@ namespace MaiyaAeroBay
             var map = d.homeMap;
             if (map == null || d.items == null) return;
 
-            foreach (var item in d.items)
+            foreach (var thing in d.items)
             {
-                var pos = CellFinder.RandomEdgeCell(map);
-                GenPlace.TryPlaceThing(item, pos, map, ThingPlaceMode.Near);
+                PlaceThingOnMap(thing, map);
             }
             d.items.Clear();
 
             SendDeliveryLetter(d);
+        }
+
+        private static void PlaceThingOnMap(Thing thing, Map map)
+        {
+            var pos = CellFinder.RandomEdgeCell(map);
+            if (thing is Pawn pawn)
+            {
+                GenSpawn.Spawn(pawn, pos, map, WipeMode.Vanish);
+            }
+            else
+            {
+                GenPlace.TryPlaceThing(thing, pos, map, ThingPlaceMode.Near);
+            }
         }
 
         private void SaveItemsFromShip(ActiveDelivery d)

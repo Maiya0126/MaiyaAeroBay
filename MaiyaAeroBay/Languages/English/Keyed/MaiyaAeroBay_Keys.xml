@@ -421,22 +421,24 @@
   <MaiyaAeroBay_FuelDeliveryArrived>R-ber Fuel Delivery: Tank refilled!</MaiyaAeroBay_FuelDeliveryArrived>
   <MaiyaAeroBay_FuelDeliverySilverAvailable>Available silver: {0}</MaiyaAeroBay_FuelDeliverySilverAvailable>
 
-  <MaiyaAeroBay_RequestDeliveryLabel>Call Delivery</MaiyaAeroBay_RequestDeliveryLabel>
-  <MaiyaAeroBay_RequestDeliveryDescCaravan>Call a third-party shuttle to ship items home.
+  <MaiyaAeroBay_RequestDeliveryLabel>Call R-ber Transport</MaiyaAeroBay_RequestDeliveryLabel>
+  <MaiyaAeroBay_RequestDeliveryDescCaravan>Call a shuttle to transport items and personnel home.
 
-{0} transportable items in caravan</MaiyaAeroBay_RequestDeliveryDescCaravan>
-  <MaiyaAeroBay_RequestDeliveryDescMap>Call a third-party shuttle to ship items home.
+{0} transportable entries in caravan</MaiyaAeroBay_RequestDeliveryDescCaravan>
+  <MaiyaAeroBay_RequestDeliveryDescMap>Call a shuttle to transport items and personnel home.
 
-{1} transportable items on {0}</MaiyaAeroBay_RequestDeliveryDescMap>
-  <MaiyaAeroBay_RequestDeliveryTitle>Call Delivery - Select items to ship home</MaiyaAeroBay_RequestDeliveryTitle>
+{1} transportable entries on {0}</MaiyaAeroBay_RequestDeliveryDescMap>
+  <MaiyaAeroBay_RequestDeliveryTitle>Call R-ber Transport - Select items and personnel</MaiyaAeroBay_RequestDeliveryTitle>
   <MaiyaAeroBay_RequestDeliverySubtitle>Source: {0}, Distance: {1} tiles</MaiyaAeroBay_RequestDeliverySubtitle>
   <MaiyaAeroBay_RequestDeliveryCost>Total: {0}s (weight {1}kg)</MaiyaAeroBay_RequestDeliveryCost>
   <MaiyaAeroBay_RequestDeliverySilver>Available: {0}s</MaiyaAeroBay_RequestDeliverySilver>
-  <MaiyaAeroBay_RequestDeliveryConfirm>Confirm Delivery</MaiyaAeroBay_RequestDeliveryConfirm>
-  <MaiyaAeroBay_RequestDeliveryNoSelection>Select items to ship first</MaiyaAeroBay_RequestDeliveryNoSelection>
+  <MaiyaAeroBay_RequestDeliveryConfirm>Confirm Transport</MaiyaAeroBay_RequestDeliveryConfirm>
+  <MaiyaAeroBay_RequestDeliveryNoSelection>Select items or personnel to ship</MaiyaAeroBay_RequestDeliveryNoSelection>
   <MaiyaAeroBay_RequestDeliverySelectAll>Select All</MaiyaAeroBay_RequestDeliverySelectAll>
-  <MaiyaAeroBay_RequestDeliveryOrdered>Delivery order placed! Cost {0}s, distance {1} tiles, dest #{2}</MaiyaAeroBay_RequestDeliveryOrdered>
+  <MaiyaAeroBay_RequestDeliveryOrdered>Transport order placed! Cost {0}s, distance {1} tiles, dest #{2}</MaiyaAeroBay_RequestDeliveryOrdered>
   <MaiyaAeroBay_RequestDeliveryNoSilver>Not enough silver! Need {0}s, have {1}s</MaiyaAeroBay_RequestDeliveryNoSilver>
-  <MaiyaAeroBay_RequestDeliveryArrivedTitle>Delivery Arrived!</MaiyaAeroBay_RequestDeliveryArrivedTitle>
-  <MaiyaAeroBay_RequestDeliveryArrived>Items from {0} have arrived at your base!</MaiyaAeroBay_RequestDeliveryArrived>
+  <MaiyaAeroBay_RequestDeliveryArrivedTitle>Transport Arrived!</MaiyaAeroBay_RequestDeliveryArrivedTitle>
+  <MaiyaAeroBay_RequestDeliveryArrived>Items and personnel from {0} have arrived!</MaiyaAeroBay_RequestDeliveryArrived>
+  <MaiyaAeroBay_RequestDeliverySectionPawns>Personnel</MaiyaAeroBay_RequestDeliverySectionPawns>
+  <MaiyaAeroBay_RequestDeliverySectionCargo>Cargo</MaiyaAeroBay_RequestDeliverySectionCargo></MaiyaAeroBay_RequestDeliverySectionCargo>
 </LanguageData>

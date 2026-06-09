@@ -14,7 +14,8 @@ namespace MaiyaAeroBay
         private int sourceTile;
         private int homeTile;
         private int tileDistance;
-        private List<ThingItem> allItems = new List<ThingItem>();
+        private List<ThingItem> pawnItems = new List<ThingItem>();
+        private List<ThingItem> cargoItems = new List<ThingItem>();
         private Vector2 scrollPosition;
         private float cachedTotalWeight;
         private bool weightDirty = true;
@@ -26,12 +27,15 @@ namespace MaiyaAeroBay
             public float massPerItem;
             public string label;
             public bool selected;
+            public bool isPawn;
+            public Thing sourceThing;
         }
 
         public override Vector2 InitialSize => new Vector2(560f, 640f);
 
         private bool FromMap => sourceMap != null;
         private bool FromCaravan => sourceCaravan != null;
+        private int TotalItemCount => pawnItems.Count + cargoItems.Count;
 
         public Dialog_RequestTransport(Map map, int tile)
         {
@@ -77,7 +81,8 @@ namespace MaiyaAeroBay
                 }
             }
 
-            allItems.Sort((a, b) => a.label.CompareTo(b.label));
+            pawnItems.Sort((a, b) => a.label.CompareTo(b.label));
+            cargoItems.Sort((a, b) => a.label.CompareTo(b.label));
             ComputeTotalWeight();
         }
 
@@ -100,45 +105,83 @@ namespace MaiyaAeroBay
 
         private static bool IsTransportable(Thing t)
         {
-            if (t.def.category == ThingCategory.Pawn) return false;
             if (t.def.category == ThingCategory.Filth) return false;
             if (t.def.IsBlueprint || t.def.IsFrame) return false;
-            if (!t.def.EverHaulable) return false;
             if (t.def == ThingDefOf.Silver) return false;
             if (t.Faction != null && t.Faction != Faction.OfPlayer) return false;
+
+            if (t is Pawn pawn)
+            {
+                if (pawn.Dead) return false;
+                if (!pawn.IsColonist && !pawn.IsColonyMech && !IsPlayerAnimal(pawn)) return false;
+                return true;
+            }
+
+            if (!t.def.EverHaulable) return false;
             return true;
+        }
+
+        private static bool IsPlayerAnimal(Pawn pawn)
+        {
+            return pawn.RaceProps.Animal && pawn.Faction == Faction.OfPlayer;
         }
 
         private void AddOrMerge(Thing t)
         {
-            int idx = allItems.FindIndex(i => i.def == t.def);
+            bool isPawn = t is Pawn;
+            var list = isPawn ? pawnItems : cargoItems;
+
+            if (isPawn)
+            {
+                var pawn = t as Pawn;
+                list.Add(new ThingItem
+                {
+                    def = t.def,
+                    count = 1,
+                    massPerItem = t.GetStatValue(StatDefOf.Mass, true),
+                    label = GetPawnLabel(pawn),
+                    selected = false,
+                    isPawn = true,
+                    sourceThing = pawn
+                });
+                return;
+            }
+
+            int idx = list.FindIndex(i => i.def == t.def);
             if (idx >= 0)
             {
-                var item = allItems[idx];
+                var item = list[idx];
                 item.count += t.stackCount;
-                allItems[idx] = item;
+                list[idx] = item;
             }
             else
             {
-                allItems.Add(new ThingItem
+                list.Add(new ThingItem
                 {
                     def = t.def,
                     count = t.stackCount,
                     massPerItem = t.GetStatValue(StatDefOf.Mass, true),
                     label = t.LabelCap,
-                    selected = false
+                    selected = false,
+                    isPawn = false
                 });
             }
+        }
+
+        private static string GetPawnLabel(Pawn pawn)
+        {
+            if (pawn.IsColonyMech) return pawn.LabelShortCap + " (机械体)";
+            if (pawn.RaceProps.Animal) return pawn.LabelShortCap + " (动物)";
+            return pawn.LabelShortCap + " (殖民者)";
         }
 
         private void ComputeTotalWeight()
         {
             cachedTotalWeight = 0f;
-            foreach (var item in allItems)
-            {
-                if (item.selected)
-                    cachedTotalWeight += item.massPerItem * item.count;
-            }
+            foreach (var item in pawnItems)
+                if (item.selected) cachedTotalWeight += item.massPerItem;
+            foreach (var item in cargoItems)
+                if (item.selected) cachedTotalWeight += item.massPerItem * item.count;
             weightDirty = false;
         }
 
@@ -179,13 +222,30 @@ namespace MaiyaAeroBay
         private List<Thing> CollectSelectedItems()
         {
             var result = new List<Thing>();
+
+            foreach (var item in pawnItems)
+            {
+                if (!item.selected || item.sourceThing == null) continue;
+                if (FromMap)
+                {
+                    if (item.sourceThing.Spawned)
+                        item.sourceThing.DeSpawn(DestroyMode.Vanish);
+                    result.Add(item.sourceThing);
+                }
+                else if (FromCaravan && item.sourceThing is Pawn pawn)
+                {
+                    sourceCaravan.RemovePawn(pawn);
+                    result.Add(pawn);
+                }
+            }
+
             if (FromMap)
             {
-                foreach (var item in allItems)
+                foreach (var item in cargoItems)
                 {
                     if (!item.selected) continue;
                     int needed = item.count;
-                    foreach (var thing in sourceMap.listerThings.AllThings)
+                    foreach (var thing in sourceMap.listerThings.AllThings.ToList())
                     {
                         if (needed <= 0) break;
                         if (thing.def != item.def) continue;
@@ -201,7 +261,7 @@ namespace MaiyaAeroBay
             }
             else if (FromCaravan)
             {
-                foreach (var item in allItems)
+                foreach (var item in cargoItems)
                 {
                     if (!item.selected) continue;
                     int needed = item.count;
@@ -268,27 +328,67 @@ namespace MaiyaAeroBay
             Widgets.DrawLineHorizontal(inRect.x, y, inRect.width);
             y += 10f;
 
-            float scrollHeight = allItems.Count * 30f;
-            Rect scrollRect = new Rect(inRect.x, y, inRect.width, Mathf.Min(scrollHeight + 10f, 420f));
+            float scrollHeight = TotalItemCount * 30f + 60f;
+            Rect scrollRect = new Rect(inRect.x, y, inRect.width, Mathf.Min(scrollHeight + 10f, 480f));
             Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, scrollHeight);
             Widgets.BeginScrollView(scrollRect, ref scrollPosition, viewRect);
 
             float listY = 0f;
-            for (int i = 0; i < allItems.Count; i++)
+
+            if (pawnItems.Count > 0)
             {
-                var item = allItems[i];
-                Rect rowRect = new Rect(0f, listY, viewRect.width, 28f);
+                Text.Font = GameFont.Medium;
+                Widgets.Label(new Rect(0f, listY, viewRect.width, 24f), "MaiyaAeroBay_RequestDeliverySectionPawns".Translate());
+                Text.Font = GameFont.Small;
+                listY += 28f;
 
-                if (i % 2 == 0) Widgets.DrawHighlight(rowRect);
+                for (int i = 0; i < pawnItems.Count; i++)
+                {
+                    var item = pawnItems[i];
+                    Rect rowRect = new Rect(0f, listY, viewRect.width, 28f);
+                    if (i % 2 == 0) Widgets.DrawHighlight(rowRect);
 
-                bool wasSel = item.selected;
-                Widgets.CheckboxLabeled(rowRect, item.label + " x" + item.count
-                    + " (" + (item.massPerItem * item.count).ToString("F1") + "kg)", ref item.selected);
-                allItems[i] = item;
+                    Rect iconRect = new Rect(2f, listY + 2f, 24f, 24f);
+                    Widgets.ThingIcon(iconRect, item.sourceThing);
 
-                if (item.selected != wasSel) weightDirty = true;
-                listY += 30f;
+                    bool wasSel = item.selected;
+                    Rect labelRect = new Rect(30f, listY, viewRect.width - 30f, 28f);
+                    Widgets.CheckboxLabeled(labelRect, item.label + " (" + item.massPerItem.ToString("F1") + "kg)", ref item.selected);
+                    pawnItems[i] = item;
+                    if (item.selected != wasSel) weightDirty = true;
+                    listY += 30f;
+                }
+
+                Widgets.DrawLineHorizontal(4f, listY + 4f, viewRect.width - 8f);
+                listY += 14f;
             }
+
+            if (cargoItems.Count > 0)
+            {
+                Text.Font = GameFont.Medium;
+                Widgets.Label(new Rect(0f, listY, viewRect.width, 24f), "MaiyaAeroBay_RequestDeliverySectionCargo".Translate());
+                Text.Font = GameFont.Small;
+                listY += 28f;
+
+                for (int i = 0; i < cargoItems.Count; i++)
+                {
+                    var item = cargoItems[i];
+                    Rect rowRect = new Rect(0f, listY, viewRect.width, 28f);
+                    if (i % 2 == 0) Widgets.DrawHighlight(rowRect);
+
+                    Rect iconRect = new Rect(2f, listY + 2f, 24f, 24f);
+                    Widgets.DefIcon(iconRect, item.def);
+
+                    bool wasSel = item.selected;
+                    Rect labelRect = new Rect(30f, listY, viewRect.width - 30f, 28f);
+                    Widgets.CheckboxLabeled(labelRect, item.label + " x" + item.count
+                        + " (" + (item.massPerItem * item.count).ToString("F1") + "kg)", ref item.selected);
+                    cargoItems[i] = item;
+                    if (item.selected != wasSel) weightDirty = true;
+                    listY += 30f;
+                }
+            }
+
             Widgets.EndScrollView();
             y = scrollRect.yMax + 10f;
 
@@ -297,7 +397,7 @@ namespace MaiyaAeroBay
 
             if (weightDirty) ComputeTotalWeight();
 
-            bool hasSelection = allItems.Any(i => i.selected);
+            bool hasSelection = pawnItems.Any(i => i.selected) || cargoItems.Any(i => i.selected);
             int cost = TotalCost;
             bool canAfford = silver >= cost;
 
@@ -314,11 +414,13 @@ namespace MaiyaAeroBay
 
             if (Widgets.ButtonText(new Rect(inRect.x, y, 140f, 36f), "MaiyaAeroBay_RequestDeliverySelectAll".Translate()))
             {
-                for (int i = 0; i < allItems.Count; i++)
+                for (int i = 0; i < pawnItems.Count; i++)
                 {
-                    var item = allItems[i];
-                    item.selected = true;
-                    allItems[i] = item;
+                    var item = pawnItems[i]; item.selected = true; pawnItems[i] = item;
+                }
+                for (int i = 0; i < cargoItems.Count; i++)
+                {
+                    var item = cargoItems[i]; item.selected = true; cargoItems[i] = item;
                 }
                 weightDirty = true;
             }
