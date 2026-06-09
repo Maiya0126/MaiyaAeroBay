@@ -427,17 +427,17 @@
   <MaiyaAeroBay_RequestDeliveryDescMap>呼叫穿梭机运送物资和人员回家。
 
 {0} 上有 {1} 项可运输</MaiyaAeroBay_RequestDeliveryDescMap>
-  <MaiyaAeroBay_RequestDeliveryTitle>叫车运送 - 选择要运回家的物资和人员</MaiyaAeroBay_RequestDeliveryTitle></MaiyaAeroBay_RequestDeliveryTitle>
+<MaiyaAeroBay_RequestDeliveryTitle>叫车运送 - 选择要运回家的物资和人员</MaiyaAeroBay_RequestDeliveryTitle>
   <MaiyaAeroBay_RequestDeliverySubtitle>所在地：{0}，距离：{1} 格</MaiyaAeroBay_RequestDeliverySubtitle>
   <MaiyaAeroBay_RequestDeliveryCost>总费用：{0}银（总重 {1}kg）</MaiyaAeroBay_RequestDeliveryCost>
   <MaiyaAeroBay_RequestDeliverySilver>可用银币：{0}</MaiyaAeroBay_RequestDeliverySilver>
   <MaiyaAeroBay_RequestDeliveryConfirm>确认叫车</MaiyaAeroBay_RequestDeliveryConfirm>
-  <MaiyaAeroBay_RequestDeliveryNoSelection>请先选择要运送的物资或人员</MaiyaAeroBay_RequestDeliveryNoSelection></MaiyaAeroBay_RequestDeliveryNoSelection>
+<MaiyaAeroBay_RequestDeliveryNoSelection>请先选择要运送的物资或人员</MaiyaAeroBay_RequestDeliveryNoSelection>
   <MaiyaAeroBay_RequestDeliverySelectAll>全选</MaiyaAeroBay_RequestDeliverySelectAll>
   <MaiyaAeroBay_RequestDeliveryOrdered>叫车订单已下达！费用 {0}银，距离 {1} 格，目的地 #{2}</MaiyaAeroBay_RequestDeliveryOrdered>
   <MaiyaAeroBay_RequestDeliverySectionPawns>人员</MaiyaAeroBay_RequestDeliverySectionPawns>
-  <MaiyaAeroBay_RequestDeliverySectionCargo>物品</MaiyaAeroBay_RequestDeliverySectionCargo></MaiyaAeroBay_RequestDeliverySectionCargo>
+  <MaiyaAeroBay_RequestDeliverySectionCargo>物品</MaiyaAeroBay_RequestDeliverySectionCargo>
   <MaiyaAeroBay_RequestDeliveryNoSilver>银币不足！需要{0}银，当前{1}银</MaiyaAeroBay_RequestDeliveryNoSilver>
   <MaiyaAeroBay_RequestDeliveryArrivedTitle>物资/人员送达！</MaiyaAeroBay_RequestDeliveryArrivedTitle>
-  <MaiyaAeroBay_RequestDeliveryArrived>来自 {0} 的物资和人员已运抵基地！</MaiyaAeroBay_RequestDeliveryArrived></MaiyaAeroBay_RequestDeliveryArrived>
+  <MaiyaAeroBay_RequestDeliveryArrived>来自 {0} 的物资和人员已运抵基地！</MaiyaAeroBay_RequestDeliveryArrived>
 </LanguageData>
