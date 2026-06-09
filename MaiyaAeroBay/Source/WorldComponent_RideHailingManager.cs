@@ -626,11 +626,36 @@ namespace MaiyaAeroBay
                 homeMap = homeMap
             };
 
-            delivery.phase = DeliveryPhase.Traveling;
-            delivery.travelCompleteTick = Find.TickManager.TicksGame + GetTravelTicks(distance);
+            if (hasRoyalty && sourceMap != null)
+            {
+                delivery.sourceMapRef = sourceMap;
+                delivery.sourceArrivalCell = DropCellFinder.GetBestShuttleLandingSpot(sourceMap, Faction.OfPlayer);
+
+                var shipDef = TransportShipDefOf.Ship_Shuttle;
+                var ship = new TransportShip(shipDef);
+                ship.shipThing = ThingMaker.MakeThing(shipDef.shipThing);
+                var shuttleComp = ship.shipThing.TryGetComp<CompShuttle>();
+                if (shuttleComp != null) shuttleComp.shipParent = ship;
+                delivery.ship = ship;
+
+                SkyfallerMaker.SpawnSkyfaller(shipDef.arrivingSkyfaller, ship.shipThing,
+                    delivery.sourceArrivalCell, sourceMap);
+                ship.Start();
+
+                delivery.sourceArrivalTick = Find.TickManager.TicksGame + 500;
+                delivery.phase = DeliveryPhase.SourceArriving;
+
+                Log.Message("[MaiyaAeroBay] Delivery: shuttle arriving at source map, " + items.Count + " entries");
+            }
+            else
+            {
+                delivery.phase = DeliveryPhase.Traveling;
+                delivery.travelCompleteTick = Find.TickManager.TicksGame + GetTravelTicks(distance);
+
+                Log.Message("[MaiyaAeroBay] Delivery: direct (no Royalty or no source map), " + items.Count + " entries, " + distance + " tiles");
+            }
 
             deliveries.Add(delivery);
-            Log.Message("[MaiyaAeroBay] Player delivery: " + items.Count + " entries, tile " + sourceTile + "→" + homeTile + " (" + distance + " tiles, royalty=" + hasRoyalty + ")");
         }
 
         private static int GetTravelTicks(int distance)
@@ -657,6 +682,64 @@ namespace MaiyaAeroBay
 
             switch (d.phase)
             {
+                case DeliveryPhase.SourceArriving:
+                    if (tick >= d.sourceArrivalTick && d.ship != null && d.ship.ShipExistsAndIsSpawned)
+                    {
+                        if (d.items.Count > 0)
+                        {
+                            var transporter = d.ship.TransporterComp;
+                            transporter?.innerContainer.TryAddRangeOrTransfer(d.items, canMergeWithExistingStacks: false, destroyLeftover: true);
+                            d.items.Clear();
+                        }
+                        d.ship.AddJob(ShipJobDefOf.WaitTime);
+                        d.sourceDelayTick = tick + 2500;
+                        d.phase = DeliveryPhase.SourceDelay;
+                        Log.Message("[MaiyaAeroBay] Delivery: shuttle landed at source, items loaded");
+                    }
+                    else if (tick >= d.sourceArrivalTick && (d.ship == null || !d.ship.ShipExistsAndIsSpawned))
+                    {
+                        d.sourceArrivalTick = tick + 300;
+                    }
+                    break;
+
+                case DeliveryPhase.SourceDelay:
+                    if (tick >= d.sourceDelayTick)
+                    {
+                        if (d.ship != null && d.ship.ShipExistsAndIsSpawned)
+                        {
+                            try { d.ship.curJob?.End(); } catch { }
+                            var shuttleThing = d.ship.shipThing;
+                            if (shuttleThing != null && shuttleThing.Map != null)
+                            {
+                                SkyfallerMaker.SpawnSkyfaller(d.ship.def.leavingSkyfaller, shuttleThing,
+                                    shuttleThing.Position, shuttleThing.Map);
+                            }
+                        }
+                        d.phase = DeliveryPhase.SourceFlying;
+                    }
+                    break;
+
+                case DeliveryPhase.SourceFlying:
+                    if (d.ship == null || !d.ship.ShipExistsAndIsSpawned)
+                    {
+                        if (d.ship != null && d.ship.TransporterComp != null)
+                        {
+                            d.items = new List<Thing>();
+                            var inner = d.ship.TransporterComp.innerContainer;
+                            for (int i = inner.Count - 1; i >= 0; i--)
+                            {
+                                d.items.Add(inner[i]);
+                                inner.RemoveAt(i);
+                            }
+                        }
+                        d.ship?.Dispose();
+                        d.ship = null;
+                        d.phase = DeliveryPhase.Traveling;
+                        d.travelCompleteTick = tick + GetTravelTicks(d.tileDistance);
+                        Log.Message("[MaiyaAeroBay] Delivery: shuttle departed source, in transit");
+                    }
+                    break;
+
                 case DeliveryPhase.Traveling:
                     if (tick >= d.travelCompleteTick)
                     {
@@ -778,6 +861,11 @@ namespace MaiyaAeroBay
 
     public enum DeliveryPhase
     {
+        SourceArriving,
+        SourceLoading,
+        SourceDelay,
+        SourceLeaving,
+        SourceFlying,
         Traveling,
         HomeArriving,
         HomeDelay,
@@ -792,8 +880,12 @@ namespace MaiyaAeroBay
         public int tileDistance;
         public List<Thing> items = new List<Thing>();
         public TransportShip ship;
+        public Map sourceMapRef;
+        public IntVec3 sourceArrivalCell;
         public Map homeMap;
         public DeliveryPhase phase = DeliveryPhase.Traveling;
+        public int sourceArrivalTick;
+        public int sourceDelayTick;
         public int travelCompleteTick;
         public int homeArrivalTick;
         public int homeDelayTick;
