@@ -641,6 +641,8 @@ namespace MaiyaAeroBay
                 SkyfallerMaker.SpawnSkyfaller(shipDef.arrivingSkyfaller, ship.shipThing,
                     delivery.sourceArrivalCell, sourceMap);
 
+                CameraJumper.TryJump(delivery.sourceArrivalCell, sourceMap);
+
                 delivery.sourceArrivalTick = Find.TickManager.TicksGame + 500;
                 delivery.phase = DeliveryPhase.SourceArriving;
 
@@ -737,6 +739,7 @@ namespace MaiyaAeroBay
                             var homeCell = DropCellFinder.GetBestShuttleLandingSpot(homeMap, Faction.OfPlayer);
                             d.ship.ArriveAt(homeCell, homeMap.Parent);
                             d.ship.Start();
+                            CameraJumper.TryJump(homeCell, homeMap);
                             d.homeArrivalTick = tick + 300;
                             d.phase = DeliveryPhase.HomeArriving;
                             Log.Message("[MaiyaAeroBay] Delivery: ship arriving at home, " + d.items.Count + " entries");
@@ -796,12 +799,13 @@ namespace MaiyaAeroBay
             var map = d.homeMap;
             if (map == null) return;
 
+            var shipPos = d.ship.shipThing?.Position ?? CellFinder.RandomEdgeCell(map);
             var things = transporter.innerContainer;
             for (int i = things.Count - 1; i >= 0; i--)
             {
                 var thing = things[i];
                 things.Remove(thing);
-                PlaceThingOnMap(thing, map);
+                PlaceThingNear(thing, map, shipPos);
             }
 
             SendDeliveryLetter(d);
@@ -864,23 +868,23 @@ namespace MaiyaAeroBay
 
             foreach (var thing in d.items)
             {
-                PlaceThingOnMap(thing, map);
+                var pos = CellFinder.RandomEdgeCell(map);
+                PlaceThingNear(thing, map, pos);
             }
             d.items.Clear();
 
             SendDeliveryLetter(d);
         }
 
-        private static void PlaceThingOnMap(Thing thing, Map map)
+        private static void PlaceThingNear(Thing thing, Map map, IntVec3 nearPos)
         {
-            var pos = CellFinder.RandomEdgeCell(map);
             if (thing is Pawn pawn)
             {
-                GenSpawn.Spawn(pawn, pos, map, WipeMode.Vanish);
+                GenSpawn.Spawn(pawn, nearPos, map, WipeMode.Vanish);
             }
             else
             {
-                GenPlace.TryPlaceThing(thing, pos, map, ThingPlaceMode.Near);
+                GenPlace.TryPlaceThing(thing, nearPos, map, ThingPlaceMode.Near);
             }
         }
 
