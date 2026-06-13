@@ -14,6 +14,7 @@ namespace MaiyaAeroBay
         private List<ActiveDelivery> deliveries = new List<ActiveDelivery>();
         private bool promptShown = false;
         private int nextOrderCheckTick = -1;
+        private int consecutiveEmptyChecks = 0;
 
         public bool PromptShown => promptShown;
 
@@ -34,6 +35,7 @@ namespace MaiyaAeroBay
             Scribe_Collections.Look(ref activeOrders, "activeOrders", LookMode.Deep);
             Scribe_Values.Look(ref promptShown, "promptShown", false);
             Scribe_Values.Look(ref nextOrderCheckTick, "nextOrderCheckTick", -1);
+            Scribe_Values.Look(ref consecutiveEmptyChecks, "consecutiveEmptyChecks", 0);
 
             if (pendingOrders == null) pendingOrders = new List<RideOrder>();
             if (activeOrders == null) activeOrders = new List<RideOrder>();
@@ -236,21 +238,35 @@ namespace MaiyaAeroBay
             var shuttles = GetAllRideHailingShuttles();
             if (shuttles.Count == 0) return;
 
+            float intervalDays = MaiyaAeroBayMod.settings.rideHailingOrderIntervalDays;
+            float baseMin = 0.3f;
+            if (intervalDays <= 0.5f) baseMin = 0.5f;
+            if (intervalDays <= 0.25f) baseMin = 0.7f;
+
+            bool forceGenerate = consecutiveEmptyChecks >= 3;
+            bool anyGenerated = false;
+
             foreach (var shuttle in shuttles)
             {
                 var comp = shuttle.TryGetComp<CompShuttleRideHailing>();
                 if (comp == null || !comp.CanAcceptNewOrder()) continue;
-                if (GetPendingOrdersForShuttle(shuttle.ThingID, comp.StarRating).Count >= 3) continue;
+                if (!forceGenerate && GetPendingOrdersForShuttle(shuttle.ThingID, comp.StarRating).Count >= 3) continue;
 
-                float chance = Mathf.Lerp(0.3f, 0.9f, (comp.StarRating - 0.5f) / 4.5f);
-                if (!Rand.Chance(chance)) continue;
+                float chance = Mathf.Lerp(baseMin, 0.95f, (comp.StarRating - 0.5f) / 4.5f);
+                if (!forceGenerate && !Rand.Chance(chance)) continue;
 
                 var order = GenerateOrder(comp);
                 if (order != null)
                 {
                     pendingOrders.Add(order);
+                    anyGenerated = true;
                 }
             }
+
+            if (anyGenerated)
+                consecutiveEmptyChecks = 0;
+            else
+                consecutiveEmptyChecks++;
         }
 
         private RideOrder GenerateOrder(CompShuttleRideHailing comp)
