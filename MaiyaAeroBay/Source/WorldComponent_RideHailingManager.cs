@@ -456,7 +456,7 @@ namespace MaiyaAeroBay
 
                 quest.appearanceTick = Find.TickManager.TicksGame;
                 quest.acceptanceTick = Find.TickManager.TicksGame;
-                quest.hiddenInUI = true;
+                quest.root = DefDatabase<QuestScriptDef>.GetNamed("MaiyaAeroBay_RideQuest", false);
 
                 Find.QuestManager.Add(quest);
 
