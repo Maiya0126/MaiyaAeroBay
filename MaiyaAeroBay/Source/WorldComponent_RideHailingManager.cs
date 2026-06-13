@@ -456,6 +456,7 @@ namespace MaiyaAeroBay
 
                 quest.appearanceTick = Find.TickManager.TicksGame;
                 quest.acceptanceTick = Find.TickManager.TicksGame;
+                quest.hiddenInUI = true;
 
                 Find.QuestManager.Add(quest);
 
