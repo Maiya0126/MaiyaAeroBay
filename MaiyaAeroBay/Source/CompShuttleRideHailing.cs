@@ -666,27 +666,11 @@ namespace MaiyaAeroBay
                 : "MaiyaAeroBay_RideAcceptCargo".Translate(order.cargoCount, order.cargoDef?.label ?? "cargo", order.pickupLabel, order.dropoffLabel);
             Messages.Message("MaiyaAeroBay_RideAccepted".Translate(detail), parent, MessageTypeDefOf.PositiveEvent);
 
-            Quest quest = order.questID >= 0
-                ? Find.QuestManager.QuestsListForReading.FirstOrDefault(q => q.id == order.questID)
-                : null;
-            if (quest != null)
-            {
-                Find.LetterStack.ReceiveLetter(
-                    "MaiyaAeroBay_RideLetterTitle".Translate(order.GetOrderTypeLabel()),
-                    "MaiyaAeroBay_RideLetterText".Translate(detail, order.rewardSilver, order.GetDispatchModeLabel()),
-                    LetterDefOf.PositiveEvent,
-                    new LookTargets(parent),
-                    null,
-                    quest);
-            }
-            else
-            {
-                Find.LetterStack.ReceiveLetter(
-                    "MaiyaAeroBay_RideLetterTitle".Translate(order.GetOrderTypeLabel()),
-                    "MaiyaAeroBay_RideLetterText".Translate(detail, order.rewardSilver, order.GetDispatchModeLabel()),
-                    LetterDefOf.PositiveEvent,
-                    new LookTargets(parent));
-            }
+            Find.LetterStack.ReceiveLetter(
+                "MaiyaAeroBay_RideLetterTitle".Translate(order.GetOrderTypeLabel()),
+                "MaiyaAeroBay_RideLetterText".Translate(detail, order.rewardSilver, order.GetDispatchModeLabel()),
+                LetterDefOf.PositiveEvent,
+                new LookTargets(parent));
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
