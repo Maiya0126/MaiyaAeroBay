@@ -820,4 +820,43 @@ namespace MaiyaAeroBay
             };
         }
     }
+
+    [HarmonyPatch(typeof(Thing), "TakeDamage", typeof(DamageInfo))]
+    public static class Thing_TakeDamage_ShieldPatch
+    {
+        static bool Prefix(Thing __instance, ref DamageInfo dinfo)
+        {
+            var shield = __instance.TryGetComp<CompShuttleShield>();
+            if (shield == null || !shield.installed || shield.CurrentHitPoints <= 0)
+                return true;
+
+            if (__instance.Map == null || shield.IsFlying)
+                return true;
+
+            if (!shield.IsActive)
+                return true;
+
+            if (dinfo.Def == DamageDefOf.EMP)
+            {
+                shield.HitByEMP();
+                return false;
+            }
+
+            int damage = Mathf.RoundToInt(dinfo.Amount);
+            if (damage <= 0) return true;
+
+            if (shield.CurrentHitPoints >= damage)
+            {
+                shield.TakeDamage(damage);
+                return false;
+            }
+            else
+            {
+                int absorbed = shield.CurrentHitPoints;
+                shield.TakeDamage(absorbed);
+                dinfo.SetAmount(damage - absorbed);
+                return true;
+            }
+        }
+    }
 }
